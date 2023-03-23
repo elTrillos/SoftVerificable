@@ -214,11 +214,6 @@
     <Content Include="Views\Personas\Details.cshtml" />
     <Content Include="Views\Personas\Edit.cshtml" />
     <Content Include="Views\Personas\Index.cshtml" />
-    <Content Include="Views\Declaracion\Create.cshtml" />
-    <Content Include="Views\Declaracion\Delete.cshtml" />
-    <Content Include="Views\Declaracion\Details.cshtml" />
-    <Content Include="Views\Declaracion\Edit.cshtml" />
-    <Content Include="Views\Declaracion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

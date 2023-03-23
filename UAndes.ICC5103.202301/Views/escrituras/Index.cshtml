@@ -1,0 +1,69 @@
+﻿@model IEnumerable<UAndes.ICC5103._202301.Models.escritura>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.cne)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comuna)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.manzana)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.predio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fojas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fechaInscripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.numInscripcion)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.cne)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.comuna)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.manzana)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.predio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fojas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fechaInscripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.numInscripcion)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.numAtencion }) |
+            @Html.ActionLink("Details", "Details", new { id=item.numAtencion }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.numAtencion })
+        </td>
+    </tr>
+}
+
+</table>

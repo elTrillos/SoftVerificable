@@ -1,0 +1,80 @@
+﻿@model UAndes.ICC5103._202301.Models.escritura
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>escritura</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.cne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comuna)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comuna)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.manzana)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.manzana)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.predio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.predio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fojas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fojas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fechaInscripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fechaInscripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.numInscripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numInscripcion)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

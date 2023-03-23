@@ -1,0 +1,74 @@
+﻿@model UAndes.ICC5103._202301.Models.escritura
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>escritura</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.cne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comuna)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comuna)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.manzana)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.manzana)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.predio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.predio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fojas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fojas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fechaInscripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fechaInscripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.numInscripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.numInscripcion)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.numAtencion }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

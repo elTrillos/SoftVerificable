@@ -15,7 +15,35 @@ CREATE TABLE [dbo].[Persona](
 	[Id] ASC
 ))
 GO
-
+CREATE TABLE [dbo].[Escritura] (
+    [NumeroAtencion] [int] PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    [CNE] [nvarchar](50) NOT NULL,
+    [Comuna] [nvarchar](50) NOT NULL,
+    [Manzana] [nvarchar](50) NOT NULL,a
+    [Predio] [nvarchar](50) NOT NULL,
+    [Fojas] [int] NOT NULL,
+    [FechaInscripcion] [date] NOT NULL,
+    [NumeroInscripcion] [nvarchar](50) NOT NULL
+);
+GO
+CREATE TABLE [dbo].[Enajenante] (
+    [id] [int] PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    [NumeroAtencion] [int] NOT NULL,
+    [RunRut] [nvarchar](20) NOT NULL,
+    [PorcentajeDerecho] DECIMAL(5,2) NOT NULL,
+    [DerechoNoAcreditado] BIT NOT NULL,
+    FOREIGN KEY (numAtencion) REFERENCES escritura(numAtencion)
+);
+GO
+CREATE TABLE [dbo].[Adquiriente] (
+    [Id] [int] PRIMARY KEY IDENTITY(1,1),
+    [NumeroAtencion] [int] NOT NULL,
+    [RunRut] [nvarchar](20) NOT NULL,
+    [PorcentajeDerecho] DECIMAL(5,2) NOT NULL,
+    [DerechoNoAcreditado] BIT NOT NULL,
+    FOREIGN KEY (numAtencion) REFERENCES escritura(numAtencion)
+);
+GO
 
 USE [InscripcionesBrDb]
 GO

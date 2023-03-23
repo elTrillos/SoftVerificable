@@ -1,0 +1,50 @@
+﻿@model UAndes.ICC5103._202301.Models.adquiriente
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>adquiriente</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.runRut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.runRut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.porcentajeDerecho)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.porcentajeDerecho)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.derechoNoAcreditado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.derechoNoAcreditado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.escritura.cne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.escritura.cne)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
