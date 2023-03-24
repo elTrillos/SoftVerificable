@@ -5,7 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="cf04ce5cfbcf4ae99a8d87d1f0dd710a" Name="Diagram1">
-        <EntityTypeShape EntityType="InscripcionesBrDbModel.Persona" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Persona" Width="1.5" PointX="8.875" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Adquiriente" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Enajenante" Width="1.5" PointX="3" PointY="4" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Escritura" Width="1.5" PointX="0.75" PointY="2.125" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Adquirien__Numer__3E52440B" />
+        <AssociationConnector Association="InscripcionesBrDbModel.FK__Enajenant__Numer__3B75D760" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

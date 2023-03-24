@@ -4,7 +4,40 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InscripcionesBrDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InscripcionesBrDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Adquiriente">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumeroAtencion" Type="int" Nullable="false" />
+          <Property Name="RunRut" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PorcentajeDerecho" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="DerechoNoAcreditado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Enajenante">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumeroAtencion" Type="int" Nullable="false" />
+          <Property Name="RunRut" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PorcentajeDerecho" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="DerechoNoAcreditado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Escritura">
+          <Key>
+            <PropertyRef Name="NumeroAtencion" />
+          </Key>
+          <Property Name="NumeroAtencion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CNE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Comuna" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Manzana" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Predio" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fojas" Type="int" Nullable="false" />
+          <Property Name="FechaInscripcion" Type="date" Nullable="false" />
+          <Property Name="NumeroInscripcion" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Persona">
           <Key>
             <PropertyRef Name="Id" />
@@ -16,11 +49,45 @@
           <Property Name="Email" Type="nchar" MaxLength="50" Nullable="false" />
           <Property Name="Dirección" Type="nchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK__Adquirien__Numer__3E52440B">
+          <End Role="Escritura" Type="Self.Escritura" Multiplicity="1" />
+          <End Role="Adquiriente" Type="Self.Adquiriente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Escritura">
+              <PropertyRef Name="NumeroAtencion" />
+            </Principal>
+            <Dependent Role="Adquiriente">
+              <PropertyRef Name="NumeroAtencion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enajenant__Numer__3B75D760">
+          <End Role="Escritura" Type="Self.Escritura" Multiplicity="1" />
+          <End Role="Enajenante" Type="Self.Enajenante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Escritura">
+              <PropertyRef Name="NumeroAtencion" />
+            </Principal>
+            <Dependent Role="Enajenante">
+              <PropertyRef Name="NumeroAtencion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="InscripcionesBrDbModelStoreContainer">
+          <EntitySet Name="Adquiriente" EntityType="Self.Adquiriente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Enajenante" EntityType="Self.Enajenante" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Escritura" EntityType="Self.Escritura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Adquirien__Numer__3E52440B" Association="Self.FK__Adquirien__Numer__3E52440B">
+            <End Role="Escritura" EntitySet="Escritura" />
+            <End Role="Adquiriente" EntitySet="Adquiriente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enajenant__Numer__3B75D760" Association="Self.FK__Enajenant__Numer__3B75D760">
+            <End Role="Escritura" EntitySet="Escritura" />
+            <End Role="Enajenante" EntitySet="Enajenante" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InscripcionesBrDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -37,8 +104,80 @@
         </EntityType>
         <EntityContainer Name="InscripcionesBrDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Persona" EntityType="Self.Persona" />
-        </EntityContainer>
-      </Schema>
+          <EntitySet Name="Adquiriente" EntityType="InscripcionesBrDbModel.Adquiriente" />
+          <EntitySet Name="Enajenante" EntityType="InscripcionesBrDbModel.Enajenante" />
+          <EntitySet Name="Escritura" EntityType="InscripcionesBrDbModel.Escritura" />
+          <AssociationSet Name="FK__Adquirien__Numer__3E52440B" Association="InscripcionesBrDbModel.FK__Adquirien__Numer__3E52440B">
+            <End Role="Escritura" EntitySet="Escritura" />
+            <End Role="Adquiriente" EntitySet="Adquiriente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enajenant__Numer__3B75D760" Association="InscripcionesBrDbModel.FK__Enajenant__Numer__3B75D760">
+            <End Role="Escritura" EntitySet="Escritura" />
+            <End Role="Enajenante" EntitySet="Enajenante" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Adquiriente">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumeroAtencion" Type="Int32" Nullable="false" />
+          <Property Name="RunRut" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PorcentajeDerecho" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="DerechoNoAcreditado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Escritura" Relationship="InscripcionesBrDbModel.FK__Adquirien__Numer__3E52440B" FromRole="Adquiriente" ToRole="Escritura" />
+        </EntityType>
+        <EntityType Name="Enajenante">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumeroAtencion" Type="Int32" Nullable="false" />
+          <Property Name="RunRut" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PorcentajeDerecho" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="DerechoNoAcreditado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Escritura" Relationship="InscripcionesBrDbModel.FK__Enajenant__Numer__3B75D760" FromRole="Enajenante" ToRole="Escritura" />
+        </EntityType>
+        <EntityType Name="Escritura">
+          <Key>
+            <PropertyRef Name="NumeroAtencion" />
+          </Key>
+          <Property Name="NumeroAtencion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CNE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Comuna" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Manzana" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Predio" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fojas" Type="Int32" Nullable="false" />
+          <Property Name="FechaInscripcion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NumeroInscripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Adquiriente" Relationship="InscripcionesBrDbModel.FK__Adquirien__Numer__3E52440B" FromRole="Escritura" ToRole="Adquiriente" />
+          <NavigationProperty Name="Enajenante" Relationship="InscripcionesBrDbModel.FK__Enajenant__Numer__3B75D760" FromRole="Escritura" ToRole="Enajenante" />
+        </EntityType>
+        <Association Name="FK__Adquirien__Numer__3E52440B">
+          <End Type="InscripcionesBrDbModel.Escritura" Role="Escritura" Multiplicity="1" />
+          <End Type="InscripcionesBrDbModel.Adquiriente" Role="Adquiriente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Escritura">
+              <PropertyRef Name="NumeroAtencion" />
+            </Principal>
+            <Dependent Role="Adquiriente">
+              <PropertyRef Name="NumeroAtencion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enajenant__Numer__3B75D760">
+          <End Type="InscripcionesBrDbModel.Escritura" Role="Escritura" Multiplicity="1" />
+          <End Type="InscripcionesBrDbModel.Enajenante" Role="Enajenante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Escritura">
+              <PropertyRef Name="NumeroAtencion" />
+            </Principal>
+            <Dependent Role="Enajenante">
+              <PropertyRef Name="NumeroAtencion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -56,7 +195,43 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="Adquiriente">
+            <EntityTypeMapping TypeName="InscripcionesBrDbModel.Adquiriente">
+              <MappingFragment StoreEntitySet="Adquiriente">
+                <ScalarProperty Name="DerechoNoAcreditado" ColumnName="DerechoNoAcreditado" />
+                <ScalarProperty Name="PorcentajeDerecho" ColumnName="PorcentajeDerecho" />
+                <ScalarProperty Name="RunRut" ColumnName="RunRut" />
+                <ScalarProperty Name="NumeroAtencion" ColumnName="NumeroAtencion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Enajenante">
+            <EntityTypeMapping TypeName="InscripcionesBrDbModel.Enajenante">
+              <MappingFragment StoreEntitySet="Enajenante">
+                <ScalarProperty Name="DerechoNoAcreditado" ColumnName="DerechoNoAcreditado" />
+                <ScalarProperty Name="PorcentajeDerecho" ColumnName="PorcentajeDerecho" />
+                <ScalarProperty Name="RunRut" ColumnName="RunRut" />
+                <ScalarProperty Name="NumeroAtencion" ColumnName="NumeroAtencion" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Escritura">
+            <EntityTypeMapping TypeName="InscripcionesBrDbModel.Escritura">
+              <MappingFragment StoreEntitySet="Escritura">
+                <ScalarProperty Name="NumeroInscripcion" ColumnName="NumeroInscripcion" />
+                <ScalarProperty Name="FechaInscripcion" ColumnName="FechaInscripcion" />
+                <ScalarProperty Name="Fojas" ColumnName="Fojas" />
+                <ScalarProperty Name="Predio" ColumnName="Predio" />
+                <ScalarProperty Name="Manzana" ColumnName="Manzana" />
+                <ScalarProperty Name="Comuna" ColumnName="Comuna" />
+                <ScalarProperty Name="CNE" ColumnName="CNE" />
+                <ScalarProperty Name="NumeroAtencion" ColumnName="NumeroAtencion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

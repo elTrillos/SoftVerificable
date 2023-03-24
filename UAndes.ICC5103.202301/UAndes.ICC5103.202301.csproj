@@ -134,6 +134,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Adquiriente.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Enajenante.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Escritura.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\InscripcionesBrDbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -153,6 +162,9 @@
       <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\AdquirientesController.cs" />
+    <Compile Include="Views\EnajenantesController.cs" />
+    <Compile Include="Views\EscriturasController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -214,6 +226,21 @@
     <Content Include="Views\Personas\Details.cshtml" />
     <Content Include="Views\Personas\Edit.cshtml" />
     <Content Include="Views\Personas\Index.cshtml" />
+    <Content Include="Views\Adquirientes\Create.cshtml" />
+    <Content Include="Views\Adquirientes\Delete.cshtml" />
+    <Content Include="Views\Adquirientes\Details.cshtml" />
+    <Content Include="Views\Adquirientes\Edit.cshtml" />
+    <Content Include="Views\Adquirientes\Index.cshtml" />
+    <Content Include="Views\Enajenantes\Create.cshtml" />
+    <Content Include="Views\Enajenantes\Delete.cshtml" />
+    <Content Include="Views\Enajenantes\Details.cshtml" />
+    <Content Include="Views\Enajenantes\Edit.cshtml" />
+    <Content Include="Views\Enajenantes\Index.cshtml" />
+    <Content Include="Views\Escrituras\Create.cshtml" />
+    <Content Include="Views\Escrituras\Delete.cshtml" />
+    <Content Include="Views\Escrituras\Details.cshtml" />
+    <Content Include="Views\Escrituras\Edit.cshtml" />
+    <Content Include="Views\Escrituras\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

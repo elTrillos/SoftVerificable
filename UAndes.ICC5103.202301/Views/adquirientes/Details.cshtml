@@ -1,4 +1,4 @@
-﻿@model UAndes.ICC5103._202301.Models.adquiriente
+﻿@model UAndes.ICC5103._202301.Models.Adquiriente
 
 @{
     ViewBag.Title = "Details";
@@ -7,44 +7,44 @@
 <h2>Details</h2>
 
 <div>
-    <h4>adquiriente</h4>
+    <h4>Adquiriente</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.runRut)
+            @Html.DisplayNameFor(model => model.RunRut)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.runRut)
+            @Html.DisplayFor(model => model.RunRut)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.porcentajeDerecho)
+            @Html.DisplayNameFor(model => model.PorcentajeDerecho)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.porcentajeDerecho)
+            @Html.DisplayFor(model => model.PorcentajeDerecho)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.derechoNoAcreditado)
+            @Html.DisplayNameFor(model => model.DerechoNoAcreditado)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.derechoNoAcreditado)
+            @Html.DisplayFor(model => model.DerechoNoAcreditado)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.escritura.cne)
+            @Html.DisplayNameFor(model => model.Escritura.CNE)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.escritura.cne)
+            @Html.DisplayFor(model => model.Escritura.CNE)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

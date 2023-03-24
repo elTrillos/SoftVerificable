@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UAndes.ICC5103._202301.Models.escritura>
+﻿@model IEnumerable<UAndes.ICC5103._202301.Models.Escritura>
 
 @{
     ViewBag.Title = "Index";
@@ -12,25 +12,25 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.cne)
+            @Html.DisplayNameFor(model => model.CNE)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.comuna)
+            @Html.DisplayNameFor(model => model.Comuna)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.manzana)
+            @Html.DisplayNameFor(model => model.Manzana)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.predio)
+            @Html.DisplayNameFor(model => model.Predio)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.fojas)
+            @Html.DisplayNameFor(model => model.Fojas)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.fechaInscripcion)
+            @Html.DisplayNameFor(model => model.FechaInscripcion)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.numInscripcion)
+            @Html.DisplayNameFor(model => model.NumeroInscripcion)
         </th>
         <th></th>
     </tr>
@@ -38,30 +38,30 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.cne)
+            @Html.DisplayFor(modelItem => item.CNE)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.comuna)
+            @Html.DisplayFor(modelItem => item.Comuna)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.manzana)
+            @Html.DisplayFor(modelItem => item.Manzana)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.predio)
+            @Html.DisplayFor(modelItem => item.Predio)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.fojas)
+            @Html.DisplayFor(modelItem => item.Fojas)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.fechaInscripcion)
+            @Html.DisplayFor(modelItem => item.FechaInscripcion)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.numInscripcion)
+            @Html.DisplayFor(modelItem => item.NumeroInscripcion)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.numAtencion }) |
-            @Html.ActionLink("Details", "Details", new { id=item.numAtencion }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.numAtencion })
+            @Html.ActionLink("Edit", "Edit", new { id=item.NumeroAtencion }) |
+            @Html.ActionLink("Details", "Details", new { id=item.NumeroAtencion }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.NumeroAtencion })
         </td>
     </tr>
 }

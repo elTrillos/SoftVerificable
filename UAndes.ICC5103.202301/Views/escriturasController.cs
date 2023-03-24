@@ -10,24 +10,24 @@ using UAndes.ICC5103._202301.Models;
 
 namespace UAndes.ICC5103._202301.Views
 {
-    public class escriturasController : Controller
+    public class EscriturasController : Controller
     {
         private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
 
-        // GET: escrituras
+        // GET: Escrituras
         public ActionResult Index()
         {
-            return View(db.escritura.ToList());
+            return View(db.Escritura.ToList());
         }
 
-        // GET: escrituras/Details/5
+        // GET: Escrituras/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            escritura escritura = db.escritura.Find(id);
+            Escritura escritura = db.Escritura.Find(id);
             if (escritura == null)
             {
                 return HttpNotFound();
@@ -35,22 +35,22 @@ namespace UAndes.ICC5103._202301.Views
             return View(escritura);
         }
 
-        // GET: escrituras/Create
+        // GET: Escrituras/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: escrituras/Create
+        // POST: Escrituras/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "numAtencion,cne,comuna,manzana,predio,fojas,fechaInscripcion,numInscripcion")] escritura escritura)
+        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura)
         {
             if (ModelState.IsValid)
             {
-                db.escritura.Add(escritura);
+                db.Escritura.Add(escritura);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -58,14 +58,14 @@ namespace UAndes.ICC5103._202301.Views
             return View(escritura);
         }
 
-        // GET: escrituras/Edit/5
+        // GET: Escrituras/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            escritura escritura = db.escritura.Find(id);
+            Escritura escritura = db.Escritura.Find(id);
             if (escritura == null)
             {
                 return HttpNotFound();
@@ -73,12 +73,12 @@ namespace UAndes.ICC5103._202301.Views
             return View(escritura);
         }
 
-        // POST: escrituras/Edit/5
+        // POST: Escrituras/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "numAtencion,cne,comuna,manzana,predio,fojas,fechaInscripcion,numInscripcion")] escritura escritura)
+        public ActionResult Edit([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura)
         {
             if (ModelState.IsValid)
             {
@@ -89,14 +89,14 @@ namespace UAndes.ICC5103._202301.Views
             return View(escritura);
         }
 
-        // GET: escrituras/Delete/5
+        // GET: Escrituras/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            escritura escritura = db.escritura.Find(id);
+            Escritura escritura = db.Escritura.Find(id);
             if (escritura == null)
             {
                 return HttpNotFound();
@@ -104,13 +104,13 @@ namespace UAndes.ICC5103._202301.Views
             return View(escritura);
         }
 
-        // POST: escrituras/Delete/5
+        // POST: Escrituras/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            escritura escritura = db.escritura.Find(id);
-            db.escritura.Remove(escritura);
+            Escritura escritura = db.Escritura.Find(id);
+            db.Escritura.Remove(escritura);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -15,45 +15,45 @@ namespace UAndes.ICC5103._202301.Models
 using System;
     using System.Collections.Generic;
     
-public partial class escritura
+public partial class Escritura
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public escritura()
+    public Escritura()
     {
 
-        this.adquiriente = new HashSet<adquiriente>();
+        this.Adquiriente = new HashSet<Adquiriente>();
 
-        this.enajenante = new HashSet<enajenante>();
+        this.Enajenante = new HashSet<Enajenante>();
 
     }
 
 
-    public int numAtencion { get; set; }
+    public int NumeroAtencion { get; set; }
 
-    public string cne { get; set; }
+    public string CNE { get; set; }
 
-    public string comuna { get; set; }
+    public string Comuna { get; set; }
 
-    public string manzana { get; set; }
+    public string Manzana { get; set; }
 
-    public string predio { get; set; }
+    public string Predio { get; set; }
 
-    public int fojas { get; set; }
+    public int Fojas { get; set; }
 
-    public System.DateTime fechaInscripcion { get; set; }
+    public System.DateTime FechaInscripcion { get; set; }
 
-    public string numInscripcion { get; set; }
+    public string NumeroInscripcion { get; set; }
 
 
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<adquiriente> adquiriente { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<enajenante> enajenante { get; set; }
+    public virtual ICollection<Adquiriente> Adquiriente { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Enajenante> Enajenante { get; set; }
 
 }
 

@@ -15,22 +15,22 @@ namespace UAndes.ICC5103._202301.Models
 using System;
     using System.Collections.Generic;
     
-public partial class enajenante
+public partial class Enajenante
 {
 
     public int id { get; set; }
 
-    public int numAtencion { get; set; }
+    public int NumeroAtencion { get; set; }
 
-    public string runRut { get; set; }
+    public string RunRut { get; set; }
 
-    public decimal porcentajeDerecho { get; set; }
+    public decimal PorcentajeDerecho { get; set; }
 
-    public bool derechoNoAcreditado { get; set; }
+    public bool DerechoNoAcreditado { get; set; }
 
 
 
-    public virtual escritura escritura { get; set; }
+    public virtual Escritura Escritura { get; set; }
 
 }
 

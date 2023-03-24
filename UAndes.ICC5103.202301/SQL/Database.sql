@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[Escritura] (
     [NumeroAtencion] [int] PRIMARY KEY IDENTITY(1,1) NOT NULL,
     [CNE] [nvarchar](50) NOT NULL,
     [Comuna] [nvarchar](50) NOT NULL,
-    [Manzana] [nvarchar](50) NOT NULL,a
+    [Manzana] [nvarchar](50) NOT NULL,
     [Predio] [nvarchar](50) NOT NULL,
     [Fojas] [int] NOT NULL,
     [FechaInscripcion] [date] NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE [dbo].[Enajenante] (
     [RunRut] [nvarchar](20) NOT NULL,
     [PorcentajeDerecho] DECIMAL(5,2) NOT NULL,
     [DerechoNoAcreditado] BIT NOT NULL,
-    FOREIGN KEY (numAtencion) REFERENCES escritura(numAtencion)
+    FOREIGN KEY (NumeroAtencion) REFERENCES Escritura(NumeroAtencion)
 );
 GO
 CREATE TABLE [dbo].[Adquiriente] (
@@ -41,7 +41,7 @@ CREATE TABLE [dbo].[Adquiriente] (
     [RunRut] [nvarchar](20) NOT NULL,
     [PorcentajeDerecho] DECIMAL(5,2) NOT NULL,
     [DerechoNoAcreditado] BIT NOT NULL,
-    FOREIGN KEY (numAtencion) REFERENCES escritura(numAtencion)
+    FOREIGN KEY (NumeroAtencion) REFERENCES Escritura(NumeroAtencion)
 );
 GO
 

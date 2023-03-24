@@ -10,25 +10,25 @@ using UAndes.ICC5103._202301.Models;
 
 namespace UAndes.ICC5103._202301.Views
 {
-    public class enajenantesController : Controller
+    public class EnajenantesController : Controller
     {
         private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
 
-        // GET: enajenantes
+        // GET: Enajenantes
         public ActionResult Index()
         {
-            var enajenante = db.enajenante.Include(e => e.escritura);
+            var enajenante = db.Enajenante.Include(e => e.Escritura);
             return View(enajenante.ToList());
         }
 
-        // GET: enajenantes/Details/5
+        // GET: Enajenantes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            enajenante enajenante = db.enajenante.Find(id);
+            Enajenante enajenante = db.Enajenante.Find(id);
             if (enajenante == null)
             {
                 return HttpNotFound();
@@ -36,53 +36,53 @@ namespace UAndes.ICC5103._202301.Views
             return View(enajenante);
         }
 
-        // GET: enajenantes/Create
+        // GET: Enajenantes/Create
         public ActionResult Create()
         {
-            ViewBag.numAtencion = new SelectList(db.escritura, "numAtencion", "cne");
+            ViewBag.NumeroAtencion = new SelectList(db.Escritura, "NumeroAtencion", "CNE");
             return View();
         }
 
-        // POST: enajenantes/Create
+        // POST: Enajenantes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,numAtencion,runRut,porcentajeDerecho,derechoNoAcreditado")] enajenante enajenante)
+        public ActionResult Create([Bind(Include = "id,NumeroAtencion,RunRut,PorcentajeDerecho,DerechoNoAcreditado")] Enajenante enajenante)
         {
             if (ModelState.IsValid)
             {
-                db.enajenante.Add(enajenante);
+                db.Enajenante.Add(enajenante);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.numAtencion = new SelectList(db.escritura, "numAtencion", "cne", enajenante.numAtencion);
+            ViewBag.NumeroAtencion = new SelectList(db.Escritura, "NumeroAtencion", "CNE", enajenante.NumeroAtencion);
             return View(enajenante);
         }
 
-        // GET: enajenantes/Edit/5
+        // GET: Enajenantes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            enajenante enajenante = db.enajenante.Find(id);
+            Enajenante enajenante = db.Enajenante.Find(id);
             if (enajenante == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.numAtencion = new SelectList(db.escritura, "numAtencion", "cne", enajenante.numAtencion);
+            ViewBag.NumeroAtencion = new SelectList(db.Escritura, "NumeroAtencion", "CNE", enajenante.NumeroAtencion);
             return View(enajenante);
         }
 
-        // POST: enajenantes/Edit/5
+        // POST: Enajenantes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,numAtencion,runRut,porcentajeDerecho,derechoNoAcreditado")] enajenante enajenante)
+        public ActionResult Edit([Bind(Include = "id,NumeroAtencion,RunRut,PorcentajeDerecho,DerechoNoAcreditado")] Enajenante enajenante)
         {
             if (ModelState.IsValid)
             {
@@ -90,18 +90,18 @@ namespace UAndes.ICC5103._202301.Views
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.numAtencion = new SelectList(db.escritura, "numAtencion", "cne", enajenante.numAtencion);
+            ViewBag.NumeroAtencion = new SelectList(db.Escritura, "NumeroAtencion", "CNE", enajenante.NumeroAtencion);
             return View(enajenante);
         }
 
-        // GET: enajenantes/Delete/5
+        // GET: Enajenantes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            enajenante enajenante = db.enajenante.Find(id);
+            Enajenante enajenante = db.Enajenante.Find(id);
             if (enajenante == null)
             {
                 return HttpNotFound();
@@ -109,13 +109,13 @@ namespace UAndes.ICC5103._202301.Views
             return View(enajenante);
         }
 
-        // POST: enajenantes/Delete/5
+        // POST: Enajenantes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            enajenante enajenante = db.enajenante.Find(id);
-            db.enajenante.Remove(enajenante);
+            Enajenante enajenante = db.Enajenante.Find(id);
+            db.Enajenante.Remove(enajenante);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
