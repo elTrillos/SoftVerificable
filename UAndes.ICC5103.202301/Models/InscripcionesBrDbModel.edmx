@@ -38,6 +38,23 @@
           <Property Name="FechaInscripcion" Type="date" Nullable="false" />
           <Property Name="NumeroInscripcion" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Multipropietario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comuna" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Manzana" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Predio" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RunRut" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PorcentajeDerecho" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Fojas" Type="int" Nullable="false" />
+          <Property Name="AñoInscripcion" Type="date" Nullable="false" />
+          <Property Name="NumeroInscripcion" Type="int" Nullable="false" />
+          <Property Name="FechaInscripcion" Type="date" Nullable="false" />
+          <Property Name="AñoVigenciaInicial" Type="date" Nullable="false" />
+          <Property Name="AñoVigenciaFinal" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="Persona">
           <Key>
             <PropertyRef Name="Id" />
@@ -77,6 +94,7 @@
           <EntitySet Name="Adquiriente" EntityType="Self.Adquiriente" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Enajenante" EntityType="Self.Enajenante" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Escritura" EntityType="Self.Escritura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Multipropietario" EntityType="Self.Multipropietario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Adquirien__Numer__3E52440B" Association="Self.FK__Adquirien__Numer__3E52440B">
             <End Role="Escritura" EntitySet="Escritura" />
@@ -115,6 +133,7 @@
             <End Role="Escritura" EntitySet="Escritura" />
             <End Role="Enajenante" EntitySet="Enajenante" />
           </AssociationSet>
+          <EntitySet Name="Multipropietario" EntityType="InscripcionesBrDbModel.Multipropietario" />
           </EntityContainer>
         <EntityType Name="Adquiriente">
           <Key>
@@ -177,6 +196,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Multipropietario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comuna" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Manzana" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Predio" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RunRut" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PorcentajeDerecho" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="Fojas" Type="Int32" Nullable="false" />
+          <Property Name="AñoInscripcion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NumeroInscripcion" Type="Int32" Nullable="false" />
+          <Property Name="FechaInscripcion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AñoVigenciaInicial" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AñoVigenciaFinal" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -228,6 +264,24 @@
                 <ScalarProperty Name="Comuna" ColumnName="Comuna" />
                 <ScalarProperty Name="CNE" ColumnName="CNE" />
                 <ScalarProperty Name="NumeroAtencion" ColumnName="NumeroAtencion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Multipropietario">
+            <EntityTypeMapping TypeName="InscripcionesBrDbModel.Multipropietario">
+              <MappingFragment StoreEntitySet="Multipropietario">
+                <ScalarProperty Name="AñoVigenciaFinal" ColumnName="AñoVigenciaFinal" />
+                <ScalarProperty Name="AñoVigenciaInicial" ColumnName="AñoVigenciaInicial" />
+                <ScalarProperty Name="FechaInscripcion" ColumnName="FechaInscripcion" />
+                <ScalarProperty Name="NumeroInscripcion" ColumnName="NumeroInscripcion" />
+                <ScalarProperty Name="AñoInscripcion" ColumnName="AñoInscripcion" />
+                <ScalarProperty Name="Fojas" ColumnName="Fojas" />
+                <ScalarProperty Name="PorcentajeDerecho" ColumnName="PorcentajeDerecho" />
+                <ScalarProperty Name="RunRut" ColumnName="RunRut" />
+                <ScalarProperty Name="Predio" ColumnName="Predio" />
+                <ScalarProperty Name="Manzana" ColumnName="Manzana" />
+                <ScalarProperty Name="Comuna" ColumnName="Comuna" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

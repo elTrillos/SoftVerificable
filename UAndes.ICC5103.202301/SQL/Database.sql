@@ -44,7 +44,21 @@ CREATE TABLE [dbo].[Adquiriente] (
     FOREIGN KEY (NumeroAtencion) REFERENCES Escritura(NumeroAtencion)
 );
 GO
-
+CREATE TABLE [dbo].[Multipropietario] (
+    [Id] [int] PRIMARY KEY IDENTITY(1,1),
+    [Comuna] [nvarchar](50) NOT NULL,
+    [Manzana] [nvarchar](50) NOT NULL,
+    [Predio] [nvarchar](50) NOT NULL,
+    [RunRut] [nvarchar](20) NOT NULL,
+    [PorcentajeDerecho] DECIMAL(5,2) NOT NULL,
+    [Fojas] [int] NOT NULL,
+    [AñoInscripcion] [date] NOT NULL,
+    [NumeroInscripcion] [int] NOT NULL,  
+    [FechaInscripcion] [date] NOT NULL,
+    [AñoVigenciaInicial] [date] NOT NULL,
+    [AñoVigenciaFinal] [date] NOT NULL,
+);
+GO
 USE [InscripcionesBrDb]
 GO
 SET IDENTITY_INSERT [dbo].[Persona] ON 

@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="InscripcionesBrDbModel.Escritura" Width="1.5" PointX="0.75" PointY="2.125" />
         <AssociationConnector Association="InscripcionesBrDbModel.FK__Adquirien__Numer__3E52440B" />
         <AssociationConnector Association="InscripcionesBrDbModel.FK__Enajenant__Numer__3B75D760" />
+        <EntityTypeShape EntityType="InscripcionesBrDbModel.Multipropietario" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

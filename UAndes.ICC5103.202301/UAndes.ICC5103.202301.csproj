@@ -158,6 +158,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InscripcionesBrDbModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Multipropietario.cs">
+      <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Persona.cs">
       <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
     </Compile>
@@ -165,6 +168,7 @@
     <Compile Include="Views\AdquirientesController.cs" />
     <Compile Include="Views\EnajenantesController.cs" />
     <Compile Include="Views\EscriturasController.cs" />
+    <Compile Include="Views\MultipropietariosController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -241,6 +245,11 @@
     <Content Include="Views\Escrituras\Details.cshtml" />
     <Content Include="Views\Escrituras\Edit.cshtml" />
     <Content Include="Views\Escrituras\Index.cshtml" />
+    <Content Include="Views\Multipropietarios\Create.cshtml" />
+    <Content Include="Views\Multipropietarios\Delete.cshtml" />
+    <Content Include="Views\Multipropietarios\Details.cshtml" />
+    <Content Include="Views\Multipropietarios\Edit.cshtml" />
+    <Content Include="Views\Multipropietarios\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
