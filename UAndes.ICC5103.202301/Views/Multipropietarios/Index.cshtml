@@ -5,7 +5,28 @@
 }
 
 <h2>Index</h2>
-
+<label for="cars">Comuna:</label>
+<select class="form-control" name="cars" id="cars">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+</select>
+<br>
+<br>
+<label for="lname">Rol:</label>
+<div class="row">
+    <div class="column">
+        <input type="text" class="form-control" id="lrol1" name="lname1">
+    </div>
+    <div class="column">
+        <input type="text" class="form-control" id="lrol2" name="lname2">
+    </div>
+</div>
+<br>
+<br>
+<label for="lname">Year:</label>
+<input type="number" class="form-control" id="lyear" name="lname">
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -47,47 +68,48 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comuna)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Manzana)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Predio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RunRut)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PorcentajeDerecho)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fojas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AñoInscripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumeroInscripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaInscripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AñoVigenciaInicial)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AñoVigenciaFinal)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comuna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manzana)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Predio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunRut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PorcentajeDerecho)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fojas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AñoInscripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroInscripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaInscripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AñoVigenciaInicial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AñoVigenciaFinal)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
