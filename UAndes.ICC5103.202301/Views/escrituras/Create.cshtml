@@ -75,12 +75,23 @@
 
 
     <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENANTES</h4>
-    <div id="example-table"></div>
-    <button type="button" id="reactivity-add" onclick="addTableRow()">Add New Row</button>
+
+    <div id="enajenantes-table"></div>
+
+    <button type="button" id="reactivity-add" onclick="addTableRowEnajenantes()">Add New Row</button>
+
     <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ADQUIRIENTES</h4>
+
+    <div id="adquirientes-table"></div>
+
+    <button type="button" id="reactivity-add" onclick="addTableRowAdquirientes()">Add New Row</button>
+
+
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="hidden" id="emajenantesTableJson" name="emajenantesTableJson" >
+            <input type="hidden" id="emajenantesTableJson" name="emajenantesTableJson">
+            <input type="hidden" id="adquirientesTableJson" name="adquirientesTableJson">
             <button type="submit" value="Crear" class="btn btn-default" onclick="submitForm()">Submit</button>
         </div>
     </div>
@@ -96,19 +107,22 @@
     let enajenantesJson;
 
     function submitForm() {
-        console.log("test");
-        var table = Tabulator.findTable("#example-table")[0]
-        var array = table.getData();
+        var tableEnajenantes = Tabulator.findTable("#enajenantes-table")[0]
+        var array = tableEnajenantes.getData();
         enajenantesJson = JSON.stringify(array);
 
     }
-    function addTableRow() {
-        console.log("xd")
-        var table = Tabulator.findTable("#example-table")[0]
+
+    function addTableRowEnajenantes() {
+        var table = Tabulator.findTable("#enajenantes-table")[0]
         var rows = table.getRows();
         table.addRow({ item: rows.length + 1 });
+    }
 
-
+    function addTableRowAdquirientes() {
+        var table = Tabulator.findTable("#adquirientes-table")[0]
+        var rows = table.getRows();
+        table.addRow({ item: rows.length + 1 });
     }
     
     $(document).ready(function () {
@@ -126,7 +140,7 @@
             { item: 1, rut: "", porcentajeDerecho: 0, porcentajeDerechoNoAcreditado: false},
 
         ];
-        var table = new Tabulator("#example-table", {
+        var tableEnajenantes = new Tabulator("#enajenantes-table", {
             height: "311px",
             layout: "fitColumns",
             resizableColumnFit: true,
@@ -135,21 +149,46 @@
             data: tabledata, //load data into table
             columns: [
                 { title: "RUT", field: "rut", editor: true, },
-                { title: "% de derecho", field: "porcentajeDerecho", sorter: "number" ,editor: true,},
-                { title: "% de derecho no acreditado", field: "porcentajeDerechoNoAcreditado", hozAlign: "center", editor: true, formatter: "tickCross" },
+                { title: "% de derecho", field: "porcentajeDerecho", sorter: "number", editor: true, width: 150 },
+                { title: "% de derecho no acreditado", field: "porcentajeDerechoNoAcreditado", hozAlign: "center", editor: true, formatter: "tickCross", width: 230 },
 
             ],
         });
-        table.on("dataChanged", function (row) {
+        tableEnajenantes.on("dataChanged", function (row) {
             //row - row component
             console.log("xd")
-            var table = Tabulator.findTable("#example-table")[0]
-            var array = table.getData();
+            var tableEnajenantes = Tabulator.findTable("#enajenantes-table")[0]
+            var array = tableEnajenantes.getData();
             enajenantesJson = JSON.stringify(array);
             console.log(enajenantesJson);
             var enajenanteJsonHiddenInput = document.querySelector("#emajenantesTableJson");
             enajenanteJsonHiddenInput.value = enajenantesJson;
             console.log(enajenanteJsonHiddenInput.value)
+        });
+        var tableAdquirientes = new Tabulator("#adquirientes-table", {
+            height: "311px",
+            layout: "fitColumns",
+            resizableColumnFit: true,
+            responsiveLayout: "hide",
+            reactiveData: true, //turn on data reactivity
+            data: tabledata, //load data into table
+            columns: [
+                { title: "RUT", field: "rut", editor: true, },
+                { title: "% de derecho", field: "porcentajeDerecho", sorter: "number", editor: true, width: 150 },
+                { title: "% de derecho no acreditado", field: "porcentajeDerechoNoAcreditado", hozAlign: "center", editor: true, formatter: "tickCross", width: 230 },
+
+            ],
+        });
+        tableAdquirientes.on("dataChanged", function (row) {
+            //row - row component
+            console.log("xd")
+            var tableAdquirientes = Tabulator.findTable("#adquirientes-table")[0]
+            var array = tableAdquirientes.getData();
+            adquirientesJson = JSON.stringify(array);
+            console.log(adquirientesJson);
+            var adquirientesJsonHiddenInput = document.querySelector("#adquirientesTableJson");
+            adquirientesJsonHiddenInput.value = adquirientesJson;
+            console.log(adquirientesJsonHiddenInput.value)
         });
         
     });
