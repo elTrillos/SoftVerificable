@@ -156,7 +156,6 @@
         });
         tableEnajenantes.on("dataChanged", function (row) {
             //row - row component
-            console.log("xd")
             var tableEnajenantes = Tabulator.findTable("#enajenantes-table")[0]
             var array = tableEnajenantes.getData();
             enajenantesJson = JSON.stringify(array);
@@ -181,7 +180,6 @@
         });
         tableAdquirientes.on("dataChanged", function (row) {
             //row - row component
-            console.log("xd")
             var tableAdquirientes = Tabulator.findTable("#adquirientes-table")[0]
             var array = tableAdquirientes.getData();
             adquirientesJson = JSON.stringify(array);

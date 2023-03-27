@@ -19,10 +19,24 @@ namespace UAndes.ICC5103._202301.Views
         public string porcentajeDerecho { get; set; }
         public bool porcentajeDerechoNoAcreditado { get; set; }
     }
+
+    public class AdquirienteClass
+    {
+        public int item { get; set; }
+        public string rut { get; set; }
+        public string porcentajeDerecho { get; set; }
+        public bool porcentajeDerechoNoAcreditado { get; set; }
+    }
     public class EnajenantesList
     {
         public List<EnajenanteClass> enajenanteClass { get; set; }
     }
+
+    public class AdquirienteList
+    {
+        public List<AdquirienteClass> adquirienteClass { get; set; }
+    }
+
     public class EscriturasController : Controller
     {
         private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
@@ -59,13 +73,15 @@ namespace UAndes.ICC5103._202301.Views
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura, string emajenantesTableJson)
+        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura, string emajenantesTableJson, string adquirientesTableJson)
         {
             if (ModelState.IsValid)
             {
                 db.Escritura.Add(escritura);
                 System.Diagnostics.Debug.WriteLine("test");
                 System.Diagnostics.Debug.WriteLine(emajenantesTableJson);
+                System.Diagnostics.Debug.WriteLine(adquirientesTableJson);
+
                 var enajenantesJson = JsonConvert.DeserializeObject<List<EnajenanteClass>>(emajenantesTableJson);
                 System.Diagnostics.Debug.WriteLine(enajenantesJson);
                 foreach (var emajenante in enajenantesJson)
@@ -83,9 +99,30 @@ namespace UAndes.ICC5103._202301.Views
 
                         };
                         db.Enajenante.Add(enajenante);
-                        //escritura.Enajenante.Add(enajenante);
                     }
                     
+                }
+
+                var adquirientesJson = JsonConvert.DeserializeObject<List<AdquirienteClass>>(adquirientesTableJson);
+                System.Diagnostics.Debug.WriteLine(adquirientesJson);
+                foreach (var adquirienteVar in adquirientesJson)
+                {
+                    System.Diagnostics.Debug.WriteLine(adquirienteVar.item.ToString());
+                    decimal porcentajeDerechoDecimal;
+                    if (Decimal.TryParse(adquirienteVar.porcentajeDerecho, out porcentajeDerechoDecimal))
+                    {
+                        Adquiriente adquiriente = new Adquiriente
+                        {
+                            RunRut = adquirienteVar.rut,
+                            NumeroAtencion = escritura.NumeroAtencion,
+                            PorcentajeDerecho = porcentajeDerechoDecimal,
+                            DerechoNoAcreditado = adquirienteVar.porcentajeDerechoNoAcreditado,
+
+                        };
+                        db.Adquiriente.Add(adquiriente);
+
+                    }
+
                 }
                 db.SaveChanges();
                 return RedirectToAction("Index");
