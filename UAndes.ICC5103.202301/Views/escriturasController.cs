@@ -4,12 +4,25 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using UAndes.ICC5103._202301.Models;
 
 namespace UAndes.ICC5103._202301.Views
 {
+    public class EnajenanteClass
+    {
+        public int item { get; set; }
+        public string rut { get; set; }
+        public string porcentajeDerecho { get; set; }
+        public bool porcentajeDerechoNoAcreditado { get; set; }
+    }
+    public class EnajenantesList
+    {
+        public List<EnajenanteClass> enajenanteClass { get; set; }
+    }
     public class EscriturasController : Controller
     {
         private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
@@ -46,11 +59,34 @@ namespace UAndes.ICC5103._202301.Views
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura)
+        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura, string emajenantesTableJson)
         {
             if (ModelState.IsValid)
             {
                 db.Escritura.Add(escritura);
+                System.Diagnostics.Debug.WriteLine("test");
+                System.Diagnostics.Debug.WriteLine(emajenantesTableJson);
+                var enajenantesJson = JsonConvert.DeserializeObject<List<EnajenanteClass>>(emajenantesTableJson);
+                System.Diagnostics.Debug.WriteLine(enajenantesJson);
+                foreach (var emajenante in enajenantesJson)
+                {
+                    System.Diagnostics.Debug.WriteLine(emajenante.item.ToString());
+                    decimal porcentajeDerechoDecimal;
+                    if(Decimal.TryParse(emajenante.porcentajeDerecho, out porcentajeDerechoDecimal))
+                    {
+                        Enajenante enajenante = new Enajenante
+                        {
+                            RunRut = emajenante.rut,
+                            NumeroAtencion = escritura.NumeroAtencion,
+                            PorcentajeDerecho = porcentajeDerechoDecimal,
+                            DerechoNoAcreditado = emajenante.porcentajeDerechoNoAcreditado,
+
+                        };
+                        db.Enajenante.Add(enajenante);
+                        //escritura.Enajenante.Add(enajenante);
+                    }
+                    
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

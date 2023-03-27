@@ -164,6 +164,7 @@
     <Compile Include="Models\Persona.cs">
       <DependentUpon>InscripcionesBrDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TemporalEscritura.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\AdquirientesController.cs" />
     <Compile Include="Views\EnajenantesController.cs" />

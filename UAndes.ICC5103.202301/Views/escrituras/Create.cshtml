@@ -4,89 +4,156 @@
     ViewBag.Title = "Create";
 }
 
-
+<link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
 <h2>CREACIÓN NUEVA ESCRITURA</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENACIÓN</h4>
+<div class="form-horizontal" id="FormCreateEscritura">
+    <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENACIÓN</h4>
 
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.Label("Código Naturaleza de la Escritura ", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CNE, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CNE, "", new { @class = "text-danger" })
-            </div>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.Label("Código Naturaleza de la Escritura ", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CNE, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CNE, "", new { @class = "text-danger" })
         </div>
-
-        <div class="form-group">
-            @Html.Label("Comuna", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Comuna, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Comuna, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Manzana", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Manzana, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Manzana, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Predio", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Predio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Predio, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Fojas", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Fojas, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Fojas, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Fecha Inscripción", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FechaInscripcion, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FechaInscripcion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Número Inscripción", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NumeroInscripcion, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NumeroInscripcion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Crear" class="btn btn-default" />
-            </div>
-        </div>
-
-        <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENANTES</h4>
-
-        <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ADQUIRIENTES</h4>
     </div>
+
+    <div class="form-group">
+        @Html.Label("Comuna", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Comuna, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Comuna, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Manzana", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Manzana, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Manzana, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Predio", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Predio, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Predio, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Fojas", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Fojas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Fojas, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Fecha Inscripción", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.FechaInscripcion, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FechaInscripcion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Número Inscripción", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NumeroInscripcion, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NumeroInscripcion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENANTES</h4>
+    <div id="example-table"></div>
+    <button type="button" id="reactivity-add" onclick="addTableRow()">Add New Row</button>
+    <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ADQUIRIENTES</h4>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="hidden" id="emajenantesTableJson" name="emajenantesTableJson" >
+            <button type="submit" value="Crear" class="btn btn-default" onclick="submitForm()">Submit</button>
+        </div>
+    </div>
+</div>
 }
 
 <div>
     @Html.ActionLink("Regresar a la lista", "Index")
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
+<script>
+    let enajenantesJson;
+
+    function submitForm() {
+        console.log("test");
+        var table = Tabulator.findTable("#example-table")[0]
+        var array = table.getData();
+        enajenantesJson = JSON.stringify(array);
+
+    }
+    function addTableRow() {
+        console.log("xd")
+        var table = Tabulator.findTable("#example-table")[0]
+        var rows = table.getRows();
+        table.addRow({ item: rows.length + 1 });
+
+
+    }
+    
+    $(document).ready(function () {
+
+
+
+        // Submit form function
+        $('#form-group').on('submit', function (e) {
+            e.preventDefault();
+            var form_data = $(this).serializeArray();
+            var json_data = JSON.stringify(form_data);
+            console.log(json_data); // Output JSON data to console
+        });
+        var tabledata = [
+            { item: 1, rut: "", porcentajeDerecho: 0, porcentajeDerechoNoAcreditado: false},
+
+        ];
+        var table = new Tabulator("#example-table", {
+            height: "311px",
+            layout: "fitColumns",
+            resizableColumnFit: true,
+            responsiveLayout: "hide",
+            reactiveData: true, //turn on data reactivity
+            data: tabledata, //load data into table
+            columns: [
+                { title: "RUT", field: "rut", editor: true, },
+                { title: "% de derecho", field: "porcentajeDerecho", sorter: "number" ,editor: true,},
+                { title: "% de derecho no acreditado", field: "porcentajeDerechoNoAcreditado", hozAlign: "center", editor: true, formatter: "tickCross" },
+
+            ],
+        });
+        table.on("dataChanged", function (row) {
+            //row - row component
+            console.log("xd")
+            var table = Tabulator.findTable("#example-table")[0]
+            var array = table.getData();
+            enajenantesJson = JSON.stringify(array);
+            console.log(enajenantesJson);
+            var enajenanteJsonHiddenInput = document.querySelector("#emajenantesTableJson");
+            enajenanteJsonHiddenInput.value = enajenantesJson;
+            console.log(enajenanteJsonHiddenInput.value)
+        });
+        
+    });
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
