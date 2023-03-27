@@ -4,33 +4,33 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Página de inicio</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear nueva escritura", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CNE)
+            @Html.DisplayName("Código Naturaleza Escritura")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Comuna)
+            @Html.DisplayName("Comuna")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Manzana)
+            @Html.DisplayName("Manzana")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Predio)
+            @Html.DisplayName("Predio")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Fojas)
+            @Html.DisplayName("Fojas")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FechaInscripcion)
+            @Html.DisplayName("Fecha Inscripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NumeroInscripcion)
+            @Html.DisplayName("Numero Inscripción")
         </th>
         <th></th>
     </tr>
@@ -59,9 +59,9 @@
             @Html.DisplayFor(modelItem => item.NumeroInscripcion)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.NumeroAtencion }) |
-            @Html.ActionLink("Details", "Details", new { id=item.NumeroAtencion }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.NumeroAtencion })
+            @Html.ActionLink("Editar", "Edit", new { id = item.NumeroAtencion }) |
+            @Html.ActionLink("Ver detalles", "Details", new { id = item.NumeroAtencion }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.NumeroAtencion })
         </td>
     </tr>
 }
