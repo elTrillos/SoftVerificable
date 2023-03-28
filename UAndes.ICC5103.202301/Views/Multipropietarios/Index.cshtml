@@ -4,8 +4,8 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-<label for="cars">Comuna:</label>
+<h2>Multipropietarios</h2>
+<label for="cars">Comuna</label>
 <select class="form-control" name="cars" id="cars">
     <option value="volvo">Volvo</option>
     <option value="saab">Saab</option>
@@ -14,7 +14,7 @@
 </select>
 <br>
 <br>
-<label for="lname">Rol:</label>
+<label for="lname">Rol</label>
 <div class="row">
     <div class="column">
         <input type="text" class="form-control" id="lrol1" name="lname1">
@@ -25,45 +25,45 @@
 </div>
 <br>
 <br>
-<label for="lname">Year:</label>
+<label for="lname">Año</label>
 <input type="number" class="form-control" id="lyear" name="lname">
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear nuevo multipropietario", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Comuna)
+            @Html.DisplayName("Comuna")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Manzana)
+            @Html.DisplayName("Manzana")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Predio)
+            @Html.DisplayName("Predio")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RunRut)
+            @Html.DisplayName("RunRut")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PorcentajeDerecho)
+            @Html.DisplayName("Porcentaje Derecho")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Fojas)
+            @Html.DisplayName("Fojas")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AñoInscripcion)
+            @Html.DisplayName("Año Inscripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NumeroInscripcion)
+            @Html.DisplayName("Numero Inscripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FechaInscripcion)
+            @Html.DisplayName("Fecha Inscripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AñoVigenciaInicial)
+            @Html.DisplayName("Año Vigencia Inicial")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AñoVigenciaFinal)
+            @Html.DisplayName("Año Vigencia Final")
         </th>
         <th></th>
     </tr>
@@ -105,9 +105,9 @@
                 @Html.DisplayFor(modelItem => item.AñoVigenciaFinal)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.Id })
             </td>
         </tr>
     }
