@@ -59,6 +59,19 @@ namespace UAndes.ICC5103._202301.Views
             {
                 return HttpNotFound();
             }
+            var enajenantesActuales = db.Enajenante
+                    .Where(b => b.NumeroAtencion == id)
+                    .ToList();
+            var adquirientesActuales = db.Adquiriente
+                    .Where(c => c.NumeroAtencion == id)
+                    .ToList();
+            System.Diagnostics.Debug.WriteLine(adquirientesActuales);
+            foreach (var enajenanteActual in adquirientesActuales)
+            {
+                System.Diagnostics.Debug.WriteLine(enajenanteActual.ToString());
+            }
+            ViewBag.EnajenantesActuales = enajenantesActuales;
+            ViewBag.AdquirientesActuales = adquirientesActuales;
             return View(escritura);
         }
 

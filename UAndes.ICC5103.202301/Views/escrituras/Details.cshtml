@@ -66,9 +66,71 @@
             @Html.DisplayFor(model => model.NumeroInscripcion)
         </dd>
 
+
     </dl>
+    <h2>Enajenantes Actuales:</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Run/Rut
+            </th>
+            <th>
+                % Derecho
+            </th>
+            <th>
+                Derecho no acreditado
+            </th>
+        </tr>
+
+        @foreach (var enajenanteActual in ViewBag.EnajenantesActuales)
+        {
+            <tr>
+                <td>
+                    @enajenanteActual.RunRut
+                </td>
+                <td>
+                    @enajenanteActual.PorcentajeDerecho
+                </td>
+                <td>
+                    @enajenanteActual.DerechoNoAcreditado
+                </td>
+
+            </tr>
+        }
+
+    </table>
+    <h2>Adquirientes Actuales:</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Run/Rut
+            </th>
+            <th>
+                % Derecho
+            </th>
+            <th>
+                Derecho no acreditado
+            </th>
+        </tr>
+
+        @foreach (var adquirienteActual in ViewBag.adquirientesActuales)
+        {
+            <tr>
+                <td>
+                    @adquirienteActual.RunRut
+                </td>
+                <td>
+                    @adquirienteActual.PorcentajeDerecho
+                </td>
+                <td>
+                    @adquirienteActual.DerechoNoAcreditado
+                </td>
+
+            </tr>
+        }
+
+    </table>
 </div>
 <p>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.NumeroAtencion }) |
     @Html.ActionLink("Regresar a la lista", "Index")
 </p>
