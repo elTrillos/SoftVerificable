@@ -49,11 +49,11 @@
           <Property Name="RunRut" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="PorcentajeDerecho" Type="decimal" Precision="5" Scale="2" Nullable="false" />
           <Property Name="Fojas" Type="int" Nullable="false" />
-          <Property Name="AñoInscripcion" Type="date" Nullable="false" />
+          <Property Name="AñoInscripcion" Type="int" Nullable="false" />
           <Property Name="NumeroInscripcion" Type="int" Nullable="false" />
           <Property Name="FechaInscripcion" Type="date" Nullable="false" />
-          <Property Name="AñoVigenciaInicial" Type="date" Nullable="false" />
-          <Property Name="AñoVigenciaFinal" Type="date" Nullable="false" />
+          <Property Name="AñoVigenciaInicial" Type="int" Nullable="false" />
+          <Property Name="AñoVigenciaFinal" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Persona">
           <Key>
@@ -207,11 +207,11 @@
           <Property Name="RunRut" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PorcentajeDerecho" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
           <Property Name="Fojas" Type="Int32" Nullable="false" />
-          <Property Name="AñoInscripcion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AñoInscripcion" Type="Int32" Nullable="false" />
           <Property Name="NumeroInscripcion" Type="Int32" Nullable="false" />
           <Property Name="FechaInscripcion" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="AñoVigenciaInicial" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="AñoVigenciaFinal" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AñoVigenciaInicial" Type="Int32" Nullable="false" />
+          <Property Name="AñoVigenciaFinal" Type="Int32" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>

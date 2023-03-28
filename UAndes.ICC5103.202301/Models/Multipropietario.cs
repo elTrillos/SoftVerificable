@@ -32,15 +32,15 @@ public partial class Multipropietario
 
     public int Fojas { get; set; }
 
-    public System.DateTime AñoInscripcion { get; set; }
+    public int AñoInscripcion { get; set; }
 
     public int NumeroInscripcion { get; set; }
 
     public System.DateTime FechaInscripcion { get; set; }
 
-    public System.DateTime AñoVigenciaInicial { get; set; }
+    public int AñoVigenciaInicial { get; set; }
 
-    public System.DateTime AñoVigenciaFinal { get; set; }
+    public int AñoVigenciaFinal { get; set; }
 
 }
 

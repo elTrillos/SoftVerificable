@@ -52,11 +52,11 @@ CREATE TABLE [dbo].[Multipropietario] (
     [RunRut] [nvarchar](20) NOT NULL,
     [PorcentajeDerecho] DECIMAL(5,2) NOT NULL,
     [Fojas] [int] NOT NULL,
-    [AñoInscripcion] [date] NOT NULL,
+    [AñoInscripcion] [int] NOT NULL,
     [NumeroInscripcion] [int] NOT NULL,  
     [FechaInscripcion] [date] NOT NULL,
-    [AñoVigenciaInicial] [date] NOT NULL,
-    [AñoVigenciaFinal] [date] NOT NULL,
+    [AñoVigenciaInicial] [int] NOT NULL,
+    [AñoVigenciaFinal] [int] NOT NULL,
 );
 GO
 USE [InscripcionesBrDb]
