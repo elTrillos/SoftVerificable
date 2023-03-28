@@ -2,92 +2,134 @@
 
 @{
     ViewBag.Title = "Index";
+
 }
 
-<h2>Index</h2>
+<h2>Multipropietarios</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear nuevo multipropietario", "Create")
 </p>
-<table class="table">
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar">
+
+<label for="searchSelector">Selecciona criterio de búsqueda:</label>
+<select name="searchSelector" id="searchValue">
+    <option value="0">Comuna</option>
+    <option value="1">Manzana</option>
+    <option value="2">Predio</option>
+    <option value="3">RUN-RUT</option>
+    <option value="8">Fecha Inscripción</option>
+    <option value="9">Año Vigencia Inicial</option>
+    <option value="10">Año Vigencia Final</option>
+</select>
+
+<table class="table" id="myTable">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Comuna)
+            @Html.DisplayName("Comuna")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Manzana)
+            @Html.DisplayName("Manzana")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Predio)
+            @Html.DisplayName("Predio")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RunRut)
+            @Html.DisplayName("RunRut")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PorcentajeDerecho)
+            @Html.DisplayName("Porcentaje Derecho")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Fojas)
+            @Html.DisplayName("Fojas")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AñoInscripcion)
+            @Html.DisplayName("Año Inscripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NumeroInscripcion)
+            @Html.DisplayName("Numero Inscripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FechaInscripcion)
+            @Html.DisplayName("Fecha Inscripción")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AñoVigenciaInicial)
+            @Html.DisplayName("Año Vigencia Inicial")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AñoVigenciaFinal)
+            @Html.DisplayName("Año Vigencia Final")
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comuna)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Manzana)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Predio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RunRut)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PorcentajeDerecho)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fojas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AñoInscripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumeroInscripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaInscripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AñoVigenciaInicial)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AñoVigenciaFinal)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comuna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manzana)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Predio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunRut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PorcentajeDerecho)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fojas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AñoInscripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroInscripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaInscripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AñoVigenciaInicial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AñoVigenciaFinal)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Borrar", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
+
+
+<script>
+    function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue, searchCriteria;
+        searchCriteria = document.getElementById("searchValue").value;
+        console.log(searchCriteria)
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[searchCriteria];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
