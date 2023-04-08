@@ -86,57 +86,54 @@ namespace UAndes.ICC5103._202301.Views
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura, string emajenantesTableJson, string adquirientesTableJson)
+        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura, string receivedEnajenantes, string receivedAdquirientes)
         {
             if (ModelState.IsValid)
             {
                 db.Escritura.Add(escritura);
-                System.Diagnostics.Debug.WriteLine("test");
-                System.Diagnostics.Debug.WriteLine(emajenantesTableJson);
-                System.Diagnostics.Debug.WriteLine(adquirientesTableJson);
 
-                var enajenantesJson = JsonConvert.DeserializeObject<List<EnajenanteClass>>(emajenantesTableJson);
-                System.Diagnostics.Debug.WriteLine(enajenantesJson);
-                foreach (var emajenante in enajenantesJson)
+                List<EnajenanteClass> enajenantes;
+                if (receivedEnajenantes != null)
                 {
-                    System.Diagnostics.Debug.WriteLine(emajenante.item.ToString());
-                    decimal porcentajeDerechoDecimal;
-                    if(Decimal.TryParse(emajenante.porcentajeDerecho, out porcentajeDerechoDecimal))
+                    enajenantes = JsonConvert.DeserializeObject<List<EnajenanteClass>>(receivedEnajenantes);
+                    foreach (var enajenante in enajenantes)
                     {
-                        Enajenante enajenante = new Enajenante
+                        decimal porcentajeDerechoDecimal;
+                        if (Decimal.TryParse(enajenante.porcentajeDerecho, out porcentajeDerechoDecimal))
                         {
-                            RunRut = emajenante.rut,
-                            NumeroAtencion = escritura.NumeroAtencion,
-                            PorcentajeDerecho = porcentajeDerechoDecimal,
-                            DerechoNoAcreditado = emajenante.porcentajeDerechoNoAcreditado,
-
-                        };
-                        db.Enajenante.Add(enajenante);
+                            Enajenante newEnajenante = new Enajenante
+                            {
+                                RunRut = enajenante.rut,
+                                NumeroAtencion = escritura.NumeroAtencion,
+                                PorcentajeDerecho = porcentajeDerechoDecimal,
+                                DerechoNoAcreditado = enajenante.porcentajeDerechoNoAcreditado,
+                            };
+                            db.Enajenante.Add(newEnajenante);
+                        }
                     }
-                    
-                }
+                }  
 
-                var adquirientesJson = JsonConvert.DeserializeObject<List<AdquirienteClass>>(adquirientesTableJson);
-                System.Diagnostics.Debug.WriteLine(adquirientesJson);
-                foreach (var adquirienteVar in adquirientesJson)
+                List<AdquirienteClass> adquirientes;
+                if (receivedAdquirientes!= null)
                 {
-                    System.Diagnostics.Debug.WriteLine(adquirienteVar.item.ToString());
-                    decimal porcentajeDerechoDecimal;
-                    if (Decimal.TryParse(adquirienteVar.porcentajeDerecho, out porcentajeDerechoDecimal))
+                    adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
+                    foreach (var adquiriente in adquirientes)
                     {
-                        Adquiriente adquiriente = new Adquiriente
+                        decimal porcentajeDerechoDecimal;
+                        if (Decimal.TryParse(adquiriente.porcentajeDerecho, out porcentajeDerechoDecimal))
                         {
-                            RunRut = adquirienteVar.rut,
-                            NumeroAtencion = escritura.NumeroAtencion,
-                            PorcentajeDerecho = porcentajeDerechoDecimal,
-                            DerechoNoAcreditado = adquirienteVar.porcentajeDerechoNoAcreditado,
-
-                        };
-                        db.Adquiriente.Add(adquiriente);
-
+                            Adquiriente newAdquiriente = new Adquiriente
+                            {
+                                RunRut = adquiriente.rut,
+                                NumeroAtencion = escritura.NumeroAtencion,
+                                PorcentajeDerecho = porcentajeDerechoDecimal,
+                                DerechoNoAcreditado = adquiriente.porcentajeDerechoNoAcreditado,
+                            };
+                            db.Adquiriente.Add(newAdquiriente);
+                        }
                     }
-
                 }
+                       
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
