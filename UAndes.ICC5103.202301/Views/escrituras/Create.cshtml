@@ -14,8 +14,8 @@
 <div class="form-horizontal" id="FormCreateEscritura">
     <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENACIÓN</h4>
 
-    <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
     <div class="form-group">
         @Html.Label("Código Naturaleza de la Escritura ", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -83,20 +83,12 @@
     </div>
 
     <h3 style="color: red;"> RUT DEBE SER INGRESADO SIN PUNTOS Y CON GUIÓN</h3>
-
     <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENANTES</h4>
-
     <div id="enajenantes-table"></div>
-
     <button type="button" id="reactivity-add" onclick="addTableRowEnajenantes()">Añadir nueva fila</button>
-
     <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ADQUIRIENTES</h4>
-
     <div id="adquirientes-table"></div>
-
     <button type="button" id="reactivity-add" onclick="addTableRowAdquirientes()">Añadir nueva fila</button>
-
-
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -111,60 +103,75 @@
 <div>
     @Html.ActionLink("Regresar a la lista", "Index")
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <script>
     let enajenantesJson;
     let adquirientesJson;
 
-
-    function addTableRowEnajenantes() {
+    function addTableRowEnajenantes()
+    {
         var table = Tabulator.findTable("#enajenantes-table")[0]
         var rows = table.getRows();
         table.addRow({ item: rows.length + 1 });
     }
 
-    function addTableRowAdquirientes() {
+    function addTableRowAdquirientes()
+    {
         var table = Tabulator.findTable("#adquirientes-table")[0]
         var rows = table.getRows();
         table.addRow({ item: rows.length + 1 });
     }
     
-    $(document).ready(function () {
-
-
-
-        // Submit form function
-        $('#form-group').on('submit', function (e) {
-            e.preventDefault();
-            var form_data = $(this).serializeArray();
-            var json_data = JSON.stringify(form_data);
-            console.log(json_data); // Output JSON data to console
-        });
-        var tabledataEnajenantes = [
-            { item: 1, rut: "", porcentajeDerecho: 0, porcentajeDerechoNoAcreditado: false},
-
+    $(document).ready(function ()
+    {
+        const tableDataEnajenantes = [
+            {
+                item: 1,
+                rut: "",
+                porcentajeDerecho: 0,
+                porcentajeDerechoNoAcreditado: false
+            },
         ];
-        var tabledataAdquirientes = [
-            { item: 1, rut: "", porcentajeDerecho: 0, porcentajeDerechoNoAcreditado: false },
 
+        const tableDataAdquirientes = [
+            {
+                item: 1,
+                rut: "",
+                porcentajeDerecho: 0,
+                porcentajeDerechoNoAcreditado: false,
+            },
         ];
+
         var tableEnajenantes = new Tabulator("#enajenantes-table", {
             height: "311px",
             layout: "fitColumns",
             resizableColumnFit: true,
             responsiveLayout: "hide",
             reactiveData: true, //turn on data reactivity
-            data: tabledataEnajenantes, //load data into table
+            data: tableDataEnajenantes, //load data into table
             columns: [
-                { title: "RUT", field: "rut", editor: true, editorParams: {
+                {
+                    title: "RUT",
+                    field: "rut",
+                    editor: true,
+                    editorParams: {
                         elementAttributes: {
                             maxlength: "10", //set the maximum character length of the input element to 10 characters
                         },
                         selectContents: true,
                         verticalNavigation: "table", //up and down arrow keys navigate away from cell without changing value
-                }},
-                { title: "% de derecho", field: "porcentajeDerecho", sorter: "number", editor: true, width: 150, validator: ["required", "min:0", "max:100"], editorParams: {
+                    },
+                },
+                {
+                    title: "% de derecho",
+                    field: "porcentajeDerecho",
+                    sorter: "number",
+                    editor: true,
+                    width: 150,
+                    validator: ["required", "min:0", "max:100"],
+                    editorParams: {
                         min: 0,
                         max: 100,
                         step: 10,
@@ -174,62 +181,86 @@
                         mask: "999",
                         selectContents: true,
                         verticalNavigation: "table", //up and down arrow keys navigate away from cell without changing value
-                }},
-                { title: "% de derecho no acreditado", field: "porcentajeDerechoNoAcreditado", hozAlign: "center", editor: true, formatter: "tickCross", width: 230 },
-
+                    },
+                },
+                {
+                    title: "% de derecho no acreditado",
+                    field: "porcentajeDerechoNoAcreditado",
+                    hozAlign: "center",
+                    editor: true,
+                    formatter: "tickCross",
+                    width: 230,
+                },
             ],
         });
-        tableEnajenantes.on("dataChanged", function (row) {
-            //row - row component
-            var tableEnajenantes = Tabulator.findTable("#enajenantes-table")[0]
-            var array = tableEnajenantes.getData();
-            enajenantesJson = JSON.stringify(array);
-            console.log(enajenantesJson);
-            var enajenanteJsonHiddenInput = document.querySelector("#emajenantesTableJson");
-            enajenanteJsonHiddenInput.value = enajenantesJson;
-            console.log(enajenanteJsonHiddenInput.value)
-        });
+
+        tableEnajenantes.on("dataChanged", function (row)
+            {
+                var tableEnajenantes = Tabulator.findTable("#enajenantes-table")[0]
+                var array = tableEnajenantes.getData();
+                var enajenanteJsonHiddenInput = document.querySelector("#emajenantesTableJson");
+                enajenantesJson = JSON.stringify(array);
+                enajenanteJsonHiddenInput.value = enajenantesJson;
+            }
+        );
+
         var tableAdquirientes = new Tabulator("#adquirientes-table", {
             height: "311px",
             layout: "fitColumns",
             resizableColumnFit: true,
             responsiveLayout: "hide",
-            reactiveData: true, //turn on data reactivity
-            data: tabledataAdquirientes, //load data into table
+            reactiveData: true,
+            data: tableDataAdquirientes,
             columns: [
-                { title: "RUT", field: "rut", editor: true, editorParams: {
+                {
+                    title: "RUT",
+                    field: "rut",
+                    editor: true,
+                    editorParams: {
                         elementAttributes: {
-                            maxlength: "10", //set the maximum character length of the input element to 10 characters
+                            maxlength: "10",
                         },
                         selectContents: true,
-                        verticalNavigation: "table", //up and down arrow keys navigate away from cell without changing value
-                }},
-                { title: "% de derecho", field: "porcentajeDerecho", sorter: "number", editor: true, width: 150, validator: ["required", "min:0", "max:100"], editorParams: {
+                        verticalNavigation: "table",
+                    },
+                },
+                {
+                    title: "% de derecho",
+                    field: "porcentajeDerecho",
+                    sorter: "number",
+                    editor: true,
+                    width: 150,
+                    validator: ["required", "min:0", "max:100"],
+                    editorParams: {
                         min: 0,
                         max: 100,
                         step: 10,
                         elementAttributes: {
-                            maxlength: "10", //set the maximum character length of the input element to 10 characters
+                            maxlength: "10",
                         },
                         mask: "999",
                         selectContents: true,
-                        verticalNavigation: "table", //up and down arrow keys navigate away from cell without changing value
-                }},
-                { title: "% de derecho no acreditado", field: "porcentajeDerechoNoAcreditado", hozAlign: "center", editor: true, formatter: "tickCross", width: 230 },
-
+                        verticalNavigation: "table",
+                    },
+                },
+                {
+                    title: "% de derecho no acreditado",
+                    field: "porcentajeDerechoNoAcreditado",
+                    hozAlign: "center",
+                    editor: true,
+                    formatter: "tickCross",
+                    width: 230,
+                },
             ],
         });
+
         tableAdquirientes.on("dataChanged", function (row) {
-            //row - row component
-            var tableAdquirientes = Tabulator.findTable("#adquirientes-table")[0]
+            var tableAdquirientes = Tabulator.findTable("#adquirientes-table")[0];
             var array = tableAdquirientes.getData();
             adquirientesJson = JSON.stringify(array);
-            console.log(adquirientesJson);
             var adquirientesJsonHiddenInput = document.querySelector("#adquirientesTableJson");
             adquirientesJsonHiddenInput.value = adquirientesJson;
-            console.log(adquirientesJsonHiddenInput.value)
         });
-        
     });
 </script>
 
