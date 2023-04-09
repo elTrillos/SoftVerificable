@@ -107,23 +107,18 @@
 
 </table>
 
-
 <script>
     function myFunction() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue, searchCriteria;
-        searchCriteria = document.getElementById("searchValue").value;
-        console.log(searchCriteria)
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
+        var input = document.getElementById("myInput");
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById("myTable");
+        var tr = table.getElementsByTagName("tr");
+        var searchCriteria = document.getElementById("searchValue").value;
 
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[searchCriteria];
+        for (var i = 0; i < tr.length; i++) {
+            var td = tr[i].getElementsByTagName("td")[searchCriteria];
             if (td) {
-                txtValue = td.textContent || td.innerText;
+                var txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
                 } else {
