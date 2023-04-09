@@ -92,8 +92,8 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="hidden" id="emajenantesTableJson" name="emajenantesTableJson">
-            <input type="hidden" id="adquirientesTableJson" name="adquirientesTableJson">
+            <input type="hidden" id="receivedEnajenantes" name="receivedEnajenantes">
+            <input type="hidden" id="receivedAdquirientes" name="receivedAdquirientes">
             <button type="submit" value="Crear" class="btn btn-default" onclick="submitForm()">Subir</button>
         </div>
     </div>
@@ -198,7 +198,7 @@
             {
                 var tableEnajenantes = Tabulator.findTable("#enajenantes-table")[0]
                 var array = tableEnajenantes.getData();
-                var enajenanteJsonHiddenInput = document.querySelector("#emajenantesTableJson");
+            var enajenanteJsonHiddenInput = document.querySelector("#receivedEnajenantes");
                 enajenantesJson = JSON.stringify(array);
                 enajenanteJsonHiddenInput.value = enajenantesJson;
             }
@@ -258,7 +258,7 @@
             var tableAdquirientes = Tabulator.findTable("#adquirientes-table")[0];
             var array = tableAdquirientes.getData();
             adquirientesJson = JSON.stringify(array);
-            var adquirientesJsonHiddenInput = document.querySelector("#adquirientesTableJson");
+            var adquirientesJsonHiddenInput = document.querySelector("#receivedAdquirientes");
             adquirientesJsonHiddenInput.value = adquirientesJson;
         });
     });
