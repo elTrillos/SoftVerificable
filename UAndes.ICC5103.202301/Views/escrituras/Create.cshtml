@@ -110,11 +110,13 @@
 <script>
     const cneDropdown = document.getElementById("cne-dropdown");
     const divToHide = document.getElementById("enajenantes-div");
-
-    cneDropdown.addEventListener("change", function () {
-        if (cneDropdown.value === "regularizacion") {
+    cneDropdown.addEventListener("change", function ()
+    {
+        if (cneDropdown.value === "regularizacion")
+        {
             divToHide.style.display = "none";
-        } else {
+        } else
+        {
             divToHide.style.display = "block";
         }
     });
