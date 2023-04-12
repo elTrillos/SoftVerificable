@@ -20,16 +20,17 @@
         @Html.Label("Código Naturaleza de la Escritura ", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.CNE, new SelectList(
-            new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Compraventa", Value= "compraventa"},
-                new SelectListItem { Text = "Inscripciones de Herencia", Value= "inscripciones"},
-                new SelectListItem { Text = "Otros", Value= "otros"},
-                new SelectListItem { Text = "Transferencia de Dominio", Value= "transferencia"},
-                new SelectListItem { Text = "Bienes Nacionales", Value= "bienes"},
-                new SelectListItem { Text = "Modificaciones de Sociedad", Value= "sociedad"},
-                new SelectListItem { Text = "Regularizacion de Patrimonios", Value= "regularizacion"},
-            }, "Value", "Text"), "Seleccione Codigo Naturaleza Escritura", new { @class = "form-control"})
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Compraventa", Value= "compraventa"},
+                    new SelectListItem { Text = "Inscripciones de Herencia", Value= "inscripciones"},
+                    new SelectListItem { Text = "Otros", Value= "otros"},
+                    new SelectListItem { Text = "Transferencia de Dominio", Value= "transferencia"},
+                    new SelectListItem { Text = "Bienes Nacionales", Value= "bienes"},
+                    new SelectListItem { Text = "Modificaciones de Sociedad", Value= "sociedad"},
+                    new SelectListItem { Text = "Regularizacion de Patrimonios", Value= "regularizacion"},
+                }, "Value", "Text"), "Seleccione Codigo Naturaleza Escritura",
+                new { @class = "form-control", id = "cne-dropdown" })
             @Html.ValidationMessageFor(model => model.CNE, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -83,9 +84,11 @@
     </div>
 
     <h3 style="color: red;"> RUT DEBE SER INGRESADO SIN PUNTOS Y CON GUIÓN</h3>
-    <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENANTES</h4>
-    <div id="enajenantes-table"></div>
-    <button type="button" id="reactivity-add" onclick="addTableRowEnajenantes()">Añadir nueva fila</button>
+    <div id="enajenantes-div">
+        <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ENAJENANTES</h4>
+        <div id="enajenantes-table"></div>
+        <button type="button" id="reactivity-add" onclick="addTableRowEnajenantes()">Añadir nueva fila</button>
+    </div>
     <h4 style="background: #2a2a2b; color: white; padding: 10px 20px;">ADQUIRIENTES</h4>
     <div id="adquirientes-table"></div>
     <button type="button" id="reactivity-add" onclick="addTableRowAdquirientes()">Añadir nueva fila</button>
@@ -104,6 +107,18 @@
     @Html.ActionLink("Regresar a la lista", "Index")
 </div>
 
+<script>
+    const cneDropdown = document.getElementById("cne-dropdown");
+    const divToHide = document.getElementById("enajenantes-div");
+
+    cneDropdown.addEventListener("change", function () {
+        if (cneDropdown.value === "regularizacion") {
+            divToHide.style.display = "none";
+        } else {
+            divToHide.style.display = "block";
+        }
+    });
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <script>
