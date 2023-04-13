@@ -175,16 +175,61 @@ namespace UAndes.ICC5103._202301.Views
                 List<AdquirienteClass> adquirientes;
                 if (receivedAdquirientes != "")
                 {
+                    decimal TOTALPERCENTAGE = 100;
+                    decimal PERCENTAGERESTGOAL = 0;
                     adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
                     AdquirienteVerificator AdquirienteVerificator = new AdquirienteVerificator();
-                    decimal SumOfPercentages = 100-AdquirienteVerificator.SumOfPercentages(adquirientes);
+                    decimal SumOfPercentages = TOTALPERCENTAGE - AdquirienteVerificator.SumOfPercentages(adquirientes);
                     int NonDeclaredAdquirientes = AdquirienteVerificator.AmountOfNonDeclaredAdquirientes(adquirientes);
                     bool AnyAdquirientesWithoutAcreditedPercentages = AdquirienteVerificator.CheckIfAnyAdquirienteWithoutDeclared(adquirientes);
-                    if (SumOfPercentages!=100 && !AnyAdquirientesWithoutAcreditedPercentages)
+                    if (SumOfPercentages!= PERCENTAGERESTGOAL && !AnyAdquirientesWithoutAcreditedPercentages)
                     {
+                        System.Diagnostics.Debug.WriteLine(SumOfPercentages);
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                     }
-                    
+
+                    int UpdatedDate = escritura.FechaInscripcion.Year;
+                    if (UpdatedDate < 2019)
+                    {
+                        UpdatedDate = 2019;
+                    }
+
+                    var multipropietariosMismoAno = db.Multipropietario
+                        .Where(a => a.Comuna == escritura.Comuna)
+                        .Where(b => b.Manzana == escritura.Manzana)
+                        .Where(c => c.Predio == escritura.Predio)
+                        .Where(d => d.AñoVigenciaInicial == UpdatedDate)
+                        .ToList();
+
+                    if (multipropietariosMismoAno.Count > 0)
+                    {
+                        foreach (var multipropietario in multipropietariosMismoAno)
+                        {
+                            System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
+                            multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
+                            db.Multipropietario.Remove(multipropietario);
+                            db.SaveChanges();
+                        }
+                    }
+
+                    var multipropietariosAnteriores = db.Multipropietario
+                        .Where(a => a.Comuna == escritura.Comuna)
+                        .Where(b => b.Manzana == escritura.Manzana)
+                        .Where(c => c.Predio == escritura.Predio)
+                        .Where(d => d.AñoVigenciaFinal == 0)
+                        .ToList();
+
+                    if (multipropietariosAnteriores.Count > 0)
+                    {
+                        foreach (var multipropietario in multipropietariosAnteriores)
+                        {
+                            //System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
+                            multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
+                            db.Entry(multipropietario).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
+
                     foreach (var adquiriente in adquirientes)
                     {
                         decimal AdquirientePercentage = 0;
@@ -203,49 +248,7 @@ namespace UAndes.ICC5103._202301.Views
                             PorcentajeDerecho = AdquirientePercentage,
                             DerechoNoAcreditado = adquiriente.porcentajeDerechoNoAcreditado,
                         };
-                        db.Adquiriente.Add(newAdquiriente);
-
-                        int UpdatedDate = escritura.FechaInscripcion.Year;
-                        if (UpdatedDate < 2019)
-                        {
-                            UpdatedDate = 2019;
-                        }
-
-                        var multipropietariosMismoAno = db.Multipropietario
-                            .Where(a => a.Comuna == escritura.Comuna)
-                            .Where(b => b.Manzana == escritura.Manzana)
-                            .Where(c => c.Predio == escritura.Predio)
-                            .Where(d => d.AñoVigenciaInicial == UpdatedDate)
-                            .ToList();
-
-                        if (multipropietariosMismoAno.Count > 0)
-                        {
-                            foreach (var multipropietario in multipropietariosMismoAno)
-                            {
-                                System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
-                                multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
-                                db.Multipropietario.Remove(multipropietario);
-                                db.SaveChanges();
-                            }
-                        }
-
-                        var multipropietariosAnteriores = db.Multipropietario
-                            .Where(a => a.Comuna == escritura.Comuna)
-                            .Where(b => b.Manzana == escritura.Manzana)
-                            .Where(c => c.Predio == escritura.Predio)
-                            .Where(d => d.AñoVigenciaFinal == 0)
-                            .ToList();
-
-                        if (multipropietariosAnteriores.Count > 0)
-                        {
-                            foreach (var multipropietario in multipropietariosAnteriores)
-                            {
-                                //System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
-                                multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
-                                db.Entry(multipropietario).State = EntityState.Modified;
-                                db.SaveChanges();
-                            }
-                        }
+                        db.Adquiriente.Add(newAdquiriente);                    
 
                         Multipropietario newMultipropietario = new Multipropietario
                         {
