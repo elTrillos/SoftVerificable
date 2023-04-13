@@ -88,7 +88,8 @@ namespace UAndes.ICC5103._202301.Views
         }
         public decimal PostDeclarationAdquirientePercentage(AdquirienteClass Adquiriente,int amountOfAdquirientes, decimal percentageSum)
         {
-            decimal extraPercentage = Decimal.Truncate(percentageSum / amountOfAdquirientes);
+            int TRUNCATEVALUE = 100;
+            decimal extraPercentage = Decimal.Truncate(TRUNCATEVALUE * percentageSum / amountOfAdquirientes)/ TRUNCATEVALUE;
             return Adquiriente.porcentajeDerecho + extraPercentage;
         }
     }
