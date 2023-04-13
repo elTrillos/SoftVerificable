@@ -139,6 +139,7 @@ namespace UAndes.ICC5103._202301.Views
                             .Where(c => c.Predio == escritura.Predio)
                             .Where(d => d.AñoVigenciaFinal == 0)
                             .ToList();
+
                             if (multipropietariosAnteriores.Count > 0)
                             {
                                 foreach (var enajenanteActual in multipropietariosAnteriores)
