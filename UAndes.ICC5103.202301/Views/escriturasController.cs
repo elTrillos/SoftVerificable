@@ -133,24 +133,47 @@ namespace UAndes.ICC5103._202301.Views
                             };
                             db.Adquiriente.Add(newAdquiriente);
 
-                            var multipropietariosAnteriores = db.Multipropietario
-                            .Where(a => a.Comuna == escritura.Comuna)
-                            .Where(b => b.Manzana == escritura.Manzana)
-                            .Where(c => c.Predio == escritura.Predio)
-                            .Where(d => d.AñoVigenciaFinal == 0)
-                            .ToList();
-
-                            if (multipropietariosAnteriores.Count > 0)
+                            int UpdatedDate = escritura.FechaInscripcion.Year;
+                            if (UpdatedDate < 2019)
                             {
-                                foreach (var enajenanteActual in multipropietariosAnteriores)
+                                UpdatedDate = 2019;
+                            }
+
+                            var multipropietariosMismoAno = db.Multipropietario
+                                .Where(a => a.Comuna == escritura.Comuna)
+                                .Where(b => b.Manzana == escritura.Manzana)
+                                .Where(c => c.Predio == escritura.Predio)
+                                .Where(d => d.AñoVigenciaInicial == UpdatedDate)
+                                .ToList();
+
+                            if (multipropietariosMismoAno.Count > 0)
+                            {
+                                foreach (var multipropietario in multipropietariosMismoAno)
                                 {
-                                    System.Diagnostics.Debug.WriteLine(enajenanteActual.ToString());
-                                    enajenanteActual.AñoVigenciaFinal = escritura.FechaInscripcion.Year - 1;
-                                    db.Entry(enajenanteActual).State = EntityState.Modified;
+                                    System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
+                                    multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
+                                    db.Multipropietario.Remove(multipropietario);
                                     db.SaveChanges();
                                 }
                             }
-                            
+
+                            var multipropietariosAnteriores = db.Multipropietario
+                                .Where(a => a.Comuna == escritura.Comuna)
+                                .Where(b => b.Manzana == escritura.Manzana)
+                                .Where(c => c.Predio == escritura.Predio)
+                                .Where(d => d.AñoVigenciaFinal == 0)
+                                .ToList();
+
+                            if (multipropietariosAnteriores.Count > 0)
+                            {
+                                foreach (var multipropietario in multipropietariosAnteriores)
+                                {
+                                    //System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
+                                    multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
+                                    db.Entry(multipropietario).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+                            }
 
                             Multipropietario newMultipropietario = new Multipropietario
                             {
@@ -163,7 +186,7 @@ namespace UAndes.ICC5103._202301.Views
                                 AñoInscripcion = escritura.FechaInscripcion.Year,
                                 NumeroInscripcion = escritura.NumeroAtencion,
                                 FechaInscripcion = escritura.FechaInscripcion,
-                                AñoVigenciaInicial = escritura.FechaInscripcion.Year,
+                                AñoVigenciaInicial = UpdatedDate,
                             };
                             db.Multipropietario.Add(newMultipropietario);
                             
