@@ -24,7 +24,7 @@ namespace UAndes.ICC5103._202301.Views
     {
         public int item { get; set; }
         public string rut { get; set; }
-        public string porcentajeDerecho { get; set; }
+        public decimal porcentajeDerecho { get; set; }
         public bool porcentajeDerechoNoAcreditado { get; set; }
     }
     public class EnajenantesList
@@ -35,6 +35,62 @@ namespace UAndes.ICC5103._202301.Views
     public class AdquirienteList
     {
         public List<AdquirienteClass> adquirienteClass { get; set; }
+    }
+    public class AdquirienteVerificator
+    {
+        public bool CheckIfAnyAdquirienteWithoutDeclared(List<AdquirienteClass> Adquirientes)
+        {
+            foreach(AdquirienteClass adquiriente in Adquirientes)
+            {
+                if (adquiriente.porcentajeDerechoNoAcreditado == true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool CheckSumOfPercentages(List<AdquirienteClass> Adquirientes)
+        {
+            decimal totalPercentage = 0;
+            foreach(AdquirienteClass adquiriente in Adquirientes)
+            {
+                totalPercentage += adquiriente.porcentajeDerecho;
+            }
+            if (totalPercentage == 100)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public decimal SumOfPercentages(List<AdquirienteClass> Adquirientes)
+        {
+            decimal totalPercentage = 0;
+            foreach (AdquirienteClass adquiriente in Adquirientes)
+            {
+                totalPercentage += adquiriente.porcentajeDerecho;
+            }
+            return totalPercentage;
+        }
+        public int AmountOfNonDeclaredAdquirientes(List<AdquirienteClass> Adquirientes)
+        {
+            int NonDeclaredAdquirientesCount = 0;
+            foreach (AdquirienteClass adquiriente in Adquirientes)
+            {
+                if (adquiriente.porcentajeDerechoNoAcreditado == true)
+                {
+                    NonDeclaredAdquirientesCount += 1;
+                }
+            }
+            return NonDeclaredAdquirientesCount;
+        }
+        public decimal PostDeclarationAdquirientePercentage(AdquirienteClass Adquiriente,int amountOfAdquirientes, decimal percentageSum)
+        {
+            decimal extraPercentage = Decimal.Truncate(percentageSum / amountOfAdquirientes);
+            return Adquiriente.porcentajeDerecho + extraPercentage;
+        }
     }
 
     public class EscriturasController : Controller
@@ -119,78 +175,93 @@ namespace UAndes.ICC5103._202301.Views
                 if (receivedAdquirientes != "")
                 {
                     adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
+                    AdquirienteVerificator AdquirienteVerificator = new AdquirienteVerificator();
+                    decimal SumOfPercentages = 100-AdquirienteVerificator.SumOfPercentages(adquirientes);
+                    int NonDeclaredAdquirientes = AdquirienteVerificator.AmountOfNonDeclaredAdquirientes(adquirientes);
+                    bool AnyAdquirientesWithoutAcreditedPercentages = AdquirienteVerificator.CheckIfAnyAdquirienteWithoutDeclared(adquirientes);
+                    if (SumOfPercentages!=100 && !AnyAdquirientesWithoutAcreditedPercentages)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    
                     foreach (var adquiriente in adquirientes)
                     {
-                        decimal porcentajeDerechoDecimal;
-                        if (Decimal.TryParse(adquiriente.porcentajeDerecho, out porcentajeDerechoDecimal))
+                        decimal AdquirientePercentage = 0;
+                        if (adquiriente.porcentajeDerechoNoAcreditado == true)
                         {
-                            Adquiriente newAdquiriente = new Adquiriente
-                            {
-                                RunRut = adquiriente.rut,
-                                NumeroAtencion = escritura.NumeroAtencion,
-                                PorcentajeDerecho = porcentajeDerechoDecimal,
-                                DerechoNoAcreditado = adquiriente.porcentajeDerechoNoAcreditado,
-                            };
-                            db.Adquiriente.Add(newAdquiriente);
-
-                            int UpdatedDate = escritura.FechaInscripcion.Year;
-                            if (UpdatedDate < 2019)
-                            {
-                                UpdatedDate = 2019;
-                            }
-
-                            var multipropietariosMismoAno = db.Multipropietario
-                                .Where(a => a.Comuna == escritura.Comuna)
-                                .Where(b => b.Manzana == escritura.Manzana)
-                                .Where(c => c.Predio == escritura.Predio)
-                                .Where(d => d.AñoVigenciaInicial == UpdatedDate)
-                                .ToList();
-
-                            if (multipropietariosMismoAno.Count > 0)
-                            {
-                                foreach (var multipropietario in multipropietariosMismoAno)
-                                {
-                                    System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
-                                    multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
-                                    db.Multipropietario.Remove(multipropietario);
-                                    db.SaveChanges();
-                                }
-                            }
-
-                            var multipropietariosAnteriores = db.Multipropietario
-                                .Where(a => a.Comuna == escritura.Comuna)
-                                .Where(b => b.Manzana == escritura.Manzana)
-                                .Where(c => c.Predio == escritura.Predio)
-                                .Where(d => d.AñoVigenciaFinal == 0)
-                                .ToList();
-
-                            if (multipropietariosAnteriores.Count > 0)
-                            {
-                                foreach (var multipropietario in multipropietariosAnteriores)
-                                {
-                                    //System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
-                                    multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
-                                    db.Entry(multipropietario).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
-                            }
-
-                            Multipropietario newMultipropietario = new Multipropietario
-                            {
-                                Comuna = escritura.Comuna,
-                                Manzana = escritura.Manzana,
-                                Predio = escritura.Predio,
-                                RunRut = adquiriente.rut,
-                                PorcentajeDerecho = porcentajeDerechoDecimal,
-                                Fojas = escritura.Fojas,
-                                AñoInscripcion = escritura.FechaInscripcion.Year,
-                                NumeroInscripcion = escritura.NumeroAtencion,
-                                FechaInscripcion = escritura.FechaInscripcion,
-                                AñoVigenciaInicial = UpdatedDate,
-                            };
-                            db.Multipropietario.Add(newMultipropietario);
-                            
+                            AdquirientePercentage = AdquirienteVerificator.PostDeclarationAdquirientePercentage(adquiriente, NonDeclaredAdquirientes, SumOfPercentages);
                         }
+                        else
+                        {
+                            AdquirientePercentage = adquiriente.porcentajeDerecho;
+                        }
+                        Adquiriente newAdquiriente = new Adquiriente
+                        {
+                            RunRut = adquiriente.rut,
+                            NumeroAtencion = escritura.NumeroAtencion,
+                            PorcentajeDerecho = AdquirientePercentage,
+                            DerechoNoAcreditado = adquiriente.porcentajeDerechoNoAcreditado,
+                        };
+                        db.Adquiriente.Add(newAdquiriente);
+
+                        int UpdatedDate = escritura.FechaInscripcion.Year;
+                        if (UpdatedDate < 2019)
+                        {
+                            UpdatedDate = 2019;
+                        }
+
+                        var multipropietariosMismoAno = db.Multipropietario
+                            .Where(a => a.Comuna == escritura.Comuna)
+                            .Where(b => b.Manzana == escritura.Manzana)
+                            .Where(c => c.Predio == escritura.Predio)
+                            .Where(d => d.AñoVigenciaInicial == UpdatedDate)
+                            .ToList();
+
+                        if (multipropietariosMismoAno.Count > 0)
+                        {
+                            foreach (var multipropietario in multipropietariosMismoAno)
+                            {
+                                System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
+                                multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
+                                db.Multipropietario.Remove(multipropietario);
+                                db.SaveChanges();
+                            }
+                        }
+
+                        var multipropietariosAnteriores = db.Multipropietario
+                            .Where(a => a.Comuna == escritura.Comuna)
+                            .Where(b => b.Manzana == escritura.Manzana)
+                            .Where(c => c.Predio == escritura.Predio)
+                            .Where(d => d.AñoVigenciaFinal == 0)
+                            .ToList();
+
+                        if (multipropietariosAnteriores.Count > 0)
+                        {
+                            foreach (var multipropietario in multipropietariosAnteriores)
+                            {
+                                //System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
+                                multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
+                                db.Entry(multipropietario).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                        }
+
+                        Multipropietario newMultipropietario = new Multipropietario
+                        {
+                            Comuna = escritura.Comuna,
+                            Manzana = escritura.Manzana,
+                            Predio = escritura.Predio,
+                            RunRut = adquiriente.rut,
+                            PorcentajeDerecho = AdquirientePercentage,
+                            Fojas = escritura.Fojas,
+                            AñoInscripcion = escritura.FechaInscripcion.Year,
+                            NumeroInscripcion = escritura.NumeroAtencion,
+                            FechaInscripcion = escritura.FechaInscripcion,
+                            AñoVigenciaInicial = UpdatedDate,
+                        };
+                        db.Multipropietario.Add(newMultipropietario);
+                            
+                        
                     }
                 }
                        
