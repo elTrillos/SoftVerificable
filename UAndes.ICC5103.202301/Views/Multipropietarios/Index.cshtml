@@ -10,20 +10,37 @@
 <p>
     @Html.ActionLink("Crear nuevo multipropietario", "Create")
 </p>
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar">
 
-<label for="searchSelector">Selecciona criterio de búsqueda:</label>
-<select name="searchSelector" id="searchValue">
-    <option value="0">Comuna</option>
-    <option value="1">Manzana</option>
-    <option value="2">Predio</option>
-    <option value="3">RUN-RUT</option>
-    <option value="8">Fecha Inscripción</option>
-    <option value="9">Año Vigencia Inicial</option>
-    <option value="10">Año Vigencia Final</option>
-</select>
+<div>
+    <label for="searchSelector">Selecciona criterio/criterios de búsqueda:</label>
 
-<table class="table" id="myTable">
+    <select name="searchSelector" id="searchValue">
+        <option value="0">Comuna</option>
+        <option value="1">Manzana</option>
+        <option value="2">Predio</option>
+        <option value="3">RUN-RUT</option>
+        <option value="8">Fecha Inscripción</option>
+        <option value="9">Año Vigencia Inicial</option>
+        <option value="10">Año Vigencia Final</option>
+    </select>
+
+    <select name="searchSelector" id="searchValue2">
+        <option value="0">Comuna</option>
+        <option value="1">Manzana</option>
+        <option value="2">Predio</option>
+        <option value="3">RUN-RUT</option>
+        <option value="8">Fecha Inscripción</option>
+        <option value="9">Año Vigencia Inicial</option>
+        <option value="10">Año Vigencia Final</option>
+    </select>
+</div>
+
+<div>
+    <input type="text" id="firstSearchInput" onkeyup="firstSearchFunction()" placeholder="Busqueda por criterio 1">
+    <input type="text" id="secondSearchInput" onkeyup="secondSearchFunction()" placeholder="Busqueda por criterio 2">
+</div>
+
+<table class="table" id="multipropietariosTable">
     <tr>
         <th>
             @Html.DisplayName("Comuna")
@@ -108,21 +125,53 @@
 </table>
 
 <script>
-    function myFunction() {
-        var input = document.getElementById("myInput");
+    function firstSearchFunction() {
+        var input = document.getElementById("firstSearchInput");
         var filter = input.value.toUpperCase();
-        var table = document.getElementById("myTable");
-        var tr = table.getElementsByTagName("tr");
+        var table = document.getElementById("multipropietariosTable");
+        var tableTag = table.getElementsByTagName("tr");
         var searchCriteria = document.getElementById("searchValue").value;
 
-        for (var i = 0; i < tr.length; i++) {
-            var td = tr[i].getElementsByTagName("td")[searchCriteria];
-            if (td) {
+        for (var i = 0; i < tableTag.length; i++)
+        {
+            var td = tableTag[i].getElementsByTagName("td")[searchCriteria];
+            if (td)
+            {
                 var txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
+                if (txtValue.toUpperCase().indexOf(filter) > -1)
+                {
+                    tableTag[i].style.display = "";
+                }
+                else
+                {
+                    tableTag[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+<script>
+    function secondSearchFunction() {
+        var input = document.getElementById("secondSearchInput");
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById("multipropietariosTable");
+        var tableTag = table.getElementsByTagName("tr");
+        var searchCriteria = document.getElementById("searchValue2").value;
+
+        for (var i = 0; i < tableTag.length; i++)
+        {
+            var td = tableTag[i].getElementsByTagName("td")[searchCriteria];
+            if (td)
+            {
+                var txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1)
+                {
+                    tableTag[i].style.display = "";
+                }
+                else
+                {
+                    tableTag[i].style.display = "none";
                 }
             }
         }

@@ -56,7 +56,6 @@ namespace UAndes.ICC5103._202301.Views
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             ViewBag.NumeroAtencion = new SelectList(db.Escritura, "NumeroAtencion", "CNE", enajenante.NumeroAtencion);
             return View(enajenante);
         }

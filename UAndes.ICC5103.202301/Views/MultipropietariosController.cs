@@ -55,7 +55,6 @@ namespace UAndes.ICC5103._202301.Views
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(multipropietario);
         }
 

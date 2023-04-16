@@ -180,6 +180,7 @@ namespace UAndes.ICC5103._202301.Views
                     decimal SumOfPercentages = TOTALPERCENTAGE - AdquirienteVerificator.SumOfPercentages(Adquirientes);
                     int NonDeclaredAdquirientes = AdquirienteVerificator.AmountOfNonDeclaredAdquirientes(Adquirientes);
                     bool AnyAdquirientesWithoutAcreditedPercentages = AdquirienteVerificator.CheckIfAnyAdquirienteWithoutDeclared(Adquirientes);
+
                     if (SumOfPercentages!= PERCENTAGERESTGOAL && !AnyAdquirientesWithoutAcreditedPercentages)
                     {
                         System.Diagnostics.Debug.WriteLine(SumOfPercentages);
@@ -261,15 +262,12 @@ namespace UAndes.ICC5103._202301.Views
                             AñoVigenciaInicial = UpdatedDate,
                         };
                         db.Multipropietario.Add(newMultipropietario);
-                            
-                        
                     }
                 }
                        
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(escritura);
         }
 

@@ -55,7 +55,6 @@ namespace UAndes.ICC5103._202301.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
             return View(persona);
         }
 
