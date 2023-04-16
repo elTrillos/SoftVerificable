@@ -148,14 +148,12 @@ namespace UAndes.ICC5103._202301.Views
             if (ModelState.IsValid)
             {
                 db.Escritura.Add(escritura);
-                System.Diagnostics.Debug.WriteLine(escritura.Fojas);
-                System.Diagnostics.Debug.WriteLine(receivedEnajenantes);
-                System.Diagnostics.Debug.WriteLine(escritura.CNE);
-                List<EnajenanteClass> enajenantes;
+
+                List<EnajenanteClass> Enajenantes;
                 if (receivedEnajenantes!="" && escritura.CNE!="regularizacion")
                 {
-                    enajenantes = JsonConvert.DeserializeObject<List<EnajenanteClass>>(receivedEnajenantes);
-                    foreach (var enajenante in enajenantes)
+                    Enajenantes = JsonConvert.DeserializeObject<List<EnajenanteClass>>(receivedEnajenantes);
+                    foreach (var enajenante in Enajenantes)
                     {
                         decimal porcentajeDerechoDecimal;
                         if (Decimal.TryParse(enajenante.porcentajeDerecho, out porcentajeDerechoDecimal))
@@ -172,16 +170,16 @@ namespace UAndes.ICC5103._202301.Views
                     }
                 }  
 
-                List<AdquirienteClass> adquirientes;
+                List<AdquirienteClass> Adquirientes;
                 if (receivedAdquirientes != "")
                 {
                     decimal TOTALPERCENTAGE = 100;
                     decimal PERCENTAGERESTGOAL = 0;
-                    adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
+                    Adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
                     AdquirienteVerificator AdquirienteVerificator = new AdquirienteVerificator();
-                    decimal SumOfPercentages = TOTALPERCENTAGE - AdquirienteVerificator.SumOfPercentages(adquirientes);
-                    int NonDeclaredAdquirientes = AdquirienteVerificator.AmountOfNonDeclaredAdquirientes(adquirientes);
-                    bool AnyAdquirientesWithoutAcreditedPercentages = AdquirienteVerificator.CheckIfAnyAdquirienteWithoutDeclared(adquirientes);
+                    decimal SumOfPercentages = TOTALPERCENTAGE - AdquirienteVerificator.SumOfPercentages(Adquirientes);
+                    int NonDeclaredAdquirientes = AdquirienteVerificator.AmountOfNonDeclaredAdquirientes(Adquirientes);
+                    bool AnyAdquirientesWithoutAcreditedPercentages = AdquirienteVerificator.CheckIfAnyAdquirienteWithoutDeclared(Adquirientes);
                     if (SumOfPercentages!= PERCENTAGERESTGOAL && !AnyAdquirientesWithoutAcreditedPercentages)
                     {
                         System.Diagnostics.Debug.WriteLine(SumOfPercentages);
@@ -194,16 +192,16 @@ namespace UAndes.ICC5103._202301.Views
                         UpdatedDate = 2019;
                     }
 
-                    var multipropietariosMismoAno = db.Multipropietario
+                    var SameYearMultipropietarios = db.Multipropietario
                         .Where(a => a.Comuna == escritura.Comuna)
                         .Where(b => b.Manzana == escritura.Manzana)
                         .Where(c => c.Predio == escritura.Predio)
                         .Where(d => d.AñoVigenciaInicial == UpdatedDate)
                         .ToList();
 
-                    if (multipropietariosMismoAno.Count > 0)
+                    if (SameYearMultipropietarios.Count > 0)
                     {
-                        foreach (var multipropietario in multipropietariosMismoAno)
+                        foreach (var multipropietario in SameYearMultipropietarios)
                         {
                             System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
                             multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
@@ -212,25 +210,24 @@ namespace UAndes.ICC5103._202301.Views
                         }
                     }
 
-                    var multipropietariosAnteriores = db.Multipropietario
+                    var PriorMultipropietarios = db.Multipropietario
                         .Where(a => a.Comuna == escritura.Comuna)
                         .Where(b => b.Manzana == escritura.Manzana)
                         .Where(c => c.Predio == escritura.Predio)
                         .Where(d => d.AñoVigenciaFinal == 0)
                         .ToList();
 
-                    if (multipropietariosAnteriores.Count > 0)
+                    if (PriorMultipropietarios.Count > 0)
                     {
-                        foreach (var multipropietario in multipropietariosAnteriores)
+                        foreach (var multipropietario in PriorMultipropietarios)
                         {
-                            //System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
                             multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
                             db.Entry(multipropietario).State = EntityState.Modified;
                             db.SaveChanges();
                         }
                     }
 
-                    foreach (var adquiriente in adquirientes)
+                    foreach (var adquiriente in Adquirientes)
                     {
                         decimal AdquirientePercentage = 0;
                         if (adquiriente.porcentajeDerechoNoAcreditado == true)
