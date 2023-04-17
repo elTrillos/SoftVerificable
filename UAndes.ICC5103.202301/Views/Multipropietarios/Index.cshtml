@@ -23,21 +23,10 @@
         <option value="9">Año Vigencia Inicial</option>
         <option value="10">Año Vigencia Final</option>
     </select>
-
-    <select name="searchSelector" id="searchValue2">
-        <option value="0">Comuna</option>
-        <option value="1">Manzana</option>
-        <option value="2">Predio</option>
-        <option value="3">RUN-RUT</option>
-        <option value="8">Fecha Inscripción</option>
-        <option value="9">Año Vigencia Inicial</option>
-        <option value="10">Año Vigencia Final</option>
-    </select>
 </div>
 
 <div>
     <input type="text" id="firstSearchInput" onkeyup="firstSearchFunction()" placeholder="Busqueda por criterio 1">
-    <input type="text" id="secondSearchInput" onkeyup="secondSearchFunction()" placeholder="Busqueda por criterio 2">
 </div>
 
 <table class="table" id="multipropietariosTable">
@@ -112,7 +101,10 @@
                 @Html.DisplayFor(modelItem => item.AñoVigenciaInicial)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AñoVigenciaFinal)
+                @if (item.AñoVigenciaFinal != 0)
+                {
+                    @Html.DisplayFor(modelItem => item.AñoVigenciaFinal)
+                }
             </td>
             <td>
                 @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
@@ -131,33 +123,6 @@
         var table = document.getElementById("multipropietariosTable");
         var tableTag = table.getElementsByTagName("tr");
         var searchCriteria = document.getElementById("searchValue").value;
-
-        for (var i = 0; i < tableTag.length; i++)
-        {
-            var td = tableTag[i].getElementsByTagName("td")[searchCriteria];
-            if (td)
-            {
-                var txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1)
-                {
-                    tableTag[i].style.display = "";
-                }
-                else
-                {
-                    tableTag[i].style.display = "none";
-                }
-            }
-        }
-    }
-</script>
-
-<script>
-    function secondSearchFunction() {
-        var input = document.getElementById("secondSearchInput");
-        var filter = input.value.toUpperCase();
-        var table = document.getElementById("multipropietariosTable");
-        var tableTag = table.getElementsByTagName("tr");
-        var searchCriteria = document.getElementById("searchValue2").value;
 
         for (var i = 0; i < tableTag.length; i++)
         {
