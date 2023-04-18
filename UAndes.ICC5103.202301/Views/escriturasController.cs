@@ -88,8 +88,8 @@ namespace UAndes.ICC5103._202301.Views
         }
         public decimal PostDeclarationAdquirientePercentage(AdquirienteClass Adquiriente,int amountOfAdquirientes, decimal percentageSum)
         {
-            int TRUNCATEVALUE = 100;
-            decimal extraPercentage = Decimal.Truncate(TRUNCATEVALUE * percentageSum / amountOfAdquirientes)/ TRUNCATEVALUE;
+            int TruncateValue = 100;
+            decimal extraPercentage = Decimal.Truncate(TruncateValue * percentageSum / amountOfAdquirientes)/ TruncateValue;
             return Adquiriente.porcentajeDerecho + extraPercentage;
         }
     }
@@ -173,15 +173,16 @@ namespace UAndes.ICC5103._202301.Views
                 List<AdquirienteClass> Adquirientes;
                 if (receivedAdquirientes != "")
                 {
-                    decimal TOTALPERCENTAGE = 100;
-                    decimal PERCENTAGERESTGOAL = 0;
+                    decimal TotalPercentage = 100;
+                    decimal PercentageRestTotal = 0;
                     Adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
                     AdquirienteVerificator AdquirienteVerificator = new AdquirienteVerificator();
-                    decimal SumOfPercentages = TOTALPERCENTAGE - AdquirienteVerificator.SumOfPercentages(Adquirientes);
+                    decimal SumOfPercentages = TotalPercentage - AdquirienteVerificator.SumOfPercentages(Adquirientes);
                     int NonDeclaredAdquirientes = AdquirienteVerificator.AmountOfNonDeclaredAdquirientes(Adquirientes);
                     bool AnyAdquirientesWithoutAcreditedPercentages = AdquirienteVerificator.CheckIfAnyAdquirienteWithoutDeclared(Adquirientes);
+                    int CurrentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
 
-                    if (SumOfPercentages!= PERCENTAGERESTGOAL && !AnyAdquirientesWithoutAcreditedPercentages)
+                    if (SumOfPercentages!= PercentageRestTotal && !AnyAdquirientesWithoutAcreditedPercentages)
                     {
                         System.Diagnostics.Debug.WriteLine(SumOfPercentages);
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -200,8 +201,14 @@ namespace UAndes.ICC5103._202301.Views
                         .Where(d => d.AñoVigenciaInicial == UpdatedDate)
                         .ToList();
 
+                    
+
                     if (SameYearMultipropietarios.Count > 0)
                     {
+                        if (SameYearMultipropietarios.First().NumeroInscripcion > CurrentInscriptionNumber)
+                        {
+                            return RedirectToAction("Index");
+                        }
                         foreach (var multipropietario in SameYearMultipropietarios)
                         {
                             System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
@@ -210,6 +217,8 @@ namespace UAndes.ICC5103._202301.Views
                             db.SaveChanges();
                         }
                     }
+
+                    
 
                     var PriorMultipropietarios = db.Multipropietario
                         .Where(a => a.Comuna == escritura.Comuna)
@@ -257,7 +266,7 @@ namespace UAndes.ICC5103._202301.Views
                             PorcentajeDerecho = AdquirientePercentage,
                             Fojas = escritura.Fojas,
                             AñoInscripcion = escritura.FechaInscripcion.Year,
-                            NumeroInscripcion = escritura.NumeroAtencion,
+                            NumeroInscripcion = CurrentInscriptionNumber,
                             FechaInscripcion = escritura.FechaInscripcion,
                             AñoVigenciaInicial = UpdatedDate,
                         };

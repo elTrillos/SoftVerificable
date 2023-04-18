@@ -395,7 +395,7 @@
         <div class="form-group">
             @Html.Label("Manzana", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Manzana, new { htmlAttributes = new { @class = "form-control", placeholder = "1" } })
+                @Html.EditorFor(model => model.Manzana, new { htmlAttributes = new { @type = "number", @min = "0", @class = "form-control", placeholder = "1" } })
                 @Html.ValidationMessageFor(model => model.Manzana, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -403,7 +403,7 @@
         <div class="form-group">
             @Html.Label("Predio", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Predio, new { htmlAttributes = new { @class = "form-control", placeholder = "1" } })
+                @Html.EditorFor(model => model.Predio, new { htmlAttributes = new { @type = "number", @min = "0", @class = "form-control", placeholder = "1" } })
                 @Html.ValidationMessageFor(model => model.Predio, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -427,7 +427,7 @@
         <div class="form-group">
             @Html.Label("Número Inscripción", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NumeroInscripcion, new { htmlAttributes = new { @class = "form-control", placeholder = "1" } })
+                @Html.EditorFor(model => model.NumeroInscripcion, new { htmlAttributes = new { @type = "number", @min = "0", @class = "form-control", placeholder = "1" } })
                 @Html.ValidationMessageFor(model => model.NumeroInscripcion, "", new { @class = "text-danger" })
             </div>
         </div>
