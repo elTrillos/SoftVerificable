@@ -147,8 +147,14 @@ namespace UAndes.ICC5103._202301.Views
         {
             if (ModelState.IsValid)
             {
+                string emptyInput = "";
+                if (escritura.NumeroInscripcion != emptyInput && escritura.Manzana != emptyInput && escritura.Predio != emptyInput)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
                 db.Escritura.Add(escritura);
-                string enajenanteOmissions = "regularizacion"
+
+                string enajenanteOmissions = "regularizacion";
                 List<EnajenanteClass> enajenantes;
                 if (receivedEnajenantes!="" && escritura.CNE!= enajenanteOmissions)
                 {
@@ -185,8 +191,8 @@ namespace UAndes.ICC5103._202301.Views
 
                     if (sumOfPercentages != percentageRestTotal && !adquirientesWithoutAcreditedPercentages)
                     {
-                        System.Diagnostics.Debug.WriteLine(sumOfPercentages);
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                        return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                     }
 
                     int updatedDate = escritura.FechaInscripcion.Year;
