@@ -181,6 +181,8 @@ namespace UAndes.ICC5103._202301.Views
                     int NonDeclaredAdquirientes = AdquirienteVerificator.AmountOfNonDeclaredAdquirientes(Adquirientes);
                     bool AnyAdquirientesWithoutAcreditedPercentages = AdquirienteVerificator.CheckIfAnyAdquirienteWithoutDeclared(Adquirientes);
                     int CurrentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
+                    int CurrentAñoVigenciaFinal = 0;
+                    int PlaceholderYear = 0;
 
                     if (SumOfPercentages!= PercentageRestTotal && !AnyAdquirientesWithoutAcreditedPercentages)
                     {
@@ -209,28 +211,31 @@ namespace UAndes.ICC5103._202301.Views
                         {
                             return RedirectToAction("Index");
                         }
+                        CurrentAñoVigenciaFinal = SameYearMultipropietarios.First().AñoVigenciaFinal;
                         foreach (var multipropietario in SameYearMultipropietarios)
                         {
-                            System.Diagnostics.Debug.WriteLine(multipropietario.ToString());
-                            multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
                             db.Multipropietario.Remove(multipropietario);
                             db.SaveChanges();
                         }
                     }
 
-                    
+
 
                     var PriorMultipropietarios = db.Multipropietario
                         .Where(a => a.Comuna == escritura.Comuna)
                         .Where(b => b.Manzana == escritura.Manzana)
                         .Where(c => c.Predio == escritura.Predio)
                         .Where(d => d.AñoVigenciaFinal == 0)
+                        .Where(e => e.AñoVigenciaInicial < escritura.FechaInscripcion.Year)
                         .ToList();
+
+
 
                     if (PriorMultipropietarios.Count > 0)
                     {
                         foreach (var multipropietario in PriorMultipropietarios)
                         {
+                            System.Diagnostics.Debug.WriteLine(multipropietario.AñoVigenciaFinal);
                             multipropietario.AñoVigenciaFinal = UpdatedDate - 1;
                             db.Entry(multipropietario).State = EntityState.Modified;
                             db.SaveChanges();
@@ -255,7 +260,7 @@ namespace UAndes.ICC5103._202301.Views
                             PorcentajeDerecho = AdquirientePercentage,
                             DerechoNoAcreditado = adquiriente.porcentajeDerechoNoAcreditado,
                         };
-                        db.Adquiriente.Add(newAdquiriente);                    
+                        db.Adquiriente.Add(newAdquiriente);
 
                         Multipropietario newMultipropietario = new Multipropietario
                         {
@@ -269,6 +274,7 @@ namespace UAndes.ICC5103._202301.Views
                             NumeroInscripcion = CurrentInscriptionNumber,
                             FechaInscripcion = escritura.FechaInscripcion,
                             AñoVigenciaInicial = UpdatedDate,
+                            AñoVigenciaFinal = CurrentAñoVigenciaFinal,
                         };
                         db.Multipropietario.Add(newMultipropietario);
                     }
