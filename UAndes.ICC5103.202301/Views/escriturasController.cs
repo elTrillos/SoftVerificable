@@ -88,8 +88,8 @@ namespace UAndes.ICC5103._202301.Views
         }
         public decimal PostDeclarationAdquirientePercentage(AdquirienteClass Adquiriente,int amountOfAdquirientes, decimal percentageSum)
         {
-            int TruncateValue = 100;
-            decimal extraPercentage = Decimal.Truncate(TruncateValue * percentageSum / amountOfAdquirientes)/ TruncateValue;
+            int truncateValue = 100;
+            decimal extraPercentage = Decimal.Truncate(truncateValue * percentageSum / amountOfAdquirientes)/ truncateValue;
             return Adquiriente.porcentajeDerecho + extraPercentage;
         }
     }
@@ -203,8 +203,6 @@ namespace UAndes.ICC5103._202301.Views
                         .Where(d => d.AñoVigenciaInicial == UpdatedDate)
                         .ToList();
 
-                    
-
                     if (SameYearMultipropietarios.Count > 0)
                     {
                         if (SameYearMultipropietarios.First().NumeroInscripcion > CurrentInscriptionNumber)
@@ -219,8 +217,6 @@ namespace UAndes.ICC5103._202301.Views
                         }
                     }
 
-
-
                     var PriorMultipropietarios = db.Multipropietario
                         .Where(a => a.Comuna == escritura.Comuna)
                         .Where(b => b.Manzana == escritura.Manzana)
@@ -228,8 +224,6 @@ namespace UAndes.ICC5103._202301.Views
                         .Where(d => d.AñoVigenciaFinal == 0)
                         .Where(e => e.AñoVigenciaInicial < escritura.FechaInscripcion.Year)
                         .ToList();
-
-
 
                     if (PriorMultipropietarios.Count > 0)
                     {
@@ -279,7 +273,6 @@ namespace UAndes.ICC5103._202301.Views
                         db.Multipropietario.Add(newMultipropietario);
                     }
                 }
-                       
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
