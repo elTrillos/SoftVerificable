@@ -15,6 +15,7 @@
     <input type="text" id="comunaInput" placeholder="Comuna">
     <input type="text" id="manzanaInput" placeholder="Manzana">
     <input type="text" id="predioInput" placeholder="Predio">
+    <input type="text" id="anoVigenciaInicialInput" placeholder="Año Vigencia Inicial">
     <button type="button" id="searchButton">Buscar</button>
 </div>
 
@@ -115,12 +116,14 @@
             var comunaValue = $('#comunaInput').val().toLowerCase();
             var manzanaValue = $('#manzanaInput').val().toLowerCase();
             var predioValue = $('#predioInput').val().toLowerCase();
+            var anoVigenciaInicialValue = $('#anoVigenciaInicialInput').val();
             $('#multipropietariosTable tbody tr').each(function ()
             {
                 var row = $(this);
                 if (row.find('td:eq(0)').text().toLowerCase().indexOf(comunaValue) === -1 ||
                     row.find('td:eq(1)').text().toLowerCase().indexOf(manzanaValue) === -1 ||
-                    row.find('td:eq(2)').text().toLowerCase().indexOf(predioValue) === -1) {
+                    row.find('td:eq(2)').text().toLowerCase().indexOf(predioValue) === -1 ||
+                    row.find('td:eq(9)').text().toLowerCase().indexOf(anoVigenciaInicialValue) === -1) {
                     row.hide();
                 } else {
                     row.show();

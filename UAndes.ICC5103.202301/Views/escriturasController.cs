@@ -277,7 +277,6 @@ namespace UAndes.ICC5103._202301.Views
                         db.Multipropietario.Add(newMultipropietario);
                     }
                 }
-                       
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
