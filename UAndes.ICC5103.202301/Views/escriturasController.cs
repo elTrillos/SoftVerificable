@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
@@ -148,15 +149,31 @@ namespace UAndes.ICC5103._202301.Views
             if (ModelState.IsValid)
             {
                 string emptyInput = "";
-                if (escritura.NumeroInscripcion != emptyInput && escritura.Manzana != emptyInput && escritura.Predio != emptyInput)
+                if (escritura.NumeroInscripcion == null )
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                    return RedirectToAction("Create");
+                }
+                if (escritura.Manzana == null)
+                {
+                    return RedirectToAction("Create");
+                }
+                if (escritura.Predio == null)
+                {
+                    return RedirectToAction("Create");
+                }
+                if (escritura.Comuna == null)
+                {
+                    return RedirectToAction("Create");
+                }
+                if (receivedAdquirientes == emptyInput)
+                {
+                    return RedirectToAction("Create");
                 }
                 db.Escritura.Add(escritura);
 
                 string enajenanteOmissions = "regularizacion";
                 List<EnajenanteClass> enajenantes;
-                if (receivedEnajenantes!="" && escritura.CNE!= enajenanteOmissions)
+                if (receivedEnajenantes!= emptyInput && escritura.CNE!= enajenanteOmissions)
                 {
                     enajenantes = JsonConvert.DeserializeObject<List<EnajenanteClass>>(receivedEnajenantes);
                     foreach (var enajenante in enajenantes)
@@ -177,7 +194,7 @@ namespace UAndes.ICC5103._202301.Views
                 }  
 
                 List<AdquirienteClass> adquirientes;
-                if (receivedAdquirientes != "")
+                if (receivedAdquirientes != emptyInput)
                 {
                     decimal totalPercentage = 100;
                     decimal percentageRestTotal = 0;
@@ -192,7 +209,7 @@ namespace UAndes.ICC5103._202301.Views
                     if (sumOfPercentages != percentageRestTotal && !adquirientesWithoutAcreditedPercentages)
                     {
 
-                        return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                        return RedirectToAction("Create");
                     }
 
                     int updatedDate = escritura.FechaInscripcion.Year;
@@ -212,7 +229,7 @@ namespace UAndes.ICC5103._202301.Views
                     {
                         if (sameYearMultipropietarios.First().NumeroInscripcion > currentInscriptionNumber)
                         {
-                            return RedirectToAction("Index");
+                            return RedirectToAction("Create");
                         }
                         currentAñoVigenciaFinal = sameYearMultipropietarios.First().AñoVigenciaFinal;
                         foreach (var multipropietario in sameYearMultipropietarios)
