@@ -215,12 +215,25 @@ namespace UAndes.ICC5103._202301.Views
         }
         public Multipropietario getMultipropietarioByRut(Escritura escritura, int startDate, string rut, InscripcionesBrDbEntities db)
         {
-            var  multipropietario = db.Multipropietario
+            var multipropietario = db.Multipropietario
                 .Where(a => a.Comuna == escritura.Comuna)
                 .Where(b => b.Manzana == escritura.Manzana)
                 .Where(c => c.Predio == escritura.Predio)
                 .Where(d => d.AñoVigenciaInicial == startDate)
                 .Where(d => d.RunRut == rut)
+                .First();
+            return multipropietario;
+        }
+        public Multipropietario getLatestMultipropietarioByRut(Escritura escritura, int startDate, string rut, InscripcionesBrDbEntities db)
+        {
+            var multipropietario = db.Multipropietario
+                .Where(a => a.Comuna == escritura.Comuna)
+                .Where(b => b.Manzana == escritura.Manzana)
+                .Where(c => c.Predio == escritura.Predio)
+                .Where(d => d.AñoVigenciaInicial <= startDate)
+                .Where(d => d.RunRut == rut)
+                .OrderByDescending(e => e.AñoVigenciaInicial)
+                .OrderByDescending(f => f.NumeroInscripcion)
                 .First();
             return multipropietario;
         }
@@ -282,10 +295,25 @@ namespace UAndes.ICC5103._202301.Views
             decimal sumOfEnajenantesPercentage = 0;
             foreach(EnajenanteClass enajenante in enajenantes)
             {
+                try
+                {
+                    System.Diagnostics.Debug.WriteLine("p1");
+                    var enajenanteMultipropietario = databaseQueries.getMultipropietarioByRut(escritura, currentYear, enajenante.rut, db);
+                    System.Diagnostics.Debug.WriteLine("p2");
+                    sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
+                    db.Multipropietario.Remove(enajenanteMultipropietario);
+                }
+                catch
+                {
+                    System.Diagnostics.Debug.WriteLine("error1");
+                    var enajenanteMultipropietario = databaseQueries.getLatestMultipropietarioByRut(escritura, currentYear, enajenante.rut, db);
+                    System.Diagnostics.Debug.WriteLine("error2");
+                    sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
+                    enajenanteMultipropietario.AñoVigenciaFinal = currentYear - 1;
+                    db.Entry(enajenanteMultipropietario).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
                 
-                var enajenanteMultipropietario = databaseQueries.getMultipropietarioByRut(escritura, currentYear, enajenante.rut, db);
-                sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
-                db.Multipropietario.Remove(enajenanteMultipropietario);
             }
             return sumOfEnajenantesPercentage;
             
@@ -582,7 +610,6 @@ namespace UAndes.ICC5103._202301.Views
                             if (sumOfPercentage == 100)
                             {
                                 sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, db);
-                                multipropietariosModifications.UpdateCurrentYearMultipropietarios(escritura, updatedDate, db);
                                 createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, db);
                             }
                             else if (sumOfPercentage !=100 && enajenantes.Count() == 1 && adquirientes.Count()==1)
@@ -591,6 +618,11 @@ namespace UAndes.ICC5103._202301.Views
                                 AdquirienteClass adquiriente = adquirientes[0];
                                 decimal enajenanteTotalPercentage = databaseQueries.getMultipropietarioByRut(escritura, updatedDate, enajenante.rut, db).PorcentajeDerecho;
                                 sumOfEnajenantesPercentage = enajenanteTotalPercentage * enajenante.porcentajeDerecho / 100;
+                                int currentAñoVigenciaFinal = multipropietariosModifications.EliminateCurrentYearMultipropietarios(escritura, updatedDate, db);
+                                if (currentAñoVigenciaFinal == -1) //if the year returned is -1, it means that there is no need to update or create anything.
+                                {
+                                    return RedirectToAction("Index");
+                                }
                                 multipropietariosModifications.UpdateMultipropietarioPorcentaje(escritura, enajenante, sumOfEnajenantesPercentage, updatedDate, db);
                                 createClasses.CreateAdquirienteAndMultipropietarioForDerechos(escritura, adquiriente, sumOfEnajenantesPercentage, updatedDate, db);
                             }
@@ -613,6 +645,11 @@ namespace UAndes.ICC5103._202301.Views
                                     }
                                     else
                                     {
+                                        int currentAñoVigenciaFinal = multipropietariosModifications.EliminateCurrentYearMultipropietarios(escritura, updatedDate, db);
+                                        if (currentAñoVigenciaFinal == -1) //if the year returned is -1, it means that there is no need to update or create anything.
+                                        {
+                                            return RedirectToAction("Index");
+                                        }
                                         multipropietariosModifications.UpdateMultipropietarioPorcentaje(escritura, enajenante, enajenante.porcentajeDerecho * porcentajeMultiplicator, updatedDate, db);
                                     }
                                 }
