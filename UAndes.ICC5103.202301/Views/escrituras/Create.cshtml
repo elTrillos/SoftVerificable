@@ -492,6 +492,19 @@
         table.addRow({ item: rows.length + 1 });
     }
 
+    function formatRutInput(input) {
+        const rawRut = input.value.replace(/[^\d]/g, '');
+        if (rawRut === '')
+        {
+            return;
+        }
+        const digits = rawRut.slice(0, -1);
+        const verifier = rawRut.slice(-1);
+        const formattedDigits = digits.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+        const formattedRut = `${formattedDigits}-${verifier}`;
+        input.value = formattedRut;
+    }
+
     $(document).ready(function () {
         const tableDataEnajenantes = [
             {
@@ -516,19 +529,22 @@
             layout: "fitColumns",
             resizableColumnFit: true,
             responsiveLayout: "hide",
-            reactiveData: true, //turn on data reactivity
-            data: tableDataEnajenantes, //load data into table
+            reactiveData: true,
+            data: tableDataEnajenantes,
             columns: [
                 {
                     title: "RUT",
                     field: "rut",
-                    editor: true,
-                    editorParams: {
-                        elementAttributes: {
-                            maxlength: "10", //set the maximum character length of the input element to 10 characters
+                    editor: "input", // Use the "input" editor
+                    editorParams:
+                    {
+                        elementAttributes:
+                        {
+                            maxlength: "12", // Increase the maxlength to accommodate the formatted RUT (e.g., "12.345.678-9")
+                            oninput: "formatRutInput(this)" // Call the formatRutInput function on input
                         },
                         selectContents: true,
-                        verticalNavigation: "table", //up and down arrow keys navigate away from cell without changing value
+                        verticalNavigation: "table"
                     },
                 },
                 {
@@ -581,13 +597,16 @@
                 {
                     title: "RUT",
                     field: "rut",
-                    editor: true,
-                    editorParams: {
-                        elementAttributes: {
-                            maxlength: "10",
+                    editor: "input",
+                    editorParams:
+                    {
+                        elementAttributes:
+                        {
+                            maxlength: "12",
+                            oninput: "formatRutInput(this)"
                         },
                         selectContents: true,
-                        verticalNavigation: "table",
+                        verticalNavigation: "table"
                     },
                 },
                 {
