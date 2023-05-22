@@ -721,6 +721,7 @@ namespace UAndes.ICC5103._202301.Views
                                         //}
                                     }
                                 }
+                                db.SaveChanges();
                                 foreach (EnajenanteClass enajenante in enajenantes)
                                 {
                                     //System.Diagnostics.Debug.WriteLine("asdwwe");
