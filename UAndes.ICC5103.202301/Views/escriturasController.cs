@@ -9,6 +9,7 @@ using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using UAndes.ICC5103._202301.Models;
 
@@ -100,6 +101,25 @@ namespace UAndes.ICC5103._202301.Views
                 }
             }
             return inscriptionNumber;
+        }
+        public bool checkIfDataIsValidCompraventa(Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
+        {
+            DatabaseQueries databaseQueries = new DatabaseQueries();
+            try
+            {
+                List<Multipropietario> validMultipropietarios = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                int currentAñoVigenciaFinal = GetLatestMultipropietarioYear(validMultipropietarios);
+                int currentMaxInscriptionNumber = GetLatestInscriptionNumberOfYear(validMultipropietarios, escritura.FechaInscripcion.Year);
+                if (currentMaxInscriptionNumber > Int32.Parse(escritura.NumeroInscripcion) || currentAñoVigenciaFinal > escritura.FechaInscripcion.Year)
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 
@@ -376,7 +396,6 @@ namespace UAndes.ICC5103._202301.Views
                 }
                 catch
                 {
-                    //System.Diagnostics.Debug.WriteLine("error1");
                     var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, currentYear, enajenante.rut, db);
                     sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
                     enajenanteMultipropietario.AñoVigenciaFinal = currentYear - 1;
@@ -432,6 +451,100 @@ namespace UAndes.ICC5103._202301.Views
             DatabaseQueries databaseQueries = new DatabaseQueries();
             var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, currentYear, enajenante.rut, db);
             db.Multipropietario.Remove(enajenanteMultipropietario);
+        }
+
+        public decimal UpdateMultipropietariosPorcentajesByPercentage(Escritura escritura, List<EnajenanteClass> enajenantes, List<AdquirienteClass> adquirientes,int updatedDate, InscripcionesBrDbEntities db)
+        {
+            DatabaseQueries databaseQueries = new DatabaseQueries();
+            AdquirienteVerificator adquirienteVerificator = new AdquirienteVerificator();
+            decimal sumOfEnajenantesPercentage = 0;
+            foreach (EnajenanteClass currentEnajenante in enajenantes)
+            {
+                var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, currentEnajenante.rut, db);
+                sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
+            }
+            decimal sumOfAdquirientesPercentages = adquirienteVerificator.SumOfPercentages(adquirientes);
+            decimal porcentajeMultiplicator = 1;
+            if (sumOfAdquirientesPercentages > sumOfEnajenantesPercentage)
+            {
+                porcentajeMultiplicator /= (sumOfAdquirientesPercentages - sumOfEnajenantesPercentage + 100) / 100;
+                List<Multipropietario> allMultipropietarios = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                List<string> usedRuts = new List<string>();
+                foreach (EnajenanteClass enajenante in enajenantes)
+                {
+                    usedRuts.Add(enajenante.rut);
+                }
+                foreach (Multipropietario multipropietario in allMultipropietarios)
+                {
+                    UpdateMultipropietario(multipropietario, multipropietario.PorcentajeDerecho * porcentajeMultiplicator, db);
+                }
+            }
+            return porcentajeMultiplicator;
+        }
+        public void UpdateMultipropietariosPercentageDerechos(Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
+        {
+            DatabaseQueries databaseQueries = new DatabaseQueries();
+            List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+            decimal sumOfEndPercentages = 0;
+            foreach (Multipropietario multipropietarioToCheck in multipropietariosToUpdate)
+            {
+                sumOfEndPercentages += multipropietarioToCheck.PorcentajeDerecho;
+            }
+            foreach (Multipropietario multipropietarioToUpdate in multipropietariosToUpdate)
+            {
+                decimal updatedPercentage = 100 * multipropietarioToUpdate.PorcentajeDerecho / sumOfEndPercentages;
+                UpdateMultipropietario(multipropietarioToUpdate, updatedPercentage, db);
+            }
+        }
+
+        public void UpdateOrCreateMultipropietarioForDerechos(Multipropietario multipropietario,Escritura escritura, EnajenanteClass enajenante, int updatedDate, decimal sumOfEnajenantesPercentage, InscripcionesBrDbEntities db)
+        {
+            CreateClasses createClasses = new CreateClasses();
+            if (multipropietario.AñoVigenciaInicial == updatedDate)
+            {
+                UpdateMultipropietario(multipropietario, sumOfEnajenantesPercentage, db);
+                UpdateMultipropietarioInscriptionNumber(multipropietario, Int32.Parse(escritura.NumeroInscripcion), db);
+            }
+            else
+            {
+                UpdateCurrentYearMultipropietario(multipropietario, escritura, updatedDate, db);
+                createClasses.CreateMultipropietarioWithEnajenante(escritura, enajenante, sumOfEnajenantesPercentage, Int32.Parse(escritura.NumeroInscripcion), updatedDate, 0, db);
+            }
+        }
+        public void UpdateOrCreateMultipropietarioForDominios(Escritura escritura, EnajenanteClass enajenante,decimal porcentajeMultiplicator,decimal sumOfEnajenantesPercentage, int updatedDate, InscripcionesBrDbEntities db)
+        {
+            DatabaseQueries databaseQueries = new DatabaseQueries();
+            CreateClasses createClasses = new CreateClasses();
+            try
+            {
+                Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante.rut, db);
+                decimal realEnajenantePercentage = multipropietario.PorcentajeDerecho;
+                int currentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
+                if (realEnajenantePercentage / porcentajeMultiplicator < enajenante.porcentajeDerecho)
+                {
+                    EliminateLatestMultipropietario(escritura, enajenante, updatedDate, db);
+                    createClasses.CreateMultipropietarioWithEnajenante(escritura, enajenante, sumOfEnajenantesPercentage, currentInscriptionNumber, multipropietario.AñoVigenciaInicial, updatedDate - 1, db);
+                    db.Multipropietario.Remove(multipropietario);
+                }
+                else
+                {
+                    if (multipropietario.AñoVigenciaInicial != updatedDate)
+                    {
+                        UpdateCurrentYearMultipropietario(multipropietario, escritura, updatedDate, db);
+                    }
+                    else
+                    {
+                        db.Multipropietario.Remove(multipropietario);
+                    }
+                    //UpdateCurrentYearMultipropietario(multipropietario, escritura, updatedDate, db);
+                    decimal multipropietarioPercentage = (realEnajenantePercentage - enajenante.porcentajeDerecho) * porcentajeMultiplicator;
+                    createClasses.CreateMultipropietarioWithEnajenante(escritura, enajenante, multipropietarioPercentage, currentInscriptionNumber, updatedDate, 0, db);
+                }
+            }
+            catch
+            {
+                return;
+            }
         }
     }
 
@@ -699,8 +812,7 @@ namespace UAndes.ICC5103._202301.Views
                             createClasses.CreateAdquirientesAndMultipropietarios(escritura, adquirientes, nonDeclaredAdquirientes, updatedDate, currentAñoVigenciaFinal, db);
                         }
                         break;
-                    case "compraventa":
-                        
+                    case "compraventa":  
                         if (receivedEnajenantes != EmptyInput && receivedAdquirientes != EmptyInput)
                         {
                             EnajenanteVerificator EnajenanteVerificator = new EnajenanteVerificator();
@@ -713,27 +825,16 @@ namespace UAndes.ICC5103._202301.Views
                             decimal sumOfPercentage = AdquirienteVerificator.SumOfPercentages(adquirientes);
                             int updatedDate = EnajenanteVerificator.GetUpdatedDate(escritura);
                             createClasses.CreateMultipleEnajenantes(escritura, enajenantes, db);
-                            try
-                            {
-                                List<Multipropietario> validMultipropietarios = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                int currentAñoVigenciaFinal = valuesChecker.GetLatestMultipropietarioYear(validMultipropietarios);
-                                int currentMaxInscriptionNumber = valuesChecker.GetLatestInscriptionNumberOfYear(validMultipropietarios, escritura.FechaInscripcion.Year);
-                                if (currentMaxInscriptionNumber > Int32.Parse(escritura.NumeroInscripcion) || currentAñoVigenciaFinal > escritura.FechaInscripcion.Year)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("Nae naed");
-                                    return RedirectToAction("Create");
-                                }
-                            }
-                            catch
+                            if (!valuesChecker.checkIfDataIsValidCompraventa(escritura,updatedDate,db))
                             {
                                 return RedirectToAction("Create");
                             }
+
                             if (sumOfPercentage == 100)
                             {
                                 sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, db);
                                 createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, db);
                             }
-
                             else if (sumOfPercentage <100 && enajenantes.Count() == 1 && adquirientes.Count()==1)
                             {
                                 EnajenanteClass enajenante = enajenantes[0];
@@ -742,69 +843,23 @@ namespace UAndes.ICC5103._202301.Views
                                 decimal enajenanteTotalPercentage = multipropietario.PorcentajeDerecho;
                                 adquirientePercentage = adquiriente.porcentajeDerecho * enajenanteTotalPercentage/100;
                                 sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.porcentajeDerecho) / 100;
-                                if (multipropietario.AñoVigenciaInicial == updatedDate)
-                                {
-                                    multipropietariosModifications.UpdateMultipropietario(multipropietario, sumOfEnajenantesPercentage, db);
-                                    multipropietariosModifications.UpdateMultipropietarioInscriptionNumber(multipropietario, Int32.Parse(escritura.NumeroInscripcion), db);
-                                }
-                                else
-                                {
-                                    multipropietariosModifications.UpdateCurrentYearMultipropietario(multipropietario, escritura, updatedDate - 1, db);
-                                    createClasses.CreateMultipropietarioWithEnajenante(escritura, enajenante, sumOfEnajenantesPercentage, Int32.Parse(escritura.NumeroInscripcion), updatedDate, 0, db);
-                                }
+                                multipropietariosModifications.UpdateOrCreateMultipropietarioForDerechos(multipropietario, escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
                                 createClasses.CreateAdquirienteAndMultipropietarioForDerechos(escritura, adquiriente, adquirientePercentage, updatedDate, db);
                                 db.SaveChanges();
-                                List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                decimal sumOfEndPercentages = 0;
-                                foreach (Multipropietario multipropietarioToCheck in multipropietariosToUpdate)
-                                {
-                                    sumOfEndPercentages += multipropietarioToCheck.PorcentajeDerecho;
-                                }
-                                foreach (Multipropietario multipropietarioToUpdate in multipropietariosToUpdate)
-                                {
-                                    decimal updatedPercentage = 100 * multipropietarioToUpdate.PorcentajeDerecho / sumOfEndPercentages;
-                                    multipropietariosModifications.UpdateMultipropietario(multipropietarioToUpdate, updatedPercentage, db);
-                                }
+                                multipropietariosModifications.UpdateMultipropietariosPercentageDerechos(escritura,updatedDate,db);
                             }
-
                             else
                             {
-                                sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, db);
-                                decimal sumOfAdquirientesPercentages = AdquirienteVerificator.SumOfPercentages(adquirientes);
-                                decimal porcentajeMultiplicator = 1;
-                                if (sumOfAdquirientesPercentages > sumOfEnajenantesPercentage)
+                                foreach (EnajenanteClass currentEnajenante in enajenantes)
                                 {
-                                    porcentajeMultiplicator /= (sumOfAdquirientesPercentages - sumOfEnajenantesPercentage + 100) / 100;
-                                    List<Multipropietario> allMultipropietarios = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                    List<string> usedRuts = new List<string>();
-                                    foreach (EnajenanteClass enajenante in enajenantes)
-                                    {
-                                        usedRuts.Add(enajenante.rut);
-                                    }
-                                    foreach (Multipropietario multipropietario in allMultipropietarios)
-                                    {
-                                        multipropietariosModifications.UpdateMultipropietario(multipropietario, multipropietario.PorcentajeDerecho * porcentajeMultiplicator, db);
-                                    }
+                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, currentEnajenante.rut, db);
+                                    sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
                                 }
+                                decimal porcentajeMultiplicator= multipropietariosModifications.UpdateMultipropietariosPorcentajesByPercentage(escritura,enajenantes,adquirientes,updatedDate,db);
                                 db.SaveChanges();
                                 foreach (EnajenanteClass enajenante in enajenantes)
                                 {
-                                    Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante.rut, db);
-                                    decimal realEnajenantePercentage = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante.rut, db).PorcentajeDerecho;
-                                    int currentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
-                                    if (realEnajenantePercentage/ porcentajeMultiplicator <= enajenante.porcentajeDerecho)
-                                    {
-                                        Multipropietario lastMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante.rut, db);
-                                        multipropietariosModifications.EliminateLatestMultipropietario(escritura, enajenante, updatedDate, db);
-                                        createClasses.CreateMultipropietarioWithEnajenante(escritura, enajenante, sumOfEnajenantesPercentage, currentInscriptionNumber, lastMultipropietario.AñoVigenciaInicial,updatedDate-1 , db);
-                                        db.Multipropietario.Remove(lastMultipropietario);
-                                    }
-                                    else
-                                    {
-                                        multipropietariosModifications.UpdateCurrentYearMultipropietario(multipropietario, escritura, updatedDate - 1, db);
-                                        decimal multipropietarioPercentage = (realEnajenantePercentage - enajenante.porcentajeDerecho) * porcentajeMultiplicator;
-                                        createClasses.CreateMultipropietarioWithEnajenante(escritura, enajenante, multipropietarioPercentage, currentInscriptionNumber, updatedDate, 0, db);
-                                    }
+                                    multipropietariosModifications.UpdateOrCreateMultipropietarioForDominios(escritura, enajenante, porcentajeMultiplicator, sumOfEnajenantesPercentage, updatedDate, db);
                                 }
                                 createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, porcentajeMultiplicator, updatedDate, db);
                             }
