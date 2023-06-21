@@ -170,6 +170,7 @@
     <Compile Include="Views\EnajenantesController.cs" />
     <Compile Include="Views\EscriturasController.cs" />
     <Compile Include="Views\MultipropietariosController.cs" />
+    <Compile Include="Views\ValuesChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
