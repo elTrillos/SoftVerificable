@@ -69,5 +69,4 @@ namespace UAndes.ICC5103._202301.Views
             return priorMultipropietarios;
         }
     }
-
 }
