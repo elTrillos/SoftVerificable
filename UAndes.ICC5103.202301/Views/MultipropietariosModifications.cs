@@ -71,11 +71,19 @@ namespace UAndes.ICC5103._202301.Views
                 }
                 catch
                 {
-                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, currentYear, enajenante.rut, db);
-                    sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
-                    enajenanteMultipropietario.AñoVigenciaFinal = currentYear - 1;
-                    db.Entry(enajenanteMultipropietario).State = EntityState.Modified;
-                    db.SaveChanges();
+                    try
+                    {
+                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, currentYear, enajenante.rut, db);
+                        sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
+                        enajenanteMultipropietario.AñoVigenciaFinal = currentYear - 1;
+                        db.Entry(enajenanteMultipropietario).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    catch
+                    {
+                        
+                    }
+                    
                 }
             }
             return sumOfEnajenantesPercentage;
