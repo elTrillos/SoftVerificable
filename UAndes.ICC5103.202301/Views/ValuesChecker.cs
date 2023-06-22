@@ -68,6 +68,7 @@ namespace UAndes.ICC5103._202301.Views
             }
             return inscriptionNumber;
         }
+
         public bool CheckIfDataIsValidCompraventa(Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
         {
             DatabaseQueries databaseQueries = new DatabaseQueries();
@@ -87,6 +88,7 @@ namespace UAndes.ICC5103._202301.Views
             }
             return true;
         }
+
         public decimal CalculateSumOfEnajenantesPercentagesDominios(List<EnajenanteClass> enajenantes, Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
         {
             DatabaseQueries databaseQueries = new DatabaseQueries();

@@ -279,5 +279,24 @@ namespace UAndes.ICC5103._202301
 
             Assert.IsTrue(result);
         }
+
+        [TestCase]
+        public void CheckIfDataIsValidCompraventa()
+        {
+            var escritura = new Escritura
+            {
+                NumeroInscripcion = "1",
+                Comuna = "VITACURA",
+                Manzana = "5",
+                Predio = "5",
+                FechaInscripcion = new DateTime(2023, 6, 22)
+            };
+            var updatedDate = 2023;
+            var dbContext = new InscripcionesBrDbEntities();
+            var valuesChecker = new ValuesChecker();
+            var result = valuesChecker.CheckIfDataIsValidCompraventa(escritura, updatedDate, dbContext);
+
+            Assert.IsFalse(result);
+        }
     }
 }
