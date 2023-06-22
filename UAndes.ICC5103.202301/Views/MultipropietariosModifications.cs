@@ -175,6 +175,7 @@ namespace UAndes.ICC5103._202301.Views
             }
             return porcentajeMultiplicator;
         }
+
         public void UpdateMultipropietariosPercentageDerechos(Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
         {
             DatabaseQueries databaseQueries = new DatabaseQueries();
@@ -246,5 +247,4 @@ namespace UAndes.ICC5103._202301.Views
             }
         }
     }
-
 }

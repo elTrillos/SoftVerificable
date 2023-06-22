@@ -192,5 +192,92 @@ namespace UAndes.ICC5103._202301
 
             Assert.AreEqual(expectedInscriptionNumber, actualInscriptionNumber);
         }
+
+        [TestCase]
+        public void NonDeclaredEnajenantesCount()
+        {
+            EnajenanteVerificator verificator = new EnajenanteVerificator();
+            List<EnajenanteClass> enajenantes = new List<EnajenanteClass>
+            {
+                new EnajenanteClass
+                {
+                    item = 1,
+                    rut = "123456789",
+                    porcentajeDerecho = 50,
+                    porcentajeDerechoNoAcreditado = false
+                },
+                new EnajenanteClass
+                {
+                    item = 2,
+                    rut = "987654321",
+                    porcentajeDerecho = 30,
+                    porcentajeDerechoNoAcreditado = true
+                },
+                new EnajenanteClass
+                {
+                    item = 3,
+                    rut = "567891234",
+                    porcentajeDerecho = 20,
+                    porcentajeDerechoNoAcreditado = true
+                }
+            };
+
+            int expectedCount = 2;
+            int actualCount = verificator.NonDeclaredEnajenantesAmount(enajenantes);
+
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        [TestCase]
+        public void GetEnajenantePercentage()
+        {
+            EnajenanteVerificator verificator = new EnajenanteVerificator();
+            EnajenanteClass enajenante = new EnajenanteClass
+            {
+                item = 1,
+                rut = "123456789",
+                porcentajeDerecho = 25,
+                porcentajeDerechoNoAcreditado = true
+            };
+
+            int nonDeclaredEnajenantes = 2;
+            decimal sumOfPercentages = 100;
+            decimal expectedPercentage = 75;
+            decimal actualPercentage = verificator.GetEnajenantePercentage(enajenante, nonDeclaredEnajenantes, sumOfPercentages);
+
+            Assert.AreEqual(expectedPercentage, actualPercentage);
+        }
+
+        [TestCase]
+        public void NonDeclaredAdquirientesAmount()
+        {
+            var adquirientes = new List<AdquirienteClass>
+            {
+                new AdquirienteClass { item = 1, rut = "12345678-9", porcentajeDerecho = 50, porcentajeDerechoNoAcreditado = true },
+                new AdquirienteClass { item = 2, rut = "98765432-1", porcentajeDerecho = 30, porcentajeDerechoNoAcreditado = false },
+                new AdquirienteClass { item = 3, rut = "54321678-9", porcentajeDerecho = 20, porcentajeDerechoNoAcreditado = true }
+            };
+            var expectedCount = 2;
+            var adquirienteVerificator = new AdquirienteVerificator();
+            var result = adquirienteVerificator.NonDeclaredAdquirientesAmount(adquirientes);
+
+            Assert.AreEqual(expectedCount, result);
+        }
+
+        [TestCase]
+        public void AdquirientesCheckSumOfPercentages()
+        {
+            var adquirientes = new List<AdquirienteClass>
+            {
+                new AdquirienteClass { item = 1, rut = "12345678-9", porcentajeDerecho = 50, porcentajeDerechoNoAcreditado = false },
+                new AdquirienteClass { item = 2, rut = "98765432-1", porcentajeDerecho = 30, porcentajeDerechoNoAcreditado = false },
+                new AdquirienteClass { item = 3, rut = "54321678-9", porcentajeDerecho = 20, porcentajeDerechoNoAcreditado = false }
+            };
+
+            var adquirienteVerificator = new AdquirienteVerificator();
+            var result = adquirienteVerificator.AdquirientesCheckSumOfPercentages(adquirientes);
+
+            Assert.IsTrue(result);
+        }
     }
 }
