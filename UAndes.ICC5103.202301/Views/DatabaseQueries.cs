@@ -120,5 +120,16 @@ namespace UAndes.ICC5103._202301.Views
                 .Count();
             return adquirienteCount;
         }
+        public decimal SumOfAllMultipropietariosPercentage(Escritura escritura, InscripcionesBrDbEntities db)
+        {
+            decimal sumOfAllMultipropietariosPercentage = db.Multipropietario
+                .Where(a => a.Comuna == escritura.Comuna)
+                .Where(b => b.Manzana == escritura.Manzana)
+                .Where(c => c.Predio == escritura.Predio)
+                .Where(d => d.AñoVigenciaFinal == 0)
+                .Sum(e => e.PorcentajeDerecho);
+            return sumOfAllMultipropietariosPercentage;
+
+        }
     }
 }

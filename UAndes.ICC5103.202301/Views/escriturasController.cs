@@ -355,7 +355,7 @@ namespace UAndes.ICC5103._202301.Views
 
                             int nonDeclaredAdquirientes = AdquirienteVerificator.NonDeclaredAdquirientesAmount(adquirientes);
 
-                            if (!valuesChecker.CheckIfSumOfPercentagesIsValid(escritura, adquirientes))
+                            if (!valuesChecker.CheckIfSumOfPercentagesIsValid(adquirientes))
                             {
                                 return RedirectToAction("Create");
                             }

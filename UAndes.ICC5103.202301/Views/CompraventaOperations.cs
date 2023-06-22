@@ -27,10 +27,22 @@ namespace UAndes.ICC5103._202301.Views
             }
             catch
             {
+
                 enajenanteTotalPercentage = 100;
                 adquirientePercentage = adquiriente.porcentajeDerecho * enajenanteTotalPercentage / 100;
-                decimal sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.porcentajeDerecho) / 100;
-                multipropietariosModifications.CreateMultipropietarioForDerechosFantasma( escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
+                decimal sumOfEnajenantesPercentage = 0;
+                try
+                {
+                    sumOfEnajenantesPercentage = databaseQueries.SumOfAllMultipropietariosPercentage(escritura, db)-adquirientePercentage;
+                }
+                catch
+                {
+                    sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.porcentajeDerecho) / 100;
+                }
+                if (sumOfEnajenantesPercentage >= 100)
+                {
+                    multipropietariosModifications.CreateMultipropietarioForDerechosFantasma(escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
+                }
             }
 
             createClasses.CreateAdquirienteAndMultipropietarioForDerechos(escritura, adquiriente, adquirientePercentage, updatedDate, db);
