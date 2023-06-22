@@ -171,6 +171,7 @@
     </Compile>
     <Compile Include="Models\TemporalEscritura.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCase.cs" />
     <Compile Include="Views\AdquirienteClass.cs" />
     <Compile Include="Views\AdquirienteList.cs" />
     <Compile Include="Views\AdquirientesController.cs" />
