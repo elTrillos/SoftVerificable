@@ -102,7 +102,9 @@ namespace UAndes.ICC5103._202301.Views
                             }
                             multipropietariosModifications.UpdateCurrentYearMultipropietarios(escritura, updatedDate, db);
 
-                            createClasses.CreateAdquirientesAndMultipropietarios(escritura, adquirientes, nonDeclaredAdquirientes, updatedDate, currentAñoVigenciaFinal, db);
+                            //createClasses.CreateAdquirientesAndMultipropietarios(escritura, adquirientes, nonDeclaredAdquirientes, updatedDate, currentAñoVigenciaFinal, db);
+                            createClasses.CreateAdquirientes(escritura, adquirientes, db);
+                            createClasses.CreateMultipropietariosForRegularizacion(escritura,adquirientes,nonDeclaredAdquirientes,updatedDate,currentAñoVigenciaFinal,db);
                         }
                         break;
                     case compraventa:  
@@ -119,7 +121,7 @@ namespace UAndes.ICC5103._202301.Views
                             decimal sumOfPercentage = adquirienteVerificator.SumOfPercentages(adquirientes);
                             int updatedDate = enajenanteVerificator.GetUpdatedDate(escritura);
                             createClasses.CreateMultipleEnajenantes(escritura, enajenantes, db);
-
+                            createClasses.CreateAdquirientes(escritura, adquirientes, db);
                             if (!valuesChecker.CheckIfDataIsValidCompraventa(escritura,updatedDate,db))
                             {
                                 return RedirectToAction("Create");
@@ -306,6 +308,231 @@ namespace UAndes.ICC5103._202301.Views
             db.SaveChanges();
             DatabaseQueries databaseQueries= new DatabaseQueries();
             List<Multipropietario> allMultipropietarios = databaseQueries.GetAllMultipropietarios(escritura, db);
+            foreach(Multipropietario multipropietario in allMultipropietarios)
+            {
+                db.Multipropietario.Remove(multipropietario);
+                db.SaveChanges();
+            }
+            List<Escritura> allEscrituras=databaseQueries.GetAllEscrituras(escritura, db);
+            foreach(Escritura escrituraRecreation in allEscrituras)
+            {
+                escritura.Estado = "Vigente";
+                ValuesChecker valuesChecker = new ValuesChecker();
+                CreateClasses createClasses = new CreateClasses();
+                MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();
+                const string regularizacion = "regularizacion";
+                const string compraventa = "compraventa";
+                if (!valuesChecker.CheckIfEscrituraValuesAreValid(escritura))
+                {
+                    return RedirectToAction("Create");
+                }
+                int enajenantesCount=databaseQueries.EnajenantesCount(escrituraRecreation, db);
+                int adquirientesCount=databaseQueries.AdquirienteCount(escrituraRecreation, db);
+                //List<Enajenante> escrituraEnajenantes= databaseQueries.GetEscrituraEnajenantes(escrituraRecreation, db);
+                //List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
+
+                
+                switch (escrituraRecreation.CNE)
+                {
+                    case regularizacion:
+                        if (adquirientesCount != 0)
+                        {
+                            AdquirienteVerificator AdquirienteVerificator = new AdquirienteVerificator();
+                            //List<AdquirienteClass> adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
+                            List<AdquirienteClass> adquirientes = new List<AdquirienteClass>();
+
+                            List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
+
+                            foreach (Adquiriente escrituraToTransform in escrituraAdquirientes)
+                            {
+                                AdquirienteClass newAdquiriente = new AdquirienteClass();
+                                newAdquiriente.rut = escrituraToTransform.RunRut;
+                                newAdquiriente.porcentajeDerecho = escrituraToTransform.PorcentajeDerecho;
+                                newAdquiriente.porcentajeDerechoNoAcreditado = escrituraToTransform.DerechoNoAcreditado;
+                                adquirientes.Add(newAdquiriente);
+                            }
+
+
+                            int nonDeclaredAdquirientes = AdquirienteVerificator.NonDeclaredAdquirientesAmount(adquirientes);
+
+                            if (!valuesChecker.CheckIfSumOfPercentagesIsValid(escritura, adquirientes))
+                            {
+                                return RedirectToAction("Create");
+                            }
+                            int updatedDate = AdquirienteVerificator.GetUpdatedDate(escritura);
+                            int currentAñoVigenciaFinal = multipropietariosModifications.EliminateCurrentYearMultipropietarios(escritura, updatedDate, db);
+                            if (currentAñoVigenciaFinal == InvalidValue) //if the year returned is -1, it means that there is no need to update or create anything.
+                            {
+                                return RedirectToAction("Index");
+                            }
+                            multipropietariosModifications.UpdateCurrentYearMultipropietarios(escritura, updatedDate, db);
+
+                            createClasses.CreateMultipropietariosForRegularizacion(escritura, adquirientes, nonDeclaredAdquirientes, updatedDate, currentAñoVigenciaFinal, db);
+                        }
+                        break;
+                    case compraventa:
+                        if (enajenantesCount != 0 && adquirientesCount != 0)
+                        {
+                            EnajenanteVerificator enajenanteVerificator = new EnajenanteVerificator();
+                            //List<EnajenanteClass> enajenantes = JsonConvert.DeserializeObject<List<EnajenanteClass>>(receivedEnajenantes);
+                            List<EnajenanteClass> enajenantes = new List<EnajenanteClass>();
+                            AdquirienteVerificator adquirienteVerificator = new AdquirienteVerificator();
+                            List<Enajenante> escrituraEnajenantes = databaseQueries.GetEscrituraEnajenantes(escrituraRecreation, db);
+
+                            foreach (Enajenante enajenanteToTransform in escrituraEnajenantes)
+                            {
+                                EnajenanteClass newEnajenante = new EnajenanteClass();
+                                newEnajenante.rut = enajenanteToTransform.RunRut;
+                                newEnajenante.porcentajeDerecho = enajenanteToTransform.PorcentajeDerecho;
+                                newEnajenante.porcentajeDerechoNoAcreditado = enajenanteToTransform.DerechoNoAcreditado;
+                                enajenantes.Add(newEnajenante);
+                            }
+
+
+
+                            List<AdquirienteClass> adquirientes = new List<AdquirienteClass>();
+                            List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
+
+                            foreach (Adquiriente adquirienteToTransform in escrituraAdquirientes)
+                            {
+                                AdquirienteClass newAdquiriente = new AdquirienteClass();
+                                newAdquiriente.rut = adquirienteToTransform.RunRut;
+                                newAdquiriente.porcentajeDerecho = adquirienteToTransform.PorcentajeDerecho;
+                                newAdquiriente.porcentajeDerechoNoAcreditado = adquirienteToTransform.DerechoNoAcreditado;
+                                adquirientes.Add(newAdquiriente);
+                            }
+                            CompraventaOperations compraventaOperations = new CompraventaOperations();
+                            decimal sumOfEnajenantesPercentage = 0;
+                            decimal adquirientePercentage = 0;
+                            decimal sumOfPercentage = adquirienteVerificator.SumOfPercentages(adquirientes);
+                            int updatedDate = enajenanteVerificator.GetUpdatedDate(escritura);
+                            //createClasses.CreateMultipleEnajenantes(escritura, enajenantes, db);
+
+                            if (!valuesChecker.CheckIfDataIsValidCompraventa(escritura, updatedDate, db))
+                            {
+                                return RedirectToAction("Create");
+                            }
+
+                            if (sumOfPercentage == 100)
+                            {
+                                bool fantasmaCheck = false;
+                                foreach (EnajenanteClass enajenante1 in enajenantes)
+                                {
+                                    try
+                                    {
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.rut, db);
+                                    }
+                                    catch
+                                    {
+                                        fantasmaCheck = true;
+                                    }
+                                }
+
+                                if (fantasmaCheck)
+                                {
+                                    List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                                    foreach (Multipropietario multipropietario in multipropietariosToUpdate)
+                                    {
+                                        multipropietario.PorcentajeDerecho = multipropietario.PorcentajeDerecho / 2;
+                                        db.SaveChanges();
+                                    }
+                                    sumOfEnajenantesPercentage = 100;
+                                    multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, sumOfEnajenantesPercentage, db);
+                                    createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, sumOfEnajenantesPercentage, db);
+
+
+                                }
+                                else
+                                {
+                                    sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 0, db);
+                                    createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, 0, db);
+                                }
+
+                            }
+                            else if (sumOfPercentage < 100 && enajenantes.Count() == 1 && adquirientes.Count() == 1)
+                            {
+                                bool fantasmaCheck = false;
+                                try
+                                {
+                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenantes[0].rut, db);
+                                }
+                                catch
+                                {
+                                    fantasmaCheck = true;
+                                }
+                                compraventaOperations.DerechosHandler(enajenantes, adquirientes, escritura, updatedDate, fantasmaCheck, db);
+                                db.SaveChanges();
+                                multipropietariosModifications.UpdateMultipropietariosPercentageDerechos(escritura, updatedDate, db);
+                            }
+                            else
+                            {
+                                valuesChecker.CalculateSumOfEnajenantesPercentagesDominios(enajenantes, escritura, updatedDate, db);
+                                decimal porcentajeMultiplicator = multipropietariosModifications.UpdateMultipropietariosPorcentajesByPercentage(escritura, enajenantes, adquirientes, updatedDate, db);
+                                bool fantasmaCheck = false;
+                                List<EnajenanteClass> fantasmas = new List<EnajenanteClass>();
+                                porcentajeMultiplicator = 1;
+                                db.SaveChanges();
+                                foreach (EnajenanteClass enajenante1 in enajenantes)
+                                {
+                                    try
+                                    {
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.rut, db);
+                                    }
+                                    catch
+                                    {
+                                        fantasmas.Add(enajenante1);
+                                        fantasmaCheck = true;
+                                    }
+                                }
+                                foreach (EnajenanteClass enajenante in enajenantes)
+                                {
+                                    try
+                                    {
+                                        multipropietariosModifications.UpdateOrCreateMultipropietarioForDominios(escritura, enajenante, porcentajeMultiplicator, sumOfEnajenantesPercentage, updatedDate, db);
+                                    }
+                                    catch { }
+                                }
+                                System.Diagnostics.Debug.WriteLine("poggie woggie uwu xddd");
+                                createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, porcentajeMultiplicator, updatedDate, db);
+                                db.SaveChanges();
+
+                                List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                                decimal sumOfPercentages = 0;
+                                foreach (Multipropietario multipropietario in multipropietariosToUpdate)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(multipropietario.PorcentajeDerecho);
+                                    sumOfPercentages += multipropietario.PorcentajeDerecho;
+                                }
+                                if (!fantasmaCheck)
+                                {
+
+                                    decimal updatePercentage = sumOfPercentages / 100;
+                                    foreach (Multipropietario multipropietario1 in multipropietariosToUpdate)
+                                    {
+                                        multipropietariosModifications.UpdateMultipropietario(multipropietario1, multipropietario1.PorcentajeDerecho / updatePercentage, db);
+                                    }
+                                }
+                                else
+                                {
+                                    decimal percentageToShare = (100 - sumOfPercentages) / fantasmas.Count;
+                                    foreach (EnajenanteClass fantasma in fantasmas)
+                                    {
+                                        createClasses.CreateMultipropietarioWithEnajenante(escritura, fantasma, percentageToShare, Int32.Parse(escritura.NumeroInscripcion), updatedDate, 0, db);
+                                    }
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            return RedirectToAction("Create");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
