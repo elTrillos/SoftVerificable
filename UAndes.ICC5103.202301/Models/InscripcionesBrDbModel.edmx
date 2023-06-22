@@ -37,6 +37,7 @@
           <Property Name="Fojas" Type="int" Nullable="false" />
           <Property Name="FechaInscripcion" Type="date" Nullable="false" />
           <Property Name="NumeroInscripcion" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Estado" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Multipropietario">
           <Key>
@@ -171,6 +172,7 @@
           <Property Name="NumeroInscripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Adquiriente" Relationship="InscripcionesBrDbModel.FK__Adquirien__Numer__3E52440B" FromRole="Escritura" ToRole="Adquiriente" />
           <NavigationProperty Name="Enajenante" Relationship="InscripcionesBrDbModel.FK__Enajenant__Numer__3B75D760" FromRole="Escritura" ToRole="Enajenante" />
+          <Property Name="Estado" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__Adquirien__Numer__3E52440B">
           <End Type="InscripcionesBrDbModel.Escritura" Role="Escritura" Multiplicity="1" />
@@ -256,6 +258,7 @@
           <EntitySetMapping Name="Escritura">
             <EntityTypeMapping TypeName="InscripcionesBrDbModel.Escritura">
               <MappingFragment StoreEntitySet="Escritura">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="NumeroInscripcion" ColumnName="NumeroInscripcion" />
                 <ScalarProperty Name="FechaInscripcion" ColumnName="FechaInscripcion" />
                 <ScalarProperty Name="Fojas" ColumnName="Fojas" />

@@ -66,10 +66,11 @@ namespace UAndes.ICC5103._202301.Views
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion")] Escritura escritura, string receivedEnajenantes, string receivedAdquirientes)
+        public ActionResult Create([Bind(Include = "NumeroAtencion,CNE,Comuna,Manzana,Predio,Fojas,FechaInscripcion,NumeroInscripcion,Estado")] Escritura escritura, string receivedEnajenantes, string receivedAdquirientes)
         {
             if (ModelState.IsValid)
             {
+                escritura.Estado = "Vigente";
                 ValuesChecker valuesChecker = new ValuesChecker();
                 CreateClasses createClasses = new CreateClasses();
                 MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();

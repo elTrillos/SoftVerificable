@@ -23,7 +23,8 @@ CREATE TABLE [dbo].[Escritura] (
     [Predio] [nvarchar](50) NOT NULL,
     [Fojas] [int] NOT NULL,
     [FechaInscripcion] [date] NOT NULL,
-    [NumeroInscripcion] [nvarchar](50) NOT NULL
+    [NumeroInscripcion] [nvarchar](50) NOT NULL,
+	[Estado] [nvarchar](50) NOT NULL
 );
 GO
 CREATE TABLE [dbo].[Enajenante] (
