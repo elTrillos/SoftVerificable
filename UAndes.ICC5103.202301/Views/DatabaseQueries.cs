@@ -68,5 +68,14 @@ namespace UAndes.ICC5103._202301.Views
                 .ToList();
             return priorMultipropietarios;
         }
+        public List<Multipropietario> GetAllMultipropietarios(Escritura escritura, InscripcionesBrDbEntities db)
+        {
+            var priorMultipropietarios = db.Multipropietario
+                .Where(a => a.Comuna == escritura.Comuna)
+                .Where(b => b.Manzana == escritura.Manzana)
+                .Where(c => c.Predio == escritura.Predio)
+                .ToList();
+            return priorMultipropietarios;
+        }
     }
 }

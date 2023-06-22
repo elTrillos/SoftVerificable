@@ -301,8 +301,11 @@ namespace UAndes.ICC5103._202301.Views
         public ActionResult DeleteConfirmed(int id)
         {
             Escritura escritura = db.Escritura.Find(id);
-            db.Escritura.Remove(escritura);
+            escritura.Estado = "No Vigente";
+            db.Entry(escritura).State = EntityState.Modified;
             db.SaveChanges();
+            DatabaseQueries databaseQueries= new DatabaseQueries();
+            List<Multipropietario> allMultipropietarios = databaseQueries.GetAllMultipropietarios(escritura, db);
             return RedirectToAction("Index");
         }
 
