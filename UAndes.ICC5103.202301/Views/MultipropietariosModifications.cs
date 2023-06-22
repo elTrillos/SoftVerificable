@@ -160,7 +160,9 @@ namespace UAndes.ICC5103._202301.Views
             if (sumOfAdquirientesPercentages > sumOfEnajenantesPercentage)
             {
                 porcentajeMultiplicator /= (sumOfAdquirientesPercentages - sumOfEnajenantesPercentage + 100) / 100;
-                List<Multipropietario> allMultipropietarios = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                System.Diagnostics.Debug.WriteLine("porcentaje");
+                System.Diagnostics.Debug.WriteLine(porcentajeMultiplicator);
+                List <Multipropietario> allMultipropietarios = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
                 List<string> usedRuts = new List<string>();
                 foreach (EnajenanteClass enajenante in enajenantes)
                 {
@@ -168,7 +170,7 @@ namespace UAndes.ICC5103._202301.Views
                 }
                 foreach (Multipropietario multipropietario in allMultipropietarios)
                 {
-                    UpdateMultipropietario(multipropietario, multipropietario.PorcentajeDerecho * porcentajeMultiplicator, db);
+                    UpdateMultipropietario(multipropietario, multipropietario.PorcentajeDerecho, db);
                 }
             }
             return porcentajeMultiplicator;
@@ -234,7 +236,7 @@ namespace UAndes.ICC5103._202301.Views
                         db.Multipropietario.Remove(multipropietario);
                     }
                     //UpdateCurrentYearMultipropietario(multipropietario, escritura, updatedDate, db);
-                    decimal multipropietarioPercentage = (realEnajenantePercentage - enajenante.porcentajeDerecho) * porcentajeMultiplicator;
+                    decimal multipropietarioPercentage = (realEnajenantePercentage - enajenante.porcentajeDerecho);
                     createClasses.CreateMultipropietarioWithEnajenante(escritura, enajenante, multipropietarioPercentage, currentInscriptionNumber, updatedDate, 0, db);
                 }
             }

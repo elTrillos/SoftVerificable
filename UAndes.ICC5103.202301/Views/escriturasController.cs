@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography.Pkcs;
@@ -178,17 +179,59 @@ namespace UAndes.ICC5103._202301.Views
                             {
                                 valuesChecker.CalculateSumOfEnajenantesPercentagesDominios(enajenantes, escritura, updatedDate, db);
                                 decimal porcentajeMultiplicator= multipropietariosModifications.UpdateMultipropietariosPorcentajesByPercentage(escritura,enajenantes,adquirientes,updatedDate,db);
+                                bool fantasmaCheck= false;
+                                List<EnajenanteClass> fantasmas = new List<EnajenanteClass>();
+                                porcentajeMultiplicator = 1;
                                 db.SaveChanges();
+                                foreach (EnajenanteClass enajenante1 in enajenantes)
+                                {
+                                    try
+                                    {
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.rut, db);
+                                    }
+                                    catch
+                                    {
+                                        fantasmas.Add(enajenante1);
+                                        fantasmaCheck = true;
+                                    }
+                                }
                                 foreach (EnajenanteClass enajenante in enajenantes)
                                 {
                                     try
                                     {
                                         multipropietariosModifications.UpdateOrCreateMultipropietarioForDominios(escritura, enajenante, porcentajeMultiplicator, sumOfEnajenantesPercentage, updatedDate, db);
                                     }
-                                    catch { }
-                                    
+                                    catch {} 
                                 }
+                                System.Diagnostics.Debug.WriteLine("poggie woggie uwu xddd");
                                 createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, porcentajeMultiplicator, updatedDate, db);
+                                db.SaveChanges();
+
+                                List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                                decimal sumOfPercentages = 0;
+                                foreach (Multipropietario multipropietario in multipropietariosToUpdate)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(multipropietario.PorcentajeDerecho);
+                                    sumOfPercentages += multipropietario.PorcentajeDerecho;
+                                }
+                                if (!fantasmaCheck)
+                                {
+                                    
+                                    decimal updatePercentage = sumOfPercentages / 100;
+                                    foreach (Multipropietario multipropietario1 in multipropietariosToUpdate)
+                                    {
+                                        multipropietariosModifications.UpdateMultipropietario(multipropietario1, multipropietario1.PorcentajeDerecho / updatePercentage, db);
+                                    }
+                                }
+                                else
+                                {
+                                    decimal percentageToShare = (100 - sumOfPercentages)/fantasmas.Count;
+                                    foreach(EnajenanteClass fantasma in fantasmas)
+                                    {
+                                        createClasses.CreateMultipropietarioWithEnajenante(escritura, fantasma, percentageToShare, Int32.Parse(escritura.NumeroInscripcion), updatedDate, 0, db);
+                                    }
+                                }
+                                
                             }
                         }
                         else

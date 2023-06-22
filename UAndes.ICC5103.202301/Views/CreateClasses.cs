@@ -46,6 +46,7 @@ namespace UAndes.ICC5103._202301.Views
             db.Multipropietario.Add(newMultipropietario);
         }
 
+
         public void CreateAdquiriente(Escritura escritura, AdquirienteClass adquiriente, decimal adquirientePercentage, InscripcionesBrDbEntities db)
         {
             Adquiriente newAdquiriente = new Adquiriente
@@ -125,11 +126,15 @@ namespace UAndes.ICC5103._202301.Views
 
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
-                decimal adquirientePercentage = adquiriente.porcentajeDerecho * percentageMultiplicator;
+                decimal adquirientePercentage = adquiriente.porcentajeDerecho;
                 try
                 {
                     Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, adquiriente.rut, db);
                     CreateAdquiriente(escritura, adquiriente, adquirientePercentage, db);
+                    System.Diagnostics.Debug.WriteLine("okdda");
+                    System.Diagnostics.Debug.WriteLine(multipropietario.PorcentajeDerecho + adquirientePercentage);
+                    System.Diagnostics.Debug.WriteLine(multipropietario.PorcentajeDerecho);
+                    System.Diagnostics.Debug.WriteLine(adquirientePercentage);
                     multipropietariosModifications.UpdateMultipropietario(multipropietario, multipropietario.PorcentajeDerecho + adquirientePercentage, db);
                     multipropietariosModifications.UpdateMultipropietarioInscriptionNumber(multipropietario, currentInscriptionNumber, db);
                 }
