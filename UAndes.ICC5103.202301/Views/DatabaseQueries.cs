@@ -70,12 +70,55 @@ namespace UAndes.ICC5103._202301.Views
         }
         public List<Multipropietario> GetAllMultipropietarios(Escritura escritura, InscripcionesBrDbEntities db)
         {
-            var priorMultipropietarios = db.Multipropietario
+            var multipropietarios = db.Multipropietario
                 .Where(a => a.Comuna == escritura.Comuna)
                 .Where(b => b.Manzana == escritura.Manzana)
                 .Where(c => c.Predio == escritura.Predio)
                 .ToList();
-            return priorMultipropietarios;
+            return multipropietarios;
+        }
+
+        public List<Escritura> GetAllEscrituras(Escritura escritura, InscripcionesBrDbEntities db)
+        {
+            var escrituras = db.Escritura
+                .Where(a => a.Comuna == escritura.Comuna)
+                .Where(b => b.Manzana == escritura.Manzana)
+                .Where(c => c.Predio == escritura.Predio)
+                .Where(d => d.Estado== "Vigente")
+                .OrderByDescending(e => e.FechaInscripcion.Year)
+                .OrderByDescending(f => f.NumeroInscripcion)
+                .ToList();
+            return escrituras;
+        }
+        public List<Enajenante> GetEscrituraEnajenantes(Escritura escritura, InscripcionesBrDbEntities db)
+        {
+            var enajenantes = db.Enajenante
+                .Where(a => a.NumeroAtencion == escritura.NumeroAtencion)
+                .ToList();
+            return enajenantes;
+        }
+
+        public int EnajenantesCount(Escritura escritura, InscripcionesBrDbEntities db)
+        {
+            int enajenanteCount = db.Enajenante
+                .Where(a => a.NumeroAtencion == escritura.NumeroAtencion)
+                .Count();
+            return enajenanteCount;
+        }
+        public List<Adquiriente> GetEscrituraAdquirientes(Escritura escritura, InscripcionesBrDbEntities db)
+        {
+            var adquirientes = db.Adquiriente
+                .Where(a => a.NumeroAtencion == escritura.NumeroAtencion)
+                .ToList();
+            return adquirientes;
+        }
+
+        public int AdquirienteCount(Escritura escritura, InscripcionesBrDbEntities db)
+        {
+            int adquirienteCount = db.Adquiriente
+                .Where(a => a.NumeroAtencion == escritura.NumeroAtencion)
+                .Count();
+            return adquirienteCount;
         }
     }
 }
