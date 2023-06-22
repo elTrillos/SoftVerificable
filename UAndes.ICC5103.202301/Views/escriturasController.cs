@@ -125,12 +125,52 @@ namespace UAndes.ICC5103._202301.Views
 
                             if (sumOfPercentage == 100)
                             {
-                                sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, db);
-                                createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, db);
+                                bool fantasmaCheck = false;
+                                foreach (EnajenanteClass enajenante1 in enajenantes)
+                                {
+                                    try
+                                    {
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.rut, db);
+                                    }
+                                    catch
+                                    {
+                                        fantasmaCheck = true;
+                                    }
+                                }
+                                
+                                if (fantasmaCheck)
+                                {
+                                    List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                                    foreach (Multipropietario multipropietario in multipropietariosToUpdate)
+                                    {
+                                        multipropietario.PorcentajeDerecho = multipropietario.PorcentajeDerecho / 2;
+                                        db.SaveChanges();
+                                    }
+                                    sumOfEnajenantesPercentage = 100;
+                                    multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, sumOfEnajenantesPercentage, db);
+                                    createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, sumOfEnajenantesPercentage, db);
+                                    
+                                    
+                                }
+                                else
+                                {
+                                    sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes,0, db);
+                                    createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, 0, db);
+                                }
+                                
                             }
                             else if (sumOfPercentage < 100 && enajenantes.Count() == 1 && adquirientes.Count() == 1)
                             {
-                                compraventaOperations.DerechosHandler(enajenantes, adquirientes, escritura, updatedDate, db);
+                                bool fantasmaCheck = false;
+                                try
+                                {
+                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenantes[0].rut, db);
+                                }
+                                catch
+                                {
+                                    fantasmaCheck = true;
+                                }
+                                compraventaOperations.DerechosHandler(enajenantes, adquirientes, escritura, updatedDate,fantasmaCheck, db);
                                 db.SaveChanges();
                                 multipropietariosModifications.UpdateMultipropietariosPercentageDerechos(escritura,updatedDate,db);
                             }
@@ -141,7 +181,12 @@ namespace UAndes.ICC5103._202301.Views
                                 db.SaveChanges();
                                 foreach (EnajenanteClass enajenante in enajenantes)
                                 {
-                                    multipropietariosModifications.UpdateOrCreateMultipropietarioForDominios(escritura, enajenante, porcentajeMultiplicator, sumOfEnajenantesPercentage, updatedDate, db);
+                                    try
+                                    {
+                                        multipropietariosModifications.UpdateOrCreateMultipropietarioForDominios(escritura, enajenante, porcentajeMultiplicator, sumOfEnajenantesPercentage, updatedDate, db);
+                                    }
+                                    catch { }
+                                    
                                 }
                                 createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, porcentajeMultiplicator, updatedDate, db);
                             }

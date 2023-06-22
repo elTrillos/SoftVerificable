@@ -92,8 +92,16 @@ namespace UAndes.ICC5103._202301.Views
             decimal sumOfEnajenantesPercentage = 0;
             foreach (EnajenanteClass currentEnajenante in enajenantes)
             {
-                var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, currentEnajenante.rut, db);
-                sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
+                try
+                {
+                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, currentEnajenante.rut, db);
+                    sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
+                }
+                catch
+                {
+
+                }
+                
             }
             return sumOfEnajenantesPercentage;
         }

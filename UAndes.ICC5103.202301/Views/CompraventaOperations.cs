@@ -8,7 +8,7 @@ namespace UAndes.ICC5103._202301.Views
 {
     public class CompraventaOperations
     {
-        public void DerechosHandler(List<EnajenanteClass> enajenantes, List<AdquirienteClass> adquirientes, Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
+        public void DerechosHandler(List<EnajenanteClass> enajenantes, List<AdquirienteClass> adquirientes, Escritura escritura, int updatedDate,bool isFantasma, InscripcionesBrDbEntities db)
         {
             DatabaseQueries databaseQueries = new DatabaseQueries();
             MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();
@@ -29,6 +29,8 @@ namespace UAndes.ICC5103._202301.Views
             {
                 enajenanteTotalPercentage = 100;
                 adquirientePercentage = adquiriente.porcentajeDerecho * enajenanteTotalPercentage / 100;
+                decimal sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.porcentajeDerecho) / 100;
+                multipropietariosModifications.CreateMultipropietarioForDerechosFantasma( escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
             }
 
             createClasses.CreateAdquirienteAndMultipropietarioForDerechos(escritura, adquiriente, adquirientePercentage, updatedDate, db);

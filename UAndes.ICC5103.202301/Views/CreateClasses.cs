@@ -85,12 +85,12 @@ namespace UAndes.ICC5103._202301.Views
             }
         }
 
-        public void CreateAdquirientesAndMultipropietariosForTraspaso(Escritura escritura, List<AdquirienteClass> adquirientes, decimal percentageToSplit, int updatedDate, InscripcionesBrDbEntities db)
+        public void CreateAdquirientesAndMultipropietariosForTraspaso(Escritura escritura, List<AdquirienteClass> adquirientes, decimal percentageToSplit, int updatedDate, decimal percentageOver, InscripcionesBrDbEntities db)
         {
             int currentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
             DatabaseQueries databaseQueries = new DatabaseQueries();
             MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();
-
+            decimal multipler = 100 / (100 + percentageOver);
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
                 decimal adquirientePercentage = adquiriente.porcentajeDerecho * percentageToSplit / 100;
@@ -98,14 +98,14 @@ namespace UAndes.ICC5103._202301.Views
                 {
                     Multipropietario multipropietario = databaseQueries.GetMultipropietarioByRut(escritura, updatedDate, adquiriente.rut, db);
                     CreateAdquiriente(escritura, adquiriente, adquirientePercentage, db);
-                    multipropietariosModifications.UpdateMultipropietario(multipropietario, multipropietario.PorcentajeDerecho + adquirientePercentage, db);
+                    multipropietariosModifications.UpdateMultipropietario(multipropietario, (multipropietario.PorcentajeDerecho + adquirientePercentage)* multipler, db);
                     multipropietariosModifications.UpdateMultipropietarioInscriptionNumber(multipropietario, Int32.Parse(escritura.NumeroInscripcion), db);
 
                 }
                 catch
                 {
                     CreateAdquiriente(escritura, adquiriente, adquirientePercentage, db);
-                    CreateMultipropietario(escritura, adquiriente, adquirientePercentage, currentInscriptionNumber, updatedDate, 0, db);
+                    CreateMultipropietario(escritura, adquiriente, adquirientePercentage* multipler, currentInscriptionNumber, updatedDate, 0, db);
                 }
             }
         }
