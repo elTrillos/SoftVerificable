@@ -29,7 +29,7 @@ namespace UAndes.ICC5103._202301.Views
             return true;
         }
 
-        public bool CheckIfSumOfPercentagesIsValid(Escritura escritura, List<AdquirienteClass> adquirientes)
+        public bool CheckIfSumOfPercentagesIsValid(List<AdquirienteClass> adquirientes)
         {
             AdquirienteVerificator adquirienteVerificator = new AdquirienteVerificator();
             decimal sumOfPercentages = 100 - adquirienteVerificator.SumOfPercentages(adquirientes);
@@ -43,6 +43,7 @@ namespace UAndes.ICC5103._202301.Views
                 return true;
             }
         }
+
         public int GetLatestMultipropietarioYear(List<Multipropietario> multipropietarios)
         {
             int year = 0;

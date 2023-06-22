@@ -90,7 +90,7 @@ namespace UAndes.ICC5103._202301.Views
                             List<AdquirienteClass> adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
                             int nonDeclaredAdquirientes = AdquirienteVerificator.NonDeclaredAdquirientesAmount(adquirientes);
 
-                            if (!valuesChecker.CheckIfSumOfPercentagesIsValid(escritura, adquirientes))
+                            if (!valuesChecker.CheckIfSumOfPercentagesIsValid(adquirientes))
                             {
                                 return RedirectToAction("Create");
                             }
