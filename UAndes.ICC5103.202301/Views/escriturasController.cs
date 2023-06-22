@@ -492,7 +492,6 @@ namespace UAndes.ICC5103._202301.Views
                                     }
                                     catch { }
                                 }
-                                System.Diagnostics.Debug.WriteLine("poggie woggie uwu xddd");
                                 createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, porcentajeMultiplicator, updatedDate, db);
                                 db.SaveChanges();
 
