@@ -38,37 +38,48 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CNE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comuna)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Manzana)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Predio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fojas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaInscripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumeroInscripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Estado)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Edit", new { id = item.NumeroAtencion }) |
-            @Html.ActionLink("Ver detalles", "Details", new { id = item.NumeroAtencion }) |
-            @Html.ActionLink("Eliminar", "Delete", new { id = item.NumeroAtencion })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @CapitalizeFirstLetter(item.CNE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comuna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manzana)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Predio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fojas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaInscripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroInscripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.NumeroAtencion }) |
+                @Html.ActionLink("Ver detalles", "Details", new { id = item.NumeroAtencion }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.NumeroAtencion })
+            </td>
+        </tr>
+    }
 </table>
+
+@functions {
+    public static string CapitalizeFirstLetter(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return input;
+
+        return char.ToUpper(input[0]) + input.Substring(1);
+    }
+}

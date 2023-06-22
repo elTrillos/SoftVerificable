@@ -4,11 +4,14 @@
     ViewBag.Title = "Eliminar escritura";
 }
 
-<h2>Delete</h2>
+<style>
+    .light-red-button {
+        background-color: lightcoral;
+    }
+</style>
 
-<h3>Are you sure you want to delete this?</h3>
+<h2>Eliminar Escritura</h2>
 <div>
-    <h4>Escritura</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -67,14 +70,21 @@
             @Html.DisplayFor(model => model.NumeroInscripcion)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
     </dl>
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
+    @using (Html.BeginForm())
+    {
+    @Html.AntiForgeryToken()
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Eliminar Escritura" class="btn btn-default light-red-button" />
             @Html.ActionLink("Regresar a la lista", "Index")
         </div>
-    }
+     }
 </div>
