@@ -8,7 +8,7 @@ namespace UAndes.ICC5103._202301.Views
 {
     public class DatabaseQueries
     {
-        public List<Multipropietario> SameYearMultipropietarios(Escritura escritura, int startDate, InscripcionesBrDbEntities db)
+        public List<Multipropietario> GetSameYearMultipropietarios(Escritura escritura, int startDate, InscripcionesBrDbEntities db)
         {
             var sameYearMultipropietarios = db.Multipropietario
                 .Where(a => a.Comuna == escritura.Comuna)
@@ -45,7 +45,7 @@ namespace UAndes.ICC5103._202301.Views
             return multipropietario;
         }
 
-        public List<Multipropietario> PriorListMultipropietarios(Escritura escritura, InscripcionesBrDbEntities db)
+        public List<Multipropietario> GetPriorListMultipropietarios(Escritura escritura, InscripcionesBrDbEntities db)
         {
             var priorMultipropietarios = db.Multipropietario
                 .Where(a => a.Comuna == escritura.Comuna)
@@ -100,7 +100,7 @@ namespace UAndes.ICC5103._202301.Views
             return enajenantes;
         }
 
-        public int EnajenantesCount(Escritura escritura, InscripcionesBrDbEntities db)
+        public int GetEnajenantesCount(Escritura escritura, InscripcionesBrDbEntities db)
         {
             int enajenanteCount = db.Enajenante
                 .Where(a => a.NumeroAtencion == escritura.NumeroAtencion)
@@ -116,7 +116,7 @@ namespace UAndes.ICC5103._202301.Views
             return adquirientes;
         }
 
-        public int AdquirienteCount(Escritura escritura, InscripcionesBrDbEntities db)
+        public int GetAdquirienteCount(Escritura escritura, InscripcionesBrDbEntities db)
         {
             int adquirienteCount = db.Adquiriente
                 .Where(a => a.NumeroAtencion == escritura.NumeroAtencion)
@@ -124,7 +124,7 @@ namespace UAndes.ICC5103._202301.Views
             return adquirienteCount;
         }
 
-        public decimal SumOfAllMultipropietariosPercentage(Escritura escritura, InscripcionesBrDbEntities db)
+        public decimal GetSumOfAllMultipropietariosPercentage(Escritura escritura, InscripcionesBrDbEntities db)
         {
             decimal sumOfAllMultipropietariosPercentage = db.Multipropietario
                 .Where(a => a.Comuna == escritura.Comuna)

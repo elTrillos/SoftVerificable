@@ -190,7 +190,7 @@
     <Compile Include="Views\AdquirientesController.cs" />
     <Compile Include="Views\AdquirienteVerificator.cs" />
     <Compile Include="Views\CompraventaOperations.cs" />
-    <Compile Include="Views\CreateClasses.cs" />
+    <Compile Include="Views\CreationOperations.cs" />
     <Compile Include="Views\DatabaseQueries.cs" />
     <Compile Include="Views\LocalEnajenante.cs" />
     <Compile Include="Views\EnajenantesController.cs" />

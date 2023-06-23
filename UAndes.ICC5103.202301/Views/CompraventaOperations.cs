@@ -12,7 +12,7 @@ namespace UAndes.ICC5103._202301.Views
         {
             DatabaseQueries databaseQueries = new DatabaseQueries();
             MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();
-            CreateClasses createClasses = new CreateClasses();
+            CreationOperations creationOperations = new CreationOperations();
             LocalEnajenante enajenante = enajenantes[0];
             LocalAdquiriente adquiriente = adquirientes[0];
             decimal enajenanteTotalPercentage;
@@ -34,21 +34,19 @@ namespace UAndes.ICC5103._202301.Views
                 bool emptyCheck=false;
                 try
                 {
-                    sumOfEnajenantesPercentage = databaseQueries.SumOfAllMultipropietariosPercentage(escritura, db)-adquirientePercentage;
+                    sumOfEnajenantesPercentage = databaseQueries.GetSumOfAllMultipropietariosPercentage(escritura, db)-adquirientePercentage;
                 }
                 catch
                 {
                     sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.PorcentajeDerecho) / 100;
                     emptyCheck = true;
                 }
-                System.Diagnostics.Debug.WriteLine("checkkk");
-                System.Diagnostics.Debug.WriteLine(emptyCheck);
                 if (emptyCheck)
                 {
                     multipropietariosModifications.CreateMultipropietarioForDerechosFantasma(escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
                 }
             }
-            createClasses.CreateAdquirienteAndMultipropietarioForDerechos(escritura, adquiriente, adquirientePercentage, updatedDate, db);
+            creationOperations.CreateAdquirienteAndMultipropietarioForDerechos(escritura, adquiriente, adquirientePercentage, updatedDate, db);
         }
     }
 }

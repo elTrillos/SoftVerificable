@@ -6,7 +6,7 @@ using UAndes.ICC5103._202301.Models;
 
 namespace UAndes.ICC5103._202301.Views
 {
-    public class CreateClasses
+    public class CreationOperations
     {
         public void CreateMultipropietario(Escritura escritura, LocalAdquiriente adquiriente, decimal adquirientePercentage, int currentInscriptionNumber, int updatedDate, int currentAñoVigenciaFinal, InscripcionesBrDbEntities db)
         {
@@ -156,10 +156,6 @@ namespace UAndes.ICC5103._202301.Views
                 {
                     Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, adquiriente.Rut, db);
                     CreateAdquiriente(escritura, adquiriente, adquirientePercentage, db);
-                    System.Diagnostics.Debug.WriteLine("okdda");
-                    System.Diagnostics.Debug.WriteLine(multipropietario.PorcentajeDerecho + adquirientePercentage);
-                    System.Diagnostics.Debug.WriteLine(multipropietario.PorcentajeDerecho);
-                    System.Diagnostics.Debug.WriteLine(adquirientePercentage);
                     multipropietariosModifications.UpdateMultipropietario(multipropietario, multipropietario.PorcentajeDerecho + adquirientePercentage, db);
                     multipropietariosModifications.UpdateMultipropietarioInscriptionNumber(multipropietario, currentInscriptionNumber, db);
                 }
