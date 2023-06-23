@@ -85,7 +85,7 @@ namespace UAndes.ICC5103._202301.Views
                 .Where(b => b.Manzana == escritura.Manzana)
                 .Where(c => c.Predio == escritura.Predio)
                 .Where(d => d.Estado== "Vigente")
-                .OrderByDescending(e => e.FechaInscripcion.Year)
+                .OrderBy(e => e.FechaInscripcion.Year)
                 .OrderByDescending(f => f.NumeroInscripcion)
                 .ToList();
             return escrituras;
@@ -130,6 +130,16 @@ namespace UAndes.ICC5103._202301.Views
                 .Sum(e => e.PorcentajeDerecho);
             return sumOfAllMultipropietariosPercentage;
 
+        }
+        public Escritura GetEscrituraFromMultipropietario(Multipropietario multipropietario, InscripcionesBrDbEntities db)
+        {
+            Escritura escritura = db.Escritura
+                .Where(a => a.Comuna == multipropietario.Comuna)
+                .Where(b => b.Manzana == multipropietario.Manzana)
+                .Where(c => c.Predio == multipropietario.Predio)
+                .Where(d => d.NumeroInscripcion == multipropietario.NumeroInscripcion.ToString())
+                .First();
+            return escritura;
         }
     }
 }

@@ -28,8 +28,14 @@ namespace UAndes.ICC5103._202301.Views
                 currentAñoVigenciaFinal = sameYearMultipropietarios.First().AñoVigenciaFinal;
                 foreach (Multipropietario multipropietario in sameYearMultipropietarios)
                 {
-                    db.Multipropietario.Remove(multipropietario);
-                    db.SaveChanges();
+                    if (multipropietario.NumeroInscripcion == currentInscriptionNumber)
+                    {
+                        Escritura escrituraToChange = databaseQueries.GetEscrituraFromMultipropietario(multipropietario, db);
+                        escrituraToChange.Estado = "No Vigente";
+                        db.Entry(escrituraToChange).State = EntityState.Modified;
+                        db.Multipropietario.Remove(multipropietario);
+                        db.SaveChanges();
+                    }
                 }
             }
             return currentAñoVigenciaFinal;

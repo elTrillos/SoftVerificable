@@ -306,21 +306,20 @@ namespace UAndes.ICC5103._202301.Views
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Escritura escritura = db.Escritura.Find(id);
-            escritura.Estado = "No Vigente";
-            db.Entry(escritura).State = EntityState.Modified;
+            Escritura escrituraToMod = db.Escritura.Find(id);
+            escrituraToMod.Estado = "No Vigente";
+            db.Entry(escrituraToMod).State = EntityState.Modified;
             db.SaveChanges();
             DatabaseQueries databaseQueries = new DatabaseQueries();
-            List<Multipropietario> allMultipropietarios = databaseQueries.GetAllMultipropietarios(escritura, db);
+            List<Multipropietario> allMultipropietarios = databaseQueries.GetAllMultipropietarios(escrituraToMod, db);
             foreach (Multipropietario multipropietario in allMultipropietarios)
             {
                 db.Multipropietario.Remove(multipropietario);
                 db.SaveChanges();
             }
-            List<Escritura> allEscrituras = databaseQueries.GetAllEscrituras(escritura, db);
-            foreach (Escritura escrituraRecreation in allEscrituras)
+            List<Escritura> allEscrituras = databaseQueries.GetAllEscrituras(escrituraToMod, db);
+            foreach (Escritura escritura in allEscrituras)
             {
-                escritura.Estado = "Vigente";
                 ValuesChecker valuesChecker = new ValuesChecker();
                 CreateClasses createClasses = new CreateClasses();
                 MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();
@@ -330,13 +329,13 @@ namespace UAndes.ICC5103._202301.Views
                 {
                     return RedirectToAction("Create");
                 }
-                int enajenantesCount = databaseQueries.EnajenantesCount(escrituraRecreation, db);
-                int adquirientesCount = databaseQueries.AdquirienteCount(escrituraRecreation, db);
+                int enajenantesCount = databaseQueries.EnajenantesCount(escritura, db);
+                int adquirientesCount = databaseQueries.AdquirienteCount(escritura, db);
                 //List<Enajenante> escrituraEnajenantes= databaseQueries.GetEscrituraEnajenantes(escrituraRecreation, db);
                 //List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
                 
 
-                switch (escrituraRecreation.CNE)
+                switch (escritura.CNE)
                 {
                     case regularizacion:
                         if (adquirientesCount != 0)
@@ -345,7 +344,7 @@ namespace UAndes.ICC5103._202301.Views
                             //List<AdquirienteClass> adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
                             List<AdquirienteClass> adquirientes = new List<AdquirienteClass>();
 
-                            List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
+                            List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escritura, db);
 
                             foreach (Adquiriente escrituraToTransform in escrituraAdquirientes)
                             {
@@ -383,7 +382,7 @@ namespace UAndes.ICC5103._202301.Views
                             //List<EnajenanteClass> enajenantes = JsonConvert.DeserializeObject<List<EnajenanteClass>>(receivedEnajenantes);
                             List<EnajenanteClass> enajenantes = new List<EnajenanteClass>();
                             AdquirienteVerificator adquirienteVerificator = new AdquirienteVerificator();
-                            List<Enajenante> escrituraEnajenantes = databaseQueries.GetEscrituraEnajenantes(escrituraRecreation, db);
+                            List<Enajenante> escrituraEnajenantes = databaseQueries.GetEscrituraEnajenantes(escritura, db);
 
                             foreach (Enajenante enajenanteToTransform in escrituraEnajenantes)
                             {
@@ -397,7 +396,7 @@ namespace UAndes.ICC5103._202301.Views
                             }
 
                             List<AdquirienteClass> adquirientes = new List<AdquirienteClass>();
-                            List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
+                            List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escritura, db);
 
                             foreach (Adquiriente adquirienteToTransform in escrituraAdquirientes)
                             {
