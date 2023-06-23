@@ -17,6 +17,7 @@ namespace UAndes.ICC5103._202301.Views
             AdquirienteClass adquiriente = adquirientes[0];
             decimal enajenanteTotalPercentage;
             decimal adquirientePercentage;
+
             try
             {
                 Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante.Rut, db);
@@ -27,7 +28,6 @@ namespace UAndes.ICC5103._202301.Views
             }
             catch
             {
-
                 enajenanteTotalPercentage = 100;
                 adquirientePercentage = adquiriente.PorcentajeDerecho * enajenanteTotalPercentage / 100;
                 decimal sumOfEnajenantesPercentage;
@@ -48,7 +48,6 @@ namespace UAndes.ICC5103._202301.Views
                     multipropietariosModifications.CreateMultipropietarioForDerechosFantasma(escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
                 }
             }
-
             createClasses.CreateAdquirienteAndMultipropietarioForDerechos(escritura, adquiriente, adquirientePercentage, updatedDate, db);
         }
     }

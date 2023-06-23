@@ -102,8 +102,6 @@ namespace UAndes.ICC5103._202301.Views
                                 return RedirectToAction("Index");
                             }
                             multipropietariosModifications.UpdateCurrentYearMultipropietarios(escritura, updatedDate, db);
-
-                            //createClasses.CreateAdquirientesAndMultipropietarios(escritura, adquirientes, nonDeclaredAdquirientes, updatedDate, currentAñoVigenciaFinal, db);
                             createClasses.CreateAdquirientes(escritura, adquirientes, db);
                             createClasses.CreateMultipropietariosForRegularizacion(escritura, adquirientes, nonDeclaredAdquirientes, updatedDate, currentAñoVigenciaFinal, db);
                         }
@@ -331,17 +329,13 @@ namespace UAndes.ICC5103._202301.Views
                 }
                 int enajenantesCount = databaseQueries.EnajenantesCount(escritura, db);
                 int adquirientesCount = databaseQueries.AdquirienteCount(escritura, db);
-                //List<Enajenante> escrituraEnajenantes= databaseQueries.GetEscrituraEnajenantes(escrituraRecreation, db);
-                //List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
                 
-
                 switch (escritura.CNE)
                 {
                     case regularizacion:
                         if (adquirientesCount != 0)
                         {
                             AdquirienteVerificator AdquirienteVerificator = new AdquirienteVerificator();
-                            //List<AdquirienteClass> adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
                             List<AdquirienteClass> adquirientes = new List<AdquirienteClass>();
 
                             List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escritura, db);
@@ -366,7 +360,7 @@ namespace UAndes.ICC5103._202301.Views
                             }
                             int updatedDate = AdquirienteVerificator.GetUpdatedDate(escritura);
                             int currentAñoVigenciaFinal = multipropietariosModifications.EliminateCurrentYearMultipropietarios(escritura, updatedDate, db);
-                            if (currentAñoVigenciaFinal == InvalidValue) //if the year returned is -1, it means that there is no need to update or create anything.
+                            if (currentAñoVigenciaFinal == InvalidValue)
                             {
                                 return RedirectToAction("Index");
                             }
@@ -379,7 +373,6 @@ namespace UAndes.ICC5103._202301.Views
                         if (enajenantesCount != 0 && adquirientesCount != 0)
                         {
                             EnajenanteVerificator enajenanteVerificator = new EnajenanteVerificator();
-                            //List<EnajenanteClass> enajenantes = JsonConvert.DeserializeObject<List<EnajenanteClass>>(receivedEnajenantes);
                             List<EnajenanteClass> enajenantes = new List<EnajenanteClass>();
                             AdquirienteVerificator adquirienteVerificator = new AdquirienteVerificator();
                             List<Enajenante> escrituraEnajenantes = databaseQueries.GetEscrituraEnajenantes(escritura, db);
@@ -412,7 +405,6 @@ namespace UAndes.ICC5103._202301.Views
                             decimal sumOfEnajenantesPercentage = 0;
                             decimal sumOfPercentage = adquirienteVerificator.SumOfPercentages(adquirientes);
                             int updatedDate = enajenanteVerificator.GetUpdatedDate(escritura);
-                            //createClasses.CreateMultipleEnajenantes(escritura, enajenantes, db);
                             int currentAñoVigenciaFinal = multipropietariosModifications.EliminateCurrentYearMultipropietarios(escritura, updatedDate, db);
                             if (currentAñoVigenciaFinal == InvalidValue) //if the year returned is -1, it means that there is no need to update or create anything.
                             {
@@ -527,7 +519,6 @@ namespace UAndes.ICC5103._202301.Views
                                         createClasses.CreateMultipropietarioWithEnajenante(escritura, fantasma, percentageToShare, Int32.Parse(escritura.NumeroInscripcion), updatedDate, 0, db);
                                     }
                                 }
-
                             }
                         }
                         else

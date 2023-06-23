@@ -395,7 +395,7 @@ namespace UAndes.ICC5103._202301
             Assert.IsNotNull(result);
         }
 
-        [Test]
+        [TestCase]
         public void Index_Action_Returns_AdquirienteList()
         {
             var controller = new AdquirientesController();

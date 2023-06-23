@@ -68,6 +68,7 @@ namespace UAndes.ICC5103._202301.Views
                 .ToList();
             return priorMultipropietarios;
         }
+
         public List<Multipropietario> GetAllMultipropietarios(Escritura escritura, InscripcionesBrDbEntities db)
         {
             var multipropietarios = db.Multipropietario
@@ -90,6 +91,7 @@ namespace UAndes.ICC5103._202301.Views
                 .ToList();
             return escrituras;
         }
+
         public List<Enajenante> GetEscrituraEnajenantes(Escritura escritura, InscripcionesBrDbEntities db)
         {
             var enajenantes = db.Enajenante
@@ -105,6 +107,7 @@ namespace UAndes.ICC5103._202301.Views
                 .Count();
             return enajenanteCount;
         }
+
         public List<Adquiriente> GetEscrituraAdquirientes(Escritura escritura, InscripcionesBrDbEntities db)
         {
             var adquirientes = db.Adquiriente
@@ -120,6 +123,7 @@ namespace UAndes.ICC5103._202301.Views
                 .Count();
             return adquirienteCount;
         }
+
         public decimal SumOfAllMultipropietariosPercentage(Escritura escritura, InscripcionesBrDbEntities db)
         {
             decimal sumOfAllMultipropietariosPercentage = db.Multipropietario
@@ -131,6 +135,7 @@ namespace UAndes.ICC5103._202301.Views
             return sumOfAllMultipropietariosPercentage;
 
         }
+
         public Escritura GetEscrituraFromMultipropietario(Multipropietario multipropietario, InscripcionesBrDbEntities db)
         {
             Escritura escritura = db.Escritura

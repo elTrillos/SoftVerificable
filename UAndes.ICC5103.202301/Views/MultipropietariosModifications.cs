@@ -13,7 +13,6 @@ namespace UAndes.ICC5103._202301.Views
 
         public int EliminateCurrentYearMultipropietarios(Escritura escritura, int currentYear, InscripcionesBrDbEntities db)
         {
-            //Returns AñoVigenciaFinal if the NumeroInscripcion of the new escrituras is more than the value of already existing escrituras of the same year
             int currentAñoVigenciaFinal = 0;
             int currentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
             DatabaseQueries databaseQueries = new DatabaseQueries();
@@ -22,7 +21,6 @@ namespace UAndes.ICC5103._202301.Views
             {
                 if (sameYearMultipropietarios.First().NumeroInscripcion > currentInscriptionNumber)
                 {
-                    //if it is less than that, it returns -1
                     return InvalidValue;
                 }
                 currentAñoVigenciaFinal = sameYearMultipropietarios.First().AñoVigenciaFinal;
@@ -242,7 +240,6 @@ namespace UAndes.ICC5103._202301.Views
                     {
                         db.Multipropietario.Remove(multipropietario);
                     }
-                    //UpdateCurrentYearMultipropietario(multipropietario, escritura, updatedDate, db);
                     decimal multipropietarioPercentage = (realEnajenantePercentage - enajenante.PorcentajeDerecho);
                     createClasses.CreateMultipropietarioWithEnajenante(escritura, enajenante, multipropietarioPercentage, currentInscriptionNumber, updatedDate, 0, db);
                 }
