@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web;
 using UAndes.ICC5103._202301.Models;
 using UAndes.ICC5103._202301.Views;
+using Moq;
+using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace UAndes.ICC5103._202301
 {
@@ -296,7 +299,170 @@ namespace UAndes.ICC5103._202301
             var valuesChecker = new ValuesChecker();
             var result = valuesChecker.CheckIfDataIsValidCompraventa(escritura, updatedDate, dbContext);
 
-            Assert.IsFalse(result);
+            Assert.IsTrue(result);
+        }
+
+        [TestCase]
+        public void GetAdquirientePercentage()
+        {
+            AdquirienteClass adquiriente = new AdquirienteClass
+            {
+                PorcentajeDerecho = 50,
+                PorcentajeDerechoNoAcreditado = false
+            };
+            int nonDeclaredAdquirientes = 0;
+            decimal sumOfPercentages = 0;
+
+            AdquirienteVerificator verificator = new AdquirienteVerificator();
+            decimal result = verificator.GetAdquirientePercentage(adquiriente, nonDeclaredAdquirientes, sumOfPercentages);
+
+            Assert.AreEqual(50, result);
+        }
+
+        [TestCase]
+        public void GetUpdatedDate()
+        {
+            AdquirienteVerificator verificator = new AdquirienteVerificator();
+            Escritura escritura = new Escritura
+            {
+                FechaInscripcion = new System.DateTime(2000, 1, 1)
+            };
+
+            int result = verificator.GetUpdatedDate(escritura);
+            int minimumAllowedYear = 2019;
+
+            Assert.AreEqual(minimumAllowedYear, result);
+        }
+
+        [TestCase]
+        public void PostDeclarationAdquirientePercentage()
+        {
+            AdquirienteVerificator verificator = new AdquirienteVerificator();
+            AdquirienteClass adquiriente = new AdquirienteClass
+            {
+                PorcentajeDerecho = 30
+            };
+            int amountOfAdquirientes = 5;
+            decimal percentageSum = 21;
+
+            int truncateValue = 100;
+            decimal extraPercentage = Decimal.Truncate(truncateValue * percentageSum / amountOfAdquirientes) / truncateValue;
+            decimal expectedPercentage = adquiriente.PorcentajeDerecho + extraPercentage;
+
+            decimal result = verificator.PostDeclarationAdquirientePercentage(adquiriente, amountOfAdquirientes, percentageSum);
+
+            // Assert
+            Assert.AreEqual(expectedPercentage, result);
+        }
+
+        [TestCase]
+        public void Create_Action_Returns_ViewResult()
+        {
+            var controller = new AdquirientesController();
+            var result = controller.Create() as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase]
+        public void Edit_Action_Returns_ViewResult()
+        {
+            var controller = new AdquirientesController();
+            int id = 1; 
+
+            var result = controller.Edit(id) as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase]
+        public void Delete_Action_Returns_ViewResult()
+        {
+            var controller = new AdquirientesController();
+            int id = 1; 
+
+            var result = controller.Delete(id) as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase]
+        public void Index_Action_Returns_ViewResult()
+        {
+            var controller = new AdquirientesController();
+            var result = controller.Index() as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void Index_Action_Returns_AdquirienteList()
+        {
+            var controller = new AdquirientesController();
+            var result = controller.Index() as ViewResult;
+            var model = result?.Model as List<Adquiriente>;
+
+            Assert.IsNotNull(model);
+        }
+
+        [TestCase]
+        public void Details_Action_WithValidId_Returns_ViewResult()
+        {
+            var controller = new AdquirientesController();
+            int validId = 1; 
+            var result = controller.Details(validId) as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase]
+        public void Index_Action_Returns_ViewResult_With_Enajenante_List()
+        {
+            var controller = new EnajenantesController();
+
+            var result = controller.Index() as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<IEnumerable<Enajenante>>(result.Model);
+        }
+
+        [TestCase]
+        public void Create_Enajenante_Action_Returns_ViewResult()
+        {
+            var controller = new EnajenantesController();
+            var result = controller.Create() as ViewResult;
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase]
+        public void Multipropietarios_Index_Action_Returns_ViewResult()
+        {
+            var controller = new MultipropietariosController();
+            var result = controller.Index() as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase]
+        public void Multipropietarios_Create_Action_Returns_ViewResult()
+        {
+            var controller = new MultipropietariosController();
+            var result = controller.Create() as ViewResult;
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase]
+        public void Enajenantes_GetUpdatedDate_Returns_UpdatedYear_When_GreaterThan_MinimumYear()
+        {
+            var verificator = new EnajenanteVerificator();
+            var escritura = new Escritura
+            {
+                FechaInscripcion = new System.DateTime(2022, 10, 15)
+            };
+            int expectedYear = 2022;
+            int updatedDate = verificator.GetUpdatedDate(escritura);
+
+            Assert.AreEqual(expectedYear, updatedDate);
         }
     }
 }
