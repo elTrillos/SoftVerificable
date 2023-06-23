@@ -1,4 +1,4 @@
-#Proyecto 1: Diseño de Sofware Verificable
+#Proyecto Parte 4: Diseño de Sofware Verificable
 
 Estudiantes: Ignacio Inostroza, Sebastian Trillos
 
@@ -15,3 +15,8 @@ Estudiantes: Ignacio Inostroza, Sebastian Trillos
 5) Recompilar y el proyecto.
 
 6) La aplicación está lista para ejecutarse!
+
+# Consideraciones
+
+1) Algunos test no funcionarán sin al menos 1 escritura en la base de datos.
+2) Para eliminar una escritura presione eliminar en la lista de escrituras y luego clickee el botón rojo.
