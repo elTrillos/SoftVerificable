@@ -15,7 +15,7 @@ namespace UAndes.ICC5103._202301
     public class TestCase
     {
         [TestCase]
-        public void CheckSumAdquirientesPercetanges()
+        public void Test_CheckSumAdquirientesPercetanges_ReturnsCorrectSum()
         {
             AdquirienteVerificator verificator = new AdquirienteVerificator();
             List<AdquirienteClass> adquirientelist = new List<AdquirienteClass>
@@ -43,7 +43,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void CheckifPercentageSumValid()
+        public void Test_CheckifPercentageSum_IsValid()
         {
             ValuesChecker checker = new ValuesChecker();
             List<AdquirienteClass> adquirientelist = new List<AdquirienteClass>
@@ -71,7 +71,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void CheckLatestMultipropietarioYear()
+        public void Test_GetLatestMultipropietarioYear_ReturnsLatestYear()
         {
             ValuesChecker checker = new ValuesChecker();
             List<Multipropietario> multipropietarios = new List<Multipropietario>
@@ -114,7 +114,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void CheckIfEscrituraValuesAreValid()
+        public void Test_CheckIfEscrituraValuesAreValid_ReturnsFalse()
         {
             ValuesChecker checker = new ValuesChecker();
             Escritura escritura = new Escritura
@@ -137,7 +137,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void GetLatestInscriptionNumberOfYear()
+        public void Test_GetLatestInscriptionNumberOfYear()
         {
             ValuesChecker checker = new ValuesChecker();
             List<Multipropietario> multipropietarios = new List<Multipropietario>
@@ -197,7 +197,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void NonDeclaredEnajenantesCount()
+        public void Test_NonDeclaredEnajenantesCount()
         {
             EnajenanteVerificator verificator = new EnajenanteVerificator();
             List<EnajenanteClass> enajenantes = new List<EnajenanteClass>
@@ -232,7 +232,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void GetEnajenantePercentage()
+        public void Test_GetCorrectEnajenantePercentage()
         {
             EnajenanteVerificator verificator = new EnajenanteVerificator();
             EnajenanteClass enajenante = new EnajenanteClass
@@ -252,7 +252,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void NonDeclaredAdquirientesAmount()
+        public void Test_NonDeclaredAdquirientesAmount()
         {
             var adquirientes = new List<AdquirienteClass>
             {
@@ -268,7 +268,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void AdquirientesCheckSumOfPercentages()
+        public void Test_AdquirientesCheckSumOfPercentages()
         {
             var adquirientes = new List<AdquirienteClass>
             {
@@ -284,7 +284,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void CheckIfDataIsValidCompraventa()
+        public void Test_CheckIfDataIsValidCompraventa()
         {
             var escritura = new Escritura
             {
@@ -303,7 +303,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void GetAdquirientePercentage()
+        public void Test_GetAdquirientePercentage()
         {
             AdquirienteClass adquiriente = new AdquirienteClass
             {
@@ -320,7 +320,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void GetUpdatedDate()
+        public void Test_GetUpdatedDateAdquiriente()
         {
             AdquirienteVerificator verificator = new AdquirienteVerificator();
             Escritura escritura = new Escritura
@@ -335,7 +335,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void PostDeclarationAdquirientePercentage()
+        public void Test_PostDeclarationAdquirientePercentage_CorrectPercentage()
         {
             AdquirienteVerificator verificator = new AdquirienteVerificator();
             AdquirienteClass adquiriente = new AdquirienteClass
@@ -348,15 +348,13 @@ namespace UAndes.ICC5103._202301
             int truncateValue = 100;
             decimal extraPercentage = Decimal.Truncate(truncateValue * percentageSum / amountOfAdquirientes) / truncateValue;
             decimal expectedPercentage = adquiriente.PorcentajeDerecho + extraPercentage;
-
             decimal result = verificator.PostDeclarationAdquirientePercentage(adquiriente, amountOfAdquirientes, percentageSum);
 
-            // Assert
             Assert.AreEqual(expectedPercentage, result);
         }
 
         [TestCase]
-        public void Create_Action_Returns_ViewResult()
+        public void Test_CreateActionReturnsViewResult_NotNull()
         {
             var controller = new AdquirientesController();
             var result = controller.Create() as ViewResult;
@@ -365,29 +363,27 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void Edit_Action_Returns_ViewResult()
+        public void Test_EditActionReturnsViewResult_NotNull()
         {
             var controller = new AdquirientesController();
             int id = 1; 
-
             var result = controller.Edit(id) as ViewResult;
 
             Assert.IsNotNull(result);
         }
 
         [TestCase]
-        public void Delete_Action_Returns_ViewResult()
+        public void Test_DeleteActionReturnsViewResult_NotNull()
         {
             var controller = new AdquirientesController();
             int id = 1; 
-
             var result = controller.Delete(id) as ViewResult;
 
             Assert.IsNotNull(result);
         }
 
         [TestCase]
-        public void Index_Action_Returns_ViewResult()
+        public void Test_IndexActionReturnsViewResult_NotNull()
         {
             var controller = new AdquirientesController();
             var result = controller.Index() as ViewResult;
@@ -396,7 +392,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void Index_Action_Returns_AdquirienteList()
+        public void Test_IndexActionReturnsAdquirienteList_NotNull()
         {
             var controller = new AdquirientesController();
             var result = controller.Index() as ViewResult;
@@ -406,7 +402,7 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void Details_Action_WithValidId_Returns_ViewResult()
+        public void Test_DetailsActionWithValidIdReturnsViewResult_NotNull()
         {
             var controller = new AdquirientesController();
             int validId = 1; 
@@ -416,10 +412,9 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void Index_Action_Returns_ViewResult_With_Enajenante_List()
+        public void Test_IndexActionReturnsViewResultWithEnajenanteList_NotNull()
         {
             var controller = new EnajenantesController();
-
             var result = controller.Index() as ViewResult;
 
             Assert.IsNotNull(result);
@@ -427,15 +422,16 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void Create_Enajenante_Action_Returns_ViewResult()
+        public void Test_CreateEnajenanteActionReturnsViewResult_NotNull()
         {
             var controller = new EnajenantesController();
             var result = controller.Create() as ViewResult;
+
             Assert.IsNotNull(result);
         }
 
         [TestCase]
-        public void Multipropietarios_Index_Action_Returns_ViewResult()
+        public void Test_MultipropietariosIndexActionReturnsViewResult_NotNull()
         {
             var controller = new MultipropietariosController();
             var result = controller.Index() as ViewResult;
@@ -444,15 +440,16 @@ namespace UAndes.ICC5103._202301
         }
 
         [TestCase]
-        public void Multipropietarios_Create_Action_Returns_ViewResult()
+        public void Test_MultipropietariosCreateActionReturnsViewResult_NotNull()
         {
             var controller = new MultipropietariosController();
             var result = controller.Create() as ViewResult;
+
             Assert.IsNotNull(result);
         }
 
         [TestCase]
-        public void Enajenantes_GetUpdatedDate_Returns_UpdatedYear_When_GreaterThan_MinimumYear()
+        public void Test_EnajenantesGetUpdatedDateReturnsUpdatedYear_GreaterThanMinimumYear()
         {
             var verificator = new EnajenanteVerificator();
             var escritura = new Escritura
