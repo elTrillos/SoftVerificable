@@ -15,7 +15,7 @@ namespace UAndes.ICC5103._202301.Views
         {
             foreach (EnajenanteClass enajenante in enajenantes)
             {
-                if (enajenante.porcentajeDerechoNoAcreditado == true)
+                if (enajenante.PorcentajeDerechoNoAcreditado == true)
                 {
                     return true;
                 }
@@ -28,7 +28,7 @@ namespace UAndes.ICC5103._202301.Views
             decimal totalPercentage = 0;
             foreach (EnajenanteClass enajenante in enajenantes)
             {
-                totalPercentage += enajenante.porcentajeDerecho;
+                totalPercentage += enajenante.PorcentajeDerecho;
             }
             if (totalPercentage == 100)
             {
@@ -45,7 +45,7 @@ namespace UAndes.ICC5103._202301.Views
             decimal totalPercentage = 0;
             foreach (EnajenanteClass enajenante in enajenantes)
             {
-                totalPercentage += enajenante.porcentajeDerecho;
+                totalPercentage += enajenante.PorcentajeDerecho;
             }
             return totalPercentage;
         }
@@ -55,7 +55,7 @@ namespace UAndes.ICC5103._202301.Views
             int nonDeclaredEnajenantesCount = 0;
             foreach (EnajenanteClass enajenante in enajenantes)
             {
-                if (enajenante.porcentajeDerechoNoAcreditado == true)
+                if (enajenante.PorcentajeDerechoNoAcreditado == true)
                 {
                     nonDeclaredEnajenantesCount += CountValue;
                 }
@@ -67,19 +67,19 @@ namespace UAndes.ICC5103._202301.Views
         {
             int truncateValue = 100;
             decimal extraPercentage = Decimal.Truncate(truncateValue * percentageSum / amountOfEnajenantes) / truncateValue;
-            return enajenante.porcentajeDerecho + extraPercentage;
+            return enajenante.PorcentajeDerecho + extraPercentage;
         }
 
         public decimal GetEnajenantePercentage(EnajenanteClass enajenante, int nonDeclaredEnajenantes, decimal sumOfPercentages)
         {
             decimal adquirientePercentage = 0;
-            if (enajenante.porcentajeDerechoNoAcreditado == true)
+            if (enajenante.PorcentajeDerechoNoAcreditado == true)
             {
                 adquirientePercentage = PostDeclarationEnajenantePercentage(enajenante, nonDeclaredEnajenantes, sumOfPercentages);
             }
             else
             {
-                adquirientePercentage = enajenante.porcentajeDerecho;
+                adquirientePercentage = enajenante.PorcentajeDerecho;
             }
             return adquirientePercentage;
         }

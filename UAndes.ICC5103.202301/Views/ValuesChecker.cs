@@ -97,7 +97,7 @@ namespace UAndes.ICC5103._202301.Views
             {
                 try
                 {
-                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, currentEnajenante.rut, db);
+                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, currentEnajenante.Rut, db);
                     sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
                 }
                 catch

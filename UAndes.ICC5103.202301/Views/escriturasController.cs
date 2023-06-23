@@ -134,7 +134,7 @@ namespace UAndes.ICC5103._202301.Views
                                 {
                                     try
                                     {
-                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.rut, db);
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.Rut, db);
                                     }
                                     catch
                                     {
@@ -168,7 +168,7 @@ namespace UAndes.ICC5103._202301.Views
                                 bool fantasmaCheck = false;
                                 try
                                 {
-                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenantes[0].rut, db);
+                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenantes[0].Rut, db);
                                 }
                                 catch
                                 {
@@ -190,7 +190,7 @@ namespace UAndes.ICC5103._202301.Views
                                 {
                                     try
                                     {
-                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.rut, db);
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.Rut, db);
                                     }
                                     catch
                                     {
@@ -347,9 +347,9 @@ namespace UAndes.ICC5103._202301.Views
                             {
                                 AdquirienteClass newAdquiriente = new AdquirienteClass
                                 {
-                                    rut = escrituraToTransform.RunRut,
-                                    porcentajeDerecho = escrituraToTransform.PorcentajeDerecho,
-                                    porcentajeDerechoNoAcreditado = escrituraToTransform.DerechoNoAcreditado
+                                    Rut = escrituraToTransform.RunRut,
+                                    PorcentajeDerecho = escrituraToTransform.PorcentajeDerecho,
+                                    PorcentajeDerechoNoAcreditado = escrituraToTransform.DerechoNoAcreditado
                                 };
                                 adquirientes.Add(newAdquiriente);
                             }
@@ -385,9 +385,9 @@ namespace UAndes.ICC5103._202301.Views
                             {
                                 EnajenanteClass newEnajenante = new EnajenanteClass
                                 {
-                                    rut = enajenanteToTransform.RunRut,
-                                    porcentajeDerecho = enajenanteToTransform.PorcentajeDerecho,
-                                    porcentajeDerechoNoAcreditado = enajenanteToTransform.DerechoNoAcreditado
+                                    Rut = enajenanteToTransform.RunRut,
+                                    PorcentajeDerecho = enajenanteToTransform.PorcentajeDerecho,
+                                    PorcentajeDerechoNoAcreditado = enajenanteToTransform.DerechoNoAcreditado
                                 };
                                 enajenantes.Add(newEnajenante);
                             }
@@ -401,9 +401,9 @@ namespace UAndes.ICC5103._202301.Views
                             {
                                 AdquirienteClass newAdquiriente = new AdquirienteClass
                                 {
-                                    rut = adquirienteToTransform.RunRut,
-                                    porcentajeDerecho = adquirienteToTransform.PorcentajeDerecho,
-                                    porcentajeDerechoNoAcreditado = adquirienteToTransform.DerechoNoAcreditado
+                                    Rut = adquirienteToTransform.RunRut,
+                                    PorcentajeDerecho = adquirienteToTransform.PorcentajeDerecho,
+                                    PorcentajeDerechoNoAcreditado = adquirienteToTransform.DerechoNoAcreditado
                                 };
                                 adquirientes.Add(newAdquiriente);
                             }
@@ -425,7 +425,7 @@ namespace UAndes.ICC5103._202301.Views
                                 {
                                     try
                                     {
-                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.rut, db);
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.Rut, db);
                                     }
                                     catch
                                     {
@@ -459,7 +459,7 @@ namespace UAndes.ICC5103._202301.Views
                                 bool fantasmaCheck = false;
                                 try
                                 {
-                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenantes[0].rut, db);
+                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenantes[0].Rut, db);
                                 }
                                 catch
                                 {
@@ -481,7 +481,7 @@ namespace UAndes.ICC5103._202301.Views
                                 {
                                     try
                                     {
-                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.rut, db);
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.Rut, db);
                                     }
                                     catch
                                     {

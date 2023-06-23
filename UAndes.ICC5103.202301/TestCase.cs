@@ -19,17 +19,17 @@ namespace UAndes.ICC5103._202301
             {
                 new AdquirienteClass
                 {
-                    item = 1,
-                    rut = "123456789",
-                    porcentajeDerecho = 70,
-                    porcentajeDerechoNoAcreditado = false
+                    Item = 1,
+                    Rut = "123456789",
+                    PorcentajeDerecho = 70,
+                    PorcentajeDerechoNoAcreditado = false
                 },
                 new AdquirienteClass
                 {
-                    item = 2,
-                    rut = "987654321",
-                    porcentajeDerecho = 30,
-                    porcentajeDerechoNoAcreditado = false
+                    Item = 2,
+                    Rut = "987654321",
+                    PorcentajeDerecho = 30,
+                    PorcentajeDerechoNoAcreditado = false
                 }
             };
 
@@ -47,17 +47,17 @@ namespace UAndes.ICC5103._202301
             {
                 new AdquirienteClass
                 {
-                    item = 1,
-                    rut = "123456789",
-                    porcentajeDerecho = 70,
-                    porcentajeDerechoNoAcreditado = false
+                    Item = 1,
+                    Rut = "123456789",
+                    PorcentajeDerecho = 70,
+                    PorcentajeDerechoNoAcreditado = false
                 },
                 new AdquirienteClass
                 {
-                    item = 2,
-                    rut = "987654321",
-                    porcentajeDerecho = 30,
-                    porcentajeDerechoNoAcreditado = false
+                    Item = 2,
+                    Rut = "987654321",
+                    PorcentajeDerecho = 30,
+                    PorcentajeDerechoNoAcreditado = false
                 }
             };
 
@@ -201,24 +201,24 @@ namespace UAndes.ICC5103._202301
             {
                 new EnajenanteClass
                 {
-                    item = 1,
-                    rut = "123456789",
-                    porcentajeDerecho = 50,
-                    porcentajeDerechoNoAcreditado = false
+                    Item = 1,
+                    Rut = "123456789",
+                    PorcentajeDerecho = 50,
+                    PorcentajeDerechoNoAcreditado = false
                 },
                 new EnajenanteClass
                 {
-                    item = 2,
-                    rut = "987654321",
-                    porcentajeDerecho = 30,
-                    porcentajeDerechoNoAcreditado = true
+                    Item = 2,
+                    Rut = "987654321",
+                    PorcentajeDerecho = 30,
+                    PorcentajeDerechoNoAcreditado = true
                 },
                 new EnajenanteClass
                 {
-                    item = 3,
-                    rut = "567891234",
-                    porcentajeDerecho = 20,
-                    porcentajeDerechoNoAcreditado = true
+                    Item = 3,
+                    Rut = "567891234",
+                    PorcentajeDerecho = 20,
+                    PorcentajeDerechoNoAcreditado = true
                 }
             };
 
@@ -234,10 +234,10 @@ namespace UAndes.ICC5103._202301
             EnajenanteVerificator verificator = new EnajenanteVerificator();
             EnajenanteClass enajenante = new EnajenanteClass
             {
-                item = 1,
-                rut = "123456789",
-                porcentajeDerecho = 25,
-                porcentajeDerechoNoAcreditado = true
+                Item = 1,
+                Rut = "123456789",
+                PorcentajeDerecho = 25,
+                PorcentajeDerechoNoAcreditado = true
             };
 
             int nonDeclaredEnajenantes = 2;
@@ -253,9 +253,9 @@ namespace UAndes.ICC5103._202301
         {
             var adquirientes = new List<AdquirienteClass>
             {
-                new AdquirienteClass { item = 1, rut = "12345678-9", porcentajeDerecho = 50, porcentajeDerechoNoAcreditado = true },
-                new AdquirienteClass { item = 2, rut = "98765432-1", porcentajeDerecho = 30, porcentajeDerechoNoAcreditado = false },
-                new AdquirienteClass { item = 3, rut = "54321678-9", porcentajeDerecho = 20, porcentajeDerechoNoAcreditado = true }
+                new AdquirienteClass { Item = 1, Rut = "12345678-9", PorcentajeDerecho = 50, PorcentajeDerechoNoAcreditado = true },
+                new AdquirienteClass { Item = 2, Rut = "98765432-1", PorcentajeDerecho = 30, PorcentajeDerechoNoAcreditado = false },
+                new AdquirienteClass { Item = 3, Rut = "54321678-9", PorcentajeDerecho = 20, PorcentajeDerechoNoAcreditado = true }
             };
             var expectedCount = 2;
             var adquirienteVerificator = new AdquirienteVerificator();
@@ -269,9 +269,9 @@ namespace UAndes.ICC5103._202301
         {
             var adquirientes = new List<AdquirienteClass>
             {
-                new AdquirienteClass { item = 1, rut = "12345678-9", porcentajeDerecho = 50, porcentajeDerechoNoAcreditado = false },
-                new AdquirienteClass { item = 2, rut = "98765432-1", porcentajeDerecho = 30, porcentajeDerechoNoAcreditado = false },
-                new AdquirienteClass { item = 3, rut = "54321678-9", porcentajeDerecho = 20, porcentajeDerechoNoAcreditado = false }
+                new AdquirienteClass { Item = 1, Rut = "12345678-9", PorcentajeDerecho = 50, PorcentajeDerechoNoAcreditado = false },
+                new AdquirienteClass { Item = 2, Rut = "98765432-1", PorcentajeDerecho = 30, PorcentajeDerechoNoAcreditado = false },
+                new AdquirienteClass { Item = 3, Rut = "54321678-9", PorcentajeDerecho = 20, PorcentajeDerechoNoAcreditado = false }
             };
 
             var adquirienteVerificator = new AdquirienteVerificator();

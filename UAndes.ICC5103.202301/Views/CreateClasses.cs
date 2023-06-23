@@ -15,7 +15,7 @@ namespace UAndes.ICC5103._202301.Views
                 Comuna = escritura.Comuna,
                 Manzana = escritura.Manzana,
                 Predio = escritura.Predio,
-                RunRut = adquiriente.rut,
+                RunRut = adquiriente.Rut,
                 PorcentajeDerecho = adquirientePercentage,
                 Fojas = escritura.Fojas,
                 AñoInscripcion = escritura.FechaInscripcion.Year,
@@ -34,7 +34,7 @@ namespace UAndes.ICC5103._202301.Views
                 Comuna = escritura.Comuna,
                 Manzana = escritura.Manzana,
                 Predio = escritura.Predio,
-                RunRut = enajenante.rut,
+                RunRut = enajenante.Rut,
                 PorcentajeDerecho = enajenantePercentage,
                 Fojas = escritura.Fojas,
                 AñoInscripcion = escritura.FechaInscripcion.Year,
@@ -51,10 +51,10 @@ namespace UAndes.ICC5103._202301.Views
         {
             Adquiriente newAdquiriente = new Adquiriente
             {
-                RunRut = adquiriente.rut,
+                RunRut = adquiriente.Rut,
                 NumeroAtencion = escritura.NumeroAtencion,
                 PorcentajeDerecho = adquirientePercentage,
-                DerechoNoAcreditado = adquiriente.porcentajeDerechoNoAcreditado,
+                DerechoNoAcreditado = adquiriente.PorcentajeDerechoNoAcreditado,
             };
             db.Adquiriente.Add(newAdquiriente);
         }
@@ -63,10 +63,10 @@ namespace UAndes.ICC5103._202301.Views
         {
             Enajenante newEnajenante = new Enajenante
             {
-                RunRut = enajenante.rut,
+                RunRut = enajenante.Rut,
                 NumeroAtencion = escritura.NumeroAtencion,
                 PorcentajeDerecho = enajenantePercentage,
-                DerechoNoAcreditado = enajenante.porcentajeDerechoNoAcreditado
+                DerechoNoAcreditado = enajenante.PorcentajeDerechoNoAcreditado
             };
 
             db.Enajenante.Add(newEnajenante);
@@ -101,7 +101,7 @@ namespace UAndes.ICC5103._202301.Views
         {
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
-                CreateAdquiriente(escritura, adquiriente, adquiriente.porcentajeDerecho, db);
+                CreateAdquiriente(escritura, adquiriente, adquiriente.PorcentajeDerecho, db);
             }
         }
 
@@ -109,7 +109,7 @@ namespace UAndes.ICC5103._202301.Views
         {
             foreach (EnajenanteClass enajenante in enajenantes)
             {
-                CreateEnajenante(escritura, enajenante, enajenante.porcentajeDerecho, db);
+                CreateEnajenante(escritura, enajenante, enajenante.PorcentajeDerecho, db);
             }
         }
 
@@ -121,10 +121,10 @@ namespace UAndes.ICC5103._202301.Views
             decimal multipler = 100 / (100 + percentageOver);
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
-                decimal adquirientePercentage = adquiriente.porcentajeDerecho * percentageToSplit / 100;
+                decimal adquirientePercentage = adquiriente.PorcentajeDerecho * percentageToSplit / 100;
                 try
                 {
-                    Multipropietario multipropietario = databaseQueries.GetMultipropietarioByRut(escritura, updatedDate, adquiriente.rut, db);
+                    Multipropietario multipropietario = databaseQueries.GetMultipropietarioByRut(escritura, updatedDate, adquiriente.Rut, db);
                     //CreateAdquiriente(escritura, adquiriente, adquirientePercentage, db);
                     multipropietariosModifications.UpdateMultipropietario(multipropietario, (multipropietario.PorcentajeDerecho + adquirientePercentage)* multipler, db);
                     multipropietariosModifications.UpdateMultipropietarioInscriptionNumber(multipropietario, Int32.Parse(escritura.NumeroInscripcion), db);
@@ -153,10 +153,10 @@ namespace UAndes.ICC5103._202301.Views
 
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
-                decimal adquirientePercentage = adquiriente.porcentajeDerecho;
+                decimal adquirientePercentage = adquiriente.PorcentajeDerecho;
                 try
                 {
-                    Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, adquiriente.rut, db);
+                    Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, adquiriente.Rut, db);
                     CreateAdquiriente(escritura, adquiriente, adquirientePercentage, db);
                     System.Diagnostics.Debug.WriteLine("okdda");
                     System.Diagnostics.Debug.WriteLine(multipropietario.PorcentajeDerecho + adquirientePercentage);
@@ -178,7 +178,7 @@ namespace UAndes.ICC5103._202301.Views
         {
             foreach (EnajenanteClass enajenante in enajenantes)
             {
-                CreateEnajenante(escritura, enajenante, enajenante.porcentajeDerecho, db);
+                CreateEnajenante(escritura, enajenante, enajenante.PorcentajeDerecho, db);
             }
         }
     }

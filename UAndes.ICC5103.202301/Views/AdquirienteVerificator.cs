@@ -15,7 +15,7 @@ namespace UAndes.ICC5103._202301.Views
         {
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
-                if (adquiriente.porcentajeDerechoNoAcreditado == true)
+                if (adquiriente.PorcentajeDerechoNoAcreditado == true)
                 {
                     return true;
                 }
@@ -28,7 +28,7 @@ namespace UAndes.ICC5103._202301.Views
             decimal totalPercentage = 0;
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
-                totalPercentage += adquiriente.porcentajeDerecho;
+                totalPercentage += adquiriente.PorcentajeDerecho;
             }
             if (totalPercentage == 100)
             {
@@ -45,7 +45,7 @@ namespace UAndes.ICC5103._202301.Views
             decimal totalPercentage = 0;
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
-                totalPercentage += adquiriente.porcentajeDerecho;
+                totalPercentage += adquiriente.PorcentajeDerecho;
             }
             return totalPercentage;
         }
@@ -55,7 +55,7 @@ namespace UAndes.ICC5103._202301.Views
             int nonDeclaredAdquirientesCount = 0;
             foreach (AdquirienteClass adquiriente in adquirientes)
             {
-                if (adquiriente.porcentajeDerechoNoAcreditado == true)
+                if (adquiriente.PorcentajeDerechoNoAcreditado == true)
                 {
                     nonDeclaredAdquirientesCount += CountValue;
                 }
@@ -67,19 +67,19 @@ namespace UAndes.ICC5103._202301.Views
         {
             int truncateValue = 100;
             decimal extraPercentage = Decimal.Truncate(truncateValue * percentageSum / amountOfAdquirientes) / truncateValue;
-            return adquiriente.porcentajeDerecho + extraPercentage;
+            return adquiriente.PorcentajeDerecho + extraPercentage;
         }
 
         public decimal GetAdquirientePercentage(AdquirienteClass adquiriente, int nonDeclaredAdquirientes, decimal sumOfPercentages)
         {
             decimal adquirientePercentage = 0;
-            if (adquiriente.porcentajeDerechoNoAcreditado == true)
+            if (adquiriente.PorcentajeDerechoNoAcreditado == true)
             {
                 adquirientePercentage = PostDeclarationAdquirientePercentage(adquiriente, nonDeclaredAdquirientes, sumOfPercentages);
             }
             else
             {
-                adquirientePercentage = adquiriente.porcentajeDerecho;
+                adquirientePercentage = adquiriente.PorcentajeDerecho;
             }
             return adquirientePercentage;
         }

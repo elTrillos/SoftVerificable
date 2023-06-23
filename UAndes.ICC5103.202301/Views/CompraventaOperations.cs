@@ -19,17 +19,17 @@ namespace UAndes.ICC5103._202301.Views
             decimal adquirientePercentage = 0;
             try
             {
-                Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante.rut, db);
+                Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante.Rut, db);
                 enajenanteTotalPercentage = multipropietario.PorcentajeDerecho;
-                adquirientePercentage = adquiriente.porcentajeDerecho * enajenanteTotalPercentage / 100;
-                decimal sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.porcentajeDerecho) / 100;
+                adquirientePercentage = adquiriente.PorcentajeDerecho * enajenanteTotalPercentage / 100;
+                decimal sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.PorcentajeDerecho) / 100;
                 multipropietariosModifications.UpdateOrCreateMultipropietarioForDerechos(multipropietario, escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
             }
             catch
             {
 
                 enajenanteTotalPercentage = 100;
-                adquirientePercentage = adquiriente.porcentajeDerecho * enajenanteTotalPercentage / 100;
+                adquirientePercentage = adquiriente.PorcentajeDerecho * enajenanteTotalPercentage / 100;
                 decimal sumOfEnajenantesPercentage = 0;
                 try
                 {
@@ -37,7 +37,7 @@ namespace UAndes.ICC5103._202301.Views
                 }
                 catch
                 {
-                    sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.porcentajeDerecho) / 100;
+                    sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.PorcentajeDerecho) / 100;
                 }
                 if (sumOfEnajenantesPercentage >= 100)
                 {

@@ -7,9 +7,9 @@ namespace UAndes.ICC5103._202301.Views
 {
     public class AdquirienteClass
     {
-        public int item { get; set; }
-        public string rut { get; set; }
-        public decimal porcentajeDerecho { get; set; }
-        public bool porcentajeDerechoNoAcreditado { get; set; }
+        public int Item { get; set; }
+        public string Rut { get; set; }
+        public decimal PorcentajeDerecho { get; set; }
+        public bool PorcentajeDerechoNoAcreditado { get; set; }
     }
 }
