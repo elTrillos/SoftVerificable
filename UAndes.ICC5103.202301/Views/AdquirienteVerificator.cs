@@ -11,9 +11,9 @@ namespace UAndes.ICC5103._202301.Views
         private const int CountValue = 1;
         private const int MinimumYear = 2019;
 
-        public bool CheckIfAnyAdquirienteWithoutDeclared(List<AdquirienteClass> adquirientes)
+        public bool CheckIfAnyAdquirienteWithoutDeclared(List<LocalAdquiriente> adquirientes)
         {
-            foreach (AdquirienteClass adquiriente in adquirientes)
+            foreach (LocalAdquiriente adquiriente in adquirientes)
             {
                 if (adquiriente.PorcentajeDerechoNoAcreditado == true)
                 {
@@ -23,10 +23,10 @@ namespace UAndes.ICC5103._202301.Views
             return false;
         }
 
-        public bool AdquirientesCheckSumOfPercentages(List<AdquirienteClass> adquirientes)
+        public bool AdquirientesCheckSumOfPercentages(List<LocalAdquiriente> adquirientes)
         {
             decimal totalPercentage = 0;
-            foreach (AdquirienteClass adquiriente in adquirientes)
+            foreach (LocalAdquiriente adquiriente in adquirientes)
             {
                 totalPercentage += adquiriente.PorcentajeDerecho;
             }
@@ -40,20 +40,20 @@ namespace UAndes.ICC5103._202301.Views
             }
         }
 
-        public decimal SumOfPercentages(List<AdquirienteClass> adquirientes)
+        public decimal SumOfPercentages(List<LocalAdquiriente> adquirientes)
         {
             decimal totalPercentage = 0;
-            foreach (AdquirienteClass adquiriente in adquirientes)
+            foreach (LocalAdquiriente adquiriente in adquirientes)
             {
                 totalPercentage += adquiriente.PorcentajeDerecho;
             }
             return totalPercentage;
         }
 
-        public int NonDeclaredAdquirientesAmount(List<AdquirienteClass> adquirientes)
+        public int NonDeclaredAdquirientesAmount(List<LocalAdquiriente> adquirientes)
         {
             int nonDeclaredAdquirientesCount = 0;
-            foreach (AdquirienteClass adquiriente in adquirientes)
+            foreach (LocalAdquiriente adquiriente in adquirientes)
             {
                 if (adquiriente.PorcentajeDerechoNoAcreditado == true)
                 {
@@ -63,14 +63,14 @@ namespace UAndes.ICC5103._202301.Views
             return nonDeclaredAdquirientesCount;
         }
 
-        public decimal PostDeclarationAdquirientePercentage(AdquirienteClass adquiriente, int amountOfAdquirientes, decimal percentageSum)
+        public decimal PostDeclarationAdquirientePercentage(LocalAdquiriente adquiriente, int amountOfAdquirientes, decimal percentageSum)
         {
             int truncateValue = 100;
             decimal extraPercentage = Decimal.Truncate(truncateValue * percentageSum / amountOfAdquirientes) / truncateValue;
             return adquiriente.PorcentajeDerecho + extraPercentage;
         }
 
-        public decimal GetAdquirientePercentage(AdquirienteClass adquiriente, int nonDeclaredAdquirientes, decimal sumOfPercentages)
+        public decimal GetAdquirientePercentage(LocalAdquiriente adquiriente, int nonDeclaredAdquirientes, decimal sumOfPercentages)
         {
             decimal adquirientePercentage;
             if (adquiriente.PorcentajeDerechoNoAcreditado == true)

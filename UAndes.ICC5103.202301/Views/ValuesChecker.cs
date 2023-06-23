@@ -29,7 +29,7 @@ namespace UAndes.ICC5103._202301.Views
             return true;
         }
 
-        public bool CheckIfSumOfPercentagesIsValid(List<AdquirienteClass> adquirientes)
+        public bool CheckIfSumOfPercentagesIsValid(List<LocalAdquiriente> adquirientes)
         {
             AdquirienteVerificator adquirienteVerificator = new AdquirienteVerificator();
             decimal sumOfPercentages = 100 - adquirienteVerificator.SumOfPercentages(adquirientes);
@@ -89,11 +89,11 @@ namespace UAndes.ICC5103._202301.Views
             return true;
         }
 
-        public decimal CalculateSumOfEnajenantesPercentagesDominios(List<EnajenanteClass> enajenantes, Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
+        public decimal CalculateSumOfEnajenantesPercentagesDominios(List<LocalEnajenante> enajenantes, Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
         {
             DatabaseQueries databaseQueries = new DatabaseQueries();
             decimal sumOfEnajenantesPercentage = 0;
-            foreach (EnajenanteClass currentEnajenante in enajenantes)
+            foreach (LocalEnajenante currentEnajenante in enajenantes)
             {
                 try
                 {

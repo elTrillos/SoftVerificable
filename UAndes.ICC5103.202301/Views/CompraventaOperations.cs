@@ -8,13 +8,13 @@ namespace UAndes.ICC5103._202301.Views
 {
     public class CompraventaOperations
     {
-        public void DerechosHandler(List<EnajenanteClass> enajenantes, List<AdquirienteClass> adquirientes, Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
+        public void DerechosHandler(List<LocalEnajenante> enajenantes, List<LocalAdquiriente> adquirientes, Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
         {
             DatabaseQueries databaseQueries = new DatabaseQueries();
             MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();
             CreateClasses createClasses = new CreateClasses();
-            EnajenanteClass enajenante = enajenantes[0];
-            AdquirienteClass adquiriente = adquirientes[0];
+            LocalEnajenante enajenante = enajenantes[0];
+            LocalAdquiriente adquiriente = adquirientes[0];
             decimal enajenanteTotalPercentage;
             decimal adquirientePercentage;
 

@@ -11,9 +11,9 @@ namespace UAndes.ICC5103._202301.Views
         private const int CountValue = 1;
         private const int MinimumYear = 2019;
 
-        public bool CheckNonDeclaredEnajenantes(List<EnajenanteClass> enajenantes)
+        public bool CheckNonDeclaredEnajenantes(List<LocalEnajenante> enajenantes)
         {
-            foreach (EnajenanteClass enajenante in enajenantes)
+            foreach (LocalEnajenante enajenante in enajenantes)
             {
                 if (enajenante.PorcentajeDerechoNoAcreditado == true)
                 {
@@ -23,10 +23,10 @@ namespace UAndes.ICC5103._202301.Views
             return false;
         }
 
-        public bool EnajenantesCheckSumOfPercentages(List<EnajenanteClass> enajenantes)
+        public bool EnajenantesCheckSumOfPercentages(List<LocalEnajenante> enajenantes)
         {
             decimal totalPercentage = 0;
-            foreach (EnajenanteClass enajenante in enajenantes)
+            foreach (LocalEnajenante enajenante in enajenantes)
             {
                 totalPercentage += enajenante.PorcentajeDerecho;
             }
@@ -40,20 +40,20 @@ namespace UAndes.ICC5103._202301.Views
             }
         }
 
-        public decimal SumOfPercentages(List<EnajenanteClass> enajenantes)
+        public decimal SumOfPercentages(List<LocalEnajenante> enajenantes)
         {
             decimal totalPercentage = 0;
-            foreach (EnajenanteClass enajenante in enajenantes)
+            foreach (LocalEnajenante enajenante in enajenantes)
             {
                 totalPercentage += enajenante.PorcentajeDerecho;
             }
             return totalPercentage;
         }
 
-        public int NonDeclaredEnajenantesAmount(List<EnajenanteClass> enajenantes)
+        public int NonDeclaredEnajenantesAmount(List<LocalEnajenante> enajenantes)
         {
             int nonDeclaredEnajenantesCount = 0;
-            foreach (EnajenanteClass enajenante in enajenantes)
+            foreach (LocalEnajenante enajenante in enajenantes)
             {
                 if (enajenante.PorcentajeDerechoNoAcreditado == true)
                 {
@@ -63,14 +63,14 @@ namespace UAndes.ICC5103._202301.Views
             return nonDeclaredEnajenantesCount;
         }
 
-        public decimal PostDeclarationEnajenantePercentage(EnajenanteClass enajenante, int amountOfEnajenantes, decimal percentageSum)
+        public decimal PostDeclarationEnajenantePercentage(LocalEnajenante enajenante, int amountOfEnajenantes, decimal percentageSum)
         {
             int truncateValue = 100;
             decimal extraPercentage = Decimal.Truncate(truncateValue * percentageSum / amountOfEnajenantes) / truncateValue;
             return enajenante.PorcentajeDerecho + extraPercentage;
         }
 
-        public decimal GetEnajenantePercentage(EnajenanteClass enajenante, int nonDeclaredEnajenantes, decimal sumOfPercentages)
+        public decimal GetEnajenantePercentage(LocalEnajenante enajenante, int nonDeclaredEnajenantes, decimal sumOfPercentages)
         {
             decimal adquirientePercentage;
             if (enajenante.PorcentajeDerechoNoAcreditado == true)

@@ -18,16 +18,16 @@ namespace UAndes.ICC5103._202301
         public void Test_CheckSumAdquirientesPercetanges_ReturnsCorrectSum()
         {
             AdquirienteVerificator verificator = new AdquirienteVerificator();
-            List<AdquirienteClass> adquirientelist = new List<AdquirienteClass>
+            List<LocalAdquiriente> adquirientelist = new List<LocalAdquiriente>
             {
-                new AdquirienteClass
+                new LocalAdquiriente
                 {
                     Item = 1,
                     Rut = "123456789",
                     PorcentajeDerecho = 70,
                     PorcentajeDerechoNoAcreditado = false
                 },
-                new AdquirienteClass
+                new LocalAdquiriente
                 {
                     Item = 2,
                     Rut = "987654321",
@@ -46,16 +46,16 @@ namespace UAndes.ICC5103._202301
         public void Test_CheckifPercentageSum_IsValid()
         {
             ValuesChecker checker = new ValuesChecker();
-            List<AdquirienteClass> adquirientelist = new List<AdquirienteClass>
+            List<LocalAdquiriente> adquirientelist = new List<LocalAdquiriente>
             {
-                new AdquirienteClass
+                new LocalAdquiriente
                 {
                     Item = 1,
                     Rut = "123456789",
                     PorcentajeDerecho = 70,
                     PorcentajeDerechoNoAcreditado = false
                 },
-                new AdquirienteClass
+                new LocalAdquiriente
                 {
                     Item = 2,
                     Rut = "987654321",
@@ -200,23 +200,23 @@ namespace UAndes.ICC5103._202301
         public void Test_NonDeclaredEnajenantesCount()
         {
             EnajenanteVerificator verificator = new EnajenanteVerificator();
-            List<EnajenanteClass> enajenantes = new List<EnajenanteClass>
+            List<LocalEnajenante> enajenantes = new List<LocalEnajenante>
             {
-                new EnajenanteClass
+                new LocalEnajenante
                 {
                     Item = 1,
                     Rut = "123456789",
                     PorcentajeDerecho = 50,
                     PorcentajeDerechoNoAcreditado = false
                 },
-                new EnajenanteClass
+                new LocalEnajenante
                 {
                     Item = 2,
                     Rut = "987654321",
                     PorcentajeDerecho = 30,
                     PorcentajeDerechoNoAcreditado = true
                 },
-                new EnajenanteClass
+                new LocalEnajenante
                 {
                     Item = 3,
                     Rut = "567891234",
@@ -235,7 +235,7 @@ namespace UAndes.ICC5103._202301
         public void Test_GetCorrectEnajenantePercentage()
         {
             EnajenanteVerificator verificator = new EnajenanteVerificator();
-            EnajenanteClass enajenante = new EnajenanteClass
+            LocalEnajenante enajenante = new LocalEnajenante
             {
                 Item = 1,
                 Rut = "123456789",
@@ -254,11 +254,11 @@ namespace UAndes.ICC5103._202301
         [TestCase]
         public void Test_NonDeclaredAdquirientesAmount()
         {
-            var adquirientes = new List<AdquirienteClass>
+            var adquirientes = new List<LocalAdquiriente>
             {
-                new AdquirienteClass { Item = 1, Rut = "12345678-9", PorcentajeDerecho = 50, PorcentajeDerechoNoAcreditado = true },
-                new AdquirienteClass { Item = 2, Rut = "98765432-1", PorcentajeDerecho = 30, PorcentajeDerechoNoAcreditado = false },
-                new AdquirienteClass { Item = 3, Rut = "54321678-9", PorcentajeDerecho = 20, PorcentajeDerechoNoAcreditado = true }
+                new LocalAdquiriente { Item = 1, Rut = "12345678-9", PorcentajeDerecho = 50, PorcentajeDerechoNoAcreditado = true },
+                new LocalAdquiriente { Item = 2, Rut = "98765432-1", PorcentajeDerecho = 30, PorcentajeDerechoNoAcreditado = false },
+                new LocalAdquiriente { Item = 3, Rut = "54321678-9", PorcentajeDerecho = 20, PorcentajeDerechoNoAcreditado = true }
             };
             var expectedCount = 2;
             var adquirienteVerificator = new AdquirienteVerificator();
@@ -270,11 +270,11 @@ namespace UAndes.ICC5103._202301
         [TestCase]
         public void Test_AdquirientesCheckSumOfPercentages()
         {
-            var adquirientes = new List<AdquirienteClass>
+            var adquirientes = new List<LocalAdquiriente>
             {
-                new AdquirienteClass { Item = 1, Rut = "12345678-9", PorcentajeDerecho = 50, PorcentajeDerechoNoAcreditado = false },
-                new AdquirienteClass { Item = 2, Rut = "98765432-1", PorcentajeDerecho = 30, PorcentajeDerechoNoAcreditado = false },
-                new AdquirienteClass { Item = 3, Rut = "54321678-9", PorcentajeDerecho = 20, PorcentajeDerechoNoAcreditado = false }
+                new LocalAdquiriente { Item = 1, Rut = "12345678-9", PorcentajeDerecho = 50, PorcentajeDerechoNoAcreditado = false },
+                new LocalAdquiriente { Item = 2, Rut = "98765432-1", PorcentajeDerecho = 30, PorcentajeDerechoNoAcreditado = false },
+                new LocalAdquiriente { Item = 3, Rut = "54321678-9", PorcentajeDerecho = 20, PorcentajeDerechoNoAcreditado = false }
             };
 
             var adquirienteVerificator = new AdquirienteVerificator();
@@ -305,7 +305,7 @@ namespace UAndes.ICC5103._202301
         [TestCase]
         public void Test_GetAdquirientePercentage()
         {
-            AdquirienteClass adquiriente = new AdquirienteClass
+            LocalAdquiriente adquiriente = new LocalAdquiriente
             {
                 PorcentajeDerecho = 50,
                 PorcentajeDerechoNoAcreditado = false
@@ -338,7 +338,7 @@ namespace UAndes.ICC5103._202301
         public void Test_PostDeclarationAdquirientePercentage_CorrectPercentage()
         {
             AdquirienteVerificator verificator = new AdquirienteVerificator();
-            AdquirienteClass adquiriente = new AdquirienteClass
+            LocalAdquiriente adquiriente = new LocalAdquiriente
             {
                 PorcentajeDerecho = 30
             };

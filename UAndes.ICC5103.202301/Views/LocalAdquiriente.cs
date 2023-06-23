@@ -5,7 +5,7 @@ using System.Web;
 
 namespace UAndes.ICC5103._202301.Views
 {
-    public class AdquirienteClass
+    public class LocalAdquiriente
     {
         public int Item { get; set; }
         public string Rut { get; set; }

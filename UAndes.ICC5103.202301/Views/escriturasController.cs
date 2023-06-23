@@ -88,7 +88,7 @@ namespace UAndes.ICC5103._202301.Views
                         if (receivedAdquirientes != EmptyInput)
                         {
                             AdquirienteVerificator AdquirienteVerificator = new AdquirienteVerificator();
-                            List<AdquirienteClass> adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
+                            List<LocalAdquiriente> adquirientes = JsonConvert.DeserializeObject<List<LocalAdquiriente>>(receivedAdquirientes);
                             int nonDeclaredAdquirientes = AdquirienteVerificator.NonDeclaredAdquirientesAmount(adquirientes);
 
                             if (!valuesChecker.CheckIfSumOfPercentagesIsValid(adquirientes))
@@ -110,9 +110,9 @@ namespace UAndes.ICC5103._202301.Views
                         if (receivedEnajenantes != EmptyInput && receivedAdquirientes != EmptyInput)
                         {
                             EnajenanteVerificator enajenanteVerificator = new EnajenanteVerificator();
-                            List<EnajenanteClass> enajenantes = JsonConvert.DeserializeObject<List<EnajenanteClass>>(receivedEnajenantes);
+                            List<LocalEnajenante> enajenantes = JsonConvert.DeserializeObject<List<LocalEnajenante>>(receivedEnajenantes);
                             AdquirienteVerificator adquirienteVerificator = new AdquirienteVerificator();
-                            List<AdquirienteClass> adquirientes = JsonConvert.DeserializeObject<List<AdquirienteClass>>(receivedAdquirientes);
+                            List<LocalAdquiriente> adquirientes = JsonConvert.DeserializeObject<List<LocalAdquiriente>>(receivedAdquirientes);
                             DatabaseQueries databaseQueries = new DatabaseQueries();
                             CompraventaOperations compraventaOperations = new CompraventaOperations();
                             decimal sumOfEnajenantesPercentage = 0;
@@ -133,7 +133,7 @@ namespace UAndes.ICC5103._202301.Views
                             if (sumOfPercentage == 100)
                             {
                                 bool fantasmaCheck = false;
-                                foreach (EnajenanteClass enajenante1 in enajenantes)
+                                foreach (LocalEnajenante enajenante1 in enajenantes)
                                 {
                                     try
                                     {
@@ -185,10 +185,10 @@ namespace UAndes.ICC5103._202301.Views
                                 valuesChecker.CalculateSumOfEnajenantesPercentagesDominios(enajenantes, escritura, updatedDate, db);
                                 multipropietariosModifications.UpdateMultipropietariosPorcentajesByPercentage(escritura, enajenantes, adquirientes, updatedDate, db);
                                 bool fantasmaCheck = false;
-                                List<EnajenanteClass> fantasmas = new List<EnajenanteClass>();
+                                List<LocalEnajenante> fantasmas = new List<LocalEnajenante>();
                                 decimal porcentajeMultiplicator = 1;
                                 db.SaveChanges();
-                                foreach (EnajenanteClass enajenante1 in enajenantes)
+                                foreach (LocalEnajenante enajenante1 in enajenantes)
                                 {
                                     try
                                     {
@@ -200,7 +200,7 @@ namespace UAndes.ICC5103._202301.Views
                                         fantasmaCheck = true;
                                     }
                                 }
-                                foreach (EnajenanteClass enajenante in enajenantes)
+                                foreach (LocalEnajenante enajenante in enajenantes)
                                 {
                                     try
                                     {
@@ -231,7 +231,7 @@ namespace UAndes.ICC5103._202301.Views
                                 else
                                 {
                                     decimal percentageToShare = (100 - sumOfPercentages) / fantasmas.Count;
-                                    foreach (EnajenanteClass fantasma in fantasmas)
+                                    foreach (LocalEnajenante fantasma in fantasmas)
                                     {
                                         createClasses.CreateMultipropietarioWithEnajenante(escritura, fantasma, percentageToShare, Int32.Parse(escritura.NumeroInscripcion), updatedDate, 0, db);
                                     }
@@ -336,13 +336,13 @@ namespace UAndes.ICC5103._202301.Views
                         if (adquirientesCount != 0)
                         {
                             AdquirienteVerificator AdquirienteVerificator = new AdquirienteVerificator();
-                            List<AdquirienteClass> adquirientes = new List<AdquirienteClass>();
+                            List<LocalAdquiriente> adquirientes = new List<LocalAdquiriente>();
 
                             List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escritura, db);
 
                             foreach (Adquiriente escrituraToTransform in escrituraAdquirientes)
                             {
-                                AdquirienteClass newAdquiriente = new AdquirienteClass
+                                LocalAdquiriente newAdquiriente = new LocalAdquiriente
                                 {
                                     Rut = escrituraToTransform.RunRut,
                                     PorcentajeDerecho = escrituraToTransform.PorcentajeDerecho,
@@ -373,13 +373,13 @@ namespace UAndes.ICC5103._202301.Views
                         if (enajenantesCount != 0 && adquirientesCount != 0)
                         {
                             EnajenanteVerificator enajenanteVerificator = new EnajenanteVerificator();
-                            List<EnajenanteClass> enajenantes = new List<EnajenanteClass>();
+                            List<LocalEnajenante> enajenantes = new List<LocalEnajenante>();
                             AdquirienteVerificator adquirienteVerificator = new AdquirienteVerificator();
                             List<Enajenante> escrituraEnajenantes = databaseQueries.GetEscrituraEnajenantes(escritura, db);
 
                             foreach (Enajenante enajenanteToTransform in escrituraEnajenantes)
                             {
-                                EnajenanteClass newEnajenante = new EnajenanteClass
+                                LocalEnajenante newEnajenante = new LocalEnajenante
                                 {
                                     Rut = enajenanteToTransform.RunRut,
                                     PorcentajeDerecho = enajenanteToTransform.PorcentajeDerecho,
@@ -388,12 +388,12 @@ namespace UAndes.ICC5103._202301.Views
                                 enajenantes.Add(newEnajenante);
                             }
 
-                            List<AdquirienteClass> adquirientes = new List<AdquirienteClass>();
+                            List<LocalAdquiriente> adquirientes = new List<LocalAdquiriente>();
                             List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escritura, db);
 
                             foreach (Adquiriente adquirienteToTransform in escrituraAdquirientes)
                             {
-                                AdquirienteClass newAdquiriente = new AdquirienteClass
+                                LocalAdquiriente newAdquiriente = new LocalAdquiriente
                                 {
                                     Rut = adquirienteToTransform.RunRut,
                                     PorcentajeDerecho = adquirienteToTransform.PorcentajeDerecho,
@@ -418,7 +418,7 @@ namespace UAndes.ICC5103._202301.Views
                             if (sumOfPercentage == 100)
                             {
                                 bool fantasmaCheck = false;
-                                foreach (EnajenanteClass enajenante1 in enajenantes)
+                                foreach (LocalEnajenante enajenante1 in enajenantes)
                                 {
                                     try
                                     {
@@ -468,10 +468,10 @@ namespace UAndes.ICC5103._202301.Views
                                 valuesChecker.CalculateSumOfEnajenantesPercentagesDominios(enajenantes, escritura, updatedDate, db);
                                 decimal porcentajeMultiplicator = multipropietariosModifications.UpdateMultipropietariosPorcentajesByPercentage(escritura, enajenantes, adquirientes, updatedDate, db);
                                 bool fantasmaCheck = false;
-                                List<EnajenanteClass> fantasmas = new List<EnajenanteClass>();
+                                List<LocalEnajenante> fantasmas = new List<LocalEnajenante>();
                                 porcentajeMultiplicator = 1;
                                 db.SaveChanges();
-                                foreach (EnajenanteClass enajenante1 in enajenantes)
+                                foreach (LocalEnajenante enajenante1 in enajenantes)
                                 {
                                     try
                                     {
@@ -483,7 +483,7 @@ namespace UAndes.ICC5103._202301.Views
                                         fantasmaCheck = true;
                                     }
                                 }
-                                foreach (EnajenanteClass enajenante in enajenantes)
+                                foreach (LocalEnajenante enajenante in enajenantes)
                                 {
                                     try
                                     {
@@ -514,7 +514,7 @@ namespace UAndes.ICC5103._202301.Views
                                 else
                                 {
                                     decimal percentageToShare = (100 - sumOfPercentages) / fantasmas.Count;
-                                    foreach (EnajenanteClass fantasma in fantasmas)
+                                    foreach (LocalEnajenante fantasma in fantasmas)
                                     {
                                         createClasses.CreateMultipropietarioWithEnajenante(escritura, fantasma, percentageToShare, Int32.Parse(escritura.NumeroInscripcion), updatedDate, 0, db);
                                     }
