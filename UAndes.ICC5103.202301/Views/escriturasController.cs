@@ -157,9 +157,9 @@ namespace UAndes.ICC5103._202301.Views
                                         db.SaveChanges();
                                         decimal updatePercentage = (100+sumOfEnajenantesPercentage) / 100;
                                         multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                        foreach (Multipropietario multipropietario1 in multipropietariosToUpdate)
+                                        foreach (Multipropietario multipropietarioUpdate in multipropietariosToUpdate)
                                         {
-                                            multipropietariosModifications.UpdateMultipropietario(multipropietario1, multipropietario1.PorcentajeDerecho / updatePercentage, db);
+                                            multipropietariosModifications.UpdateMultipropietario(multipropietarioUpdate, multipropietarioUpdate.PorcentajeDerecho / updatePercentage, db);
                                         }
                                     }
                                     else
@@ -187,15 +187,15 @@ namespace UAndes.ICC5103._202301.Views
                                 List<LocalEnajenante> fantasmas = new List<LocalEnajenante>();
                                 decimal porcentajeMultiplicator = 1;
                                 db.SaveChanges();
-                                foreach (LocalEnajenante enajenante1 in enajenantes)
+                                foreach (LocalEnajenante enajenanteFantasma in enajenantes)
                                 {
                                     try
                                     {
-                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.Rut, db);
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenanteFantasma.Rut, db);
                                     }
                                     catch
                                     {
-                                        fantasmas.Add(enajenante1);
+                                        fantasmas.Add(enajenanteFantasma);
                                         fantasmaCheck = true;
                                     }
                                 }
@@ -220,9 +220,9 @@ namespace UAndes.ICC5103._202301.Views
                                 {
 
                                     decimal updatePercentage = sumOfPercentages / 100;
-                                    foreach (Multipropietario multipropietario1 in multipropietariosToUpdate)
+                                    foreach (Multipropietario multipropietarioUpdate in multipropietariosToUpdate)
                                     {
-                                        multipropietariosModifications.UpdateMultipropietario(multipropietario1, multipropietario1.PorcentajeDerecho / updatePercentage, db);
+                                        multipropietariosModifications.UpdateMultipropietario(multipropietarioUpdate, multipropietarioUpdate.PorcentajeDerecho / updatePercentage, db);
                                     }
                                 }
                                 else
@@ -414,11 +414,11 @@ namespace UAndes.ICC5103._202301.Views
                             if (sumOfPercentage == 100)
                             {
                                 bool fantasmaCheck = false;
-                                foreach (LocalEnajenante enajenante1 in enajenantes)
+                                foreach (LocalEnajenante enajenanteFantasma in enajenantes)
                                 {
                                     try
                                     {
-                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.Rut, db);
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenanteFantasma.Rut, db);
                                     }
                                     catch
                                     {
@@ -437,9 +437,9 @@ namespace UAndes.ICC5103._202301.Views
                                         db.SaveChanges();
                                         decimal updatePercentage = (100 + sumOfEnajenantesPercentage) / 100;
                                         multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                        foreach (Multipropietario multipropietario1 in multipropietariosToUpdate)
+                                        foreach (Multipropietario multipropietarioUpdate in multipropietariosToUpdate)
                                         {
-                                            multipropietariosModifications.UpdateMultipropietario(multipropietario1, multipropietario1.PorcentajeDerecho / updatePercentage, db);
+                                            multipropietariosModifications.UpdateMultipropietario(multipropietarioUpdate, multipropietarioUpdate.PorcentajeDerecho / updatePercentage, db);
                                         }
                                     }
                                     else
@@ -468,15 +468,15 @@ namespace UAndes.ICC5103._202301.Views
                                 List<LocalEnajenante> fantasmas = new List<LocalEnajenante>();
                                 porcentajeMultiplicator = 1;
                                 db.SaveChanges();
-                                foreach (LocalEnajenante enajenante1 in enajenantes)
+                                foreach (LocalEnajenante enajenanteFantasma in enajenantes)
                                 {
                                     try
                                     {
-                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante1.Rut, db);
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenanteFantasma.Rut, db);
                                     }
                                     catch
                                     {
-                                        fantasmas.Add(enajenante1);
+                                        fantasmas.Add(enajenanteFantasma);
                                         fantasmaCheck = true;
                                     }
                                 }
@@ -501,9 +501,9 @@ namespace UAndes.ICC5103._202301.Views
                                 {
 
                                     decimal updatePercentage = sumOfPercentages / 100;
-                                    foreach (Multipropietario multipropietario1 in multipropietariosToUpdate)
+                                    foreach (Multipropietario multipropietarioUpdate in multipropietariosToUpdate)
                                     {
-                                        multipropietariosModifications.UpdateMultipropietario(multipropietario1, multipropietario1.PorcentajeDerecho / updatePercentage, db);
+                                        multipropietariosModifications.UpdateMultipropietario(multipropietarioUpdate, multipropietarioUpdate.PorcentajeDerecho / updatePercentage, db);
                                     }
                                 }
                                 else
