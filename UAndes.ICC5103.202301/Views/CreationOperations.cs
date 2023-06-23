@@ -114,7 +114,7 @@ namespace UAndes.ICC5103._202301.Views
             }
         }
 
-        public void CreateAdquirientesAndMultipropietariosForTraspaso(Escritura escritura, List<LocalAdquiriente> adquirientes, decimal percentageToSplit, int updatedDate, decimal percentageOver, InscripcionesBrDbEntities db)
+        public void CreateMultipropietariosForTraspaso(Escritura escritura, List<LocalAdquiriente> adquirientes, decimal percentageToSplit, int updatedDate, decimal percentageOver, InscripcionesBrDbEntities db)
         {
             int currentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
             DatabaseQueries databaseQueries = new DatabaseQueries();
@@ -137,7 +137,7 @@ namespace UAndes.ICC5103._202301.Views
             }
         }
 
-        public void CreateAdquirienteAndMultipropietarioForDerechos(Escritura escritura, LocalAdquiriente adquiriente, decimal percentageToSplit, int updatedDate, InscripcionesBrDbEntities db)
+        public void CreateMultipropietarioForDerechos(Escritura escritura, LocalAdquiriente adquiriente, decimal percentageToSplit, int updatedDate, InscripcionesBrDbEntities db)
         {
             int currentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
             CreateMultipropietario(escritura, adquiriente, percentageToSplit, currentInscriptionNumber, updatedDate, 0, db);

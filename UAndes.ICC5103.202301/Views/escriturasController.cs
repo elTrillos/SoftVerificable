@@ -153,7 +153,7 @@ namespace UAndes.ICC5103._202301.Views
                                     {
                                         sumOfEnajenantesPercentage = databaseQueries.GetSumOfAllMultipropietariosPercentage(escritura, db);
                                         multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 100, db);
-                                        creationOperations.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
+                                        creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
                                         db.SaveChanges();
                                         decimal updatePercentage = (100+sumOfEnajenantesPercentage) / 100;
                                         multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
@@ -164,13 +164,13 @@ namespace UAndes.ICC5103._202301.Views
                                     }
                                     else
                                     {
-                                        creationOperations.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
+                                        creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
                                     }
                                 }
                                 else
                                 {
                                     sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 0, db);
-                                    creationOperations.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, 0, db);
+                                    creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, 0, db);
                                 }
                             }
                             else if (sumOfPercentage < 100 && enajenantes.Count() == 1 && adquirientes.Count() == 1)
@@ -433,7 +433,7 @@ namespace UAndes.ICC5103._202301.Views
                                     {
                                         sumOfEnajenantesPercentage = databaseQueries.GetSumOfAllMultipropietariosPercentage(escritura, db);
                                         multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 100, db);
-                                        creationOperations.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
+                                        creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
                                         db.SaveChanges();
                                         decimal updatePercentage = (100 + sumOfEnajenantesPercentage) / 100;
                                         multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
@@ -444,13 +444,13 @@ namespace UAndes.ICC5103._202301.Views
                                     }
                                     else
                                     {
-                                        creationOperations.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
+                                        creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
                                     }
                                 }
                                 else
                                 {
                                     sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 0, db);
-                                    creationOperations.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, 0, db);
+                                    creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, 0, db);
                                 }
 
                             }

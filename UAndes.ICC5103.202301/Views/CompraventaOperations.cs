@@ -46,7 +46,7 @@ namespace UAndes.ICC5103._202301.Views
                     multipropietariosModifications.CreateMultipropietarioForDerechosFantasma(escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
                 }
             }
-            creationOperations.CreateAdquirienteAndMultipropietarioForDerechos(escritura, adquiriente, adquirientePercentage, updatedDate, db);
+            creationOperations.CreateMultipropietarioForDerechos(escritura, adquiriente, adquirientePercentage, updatedDate, db);
         }
     }
 }
