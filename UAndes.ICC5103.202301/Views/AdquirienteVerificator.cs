@@ -72,7 +72,7 @@ namespace UAndes.ICC5103._202301.Views
 
         public decimal GetAdquirientePercentage(AdquirienteClass adquiriente, int nonDeclaredAdquirientes, decimal sumOfPercentages)
         {
-            decimal adquirientePercentage = 0;
+            decimal adquirientePercentage;
             if (adquiriente.PorcentajeDerechoNoAcreditado == true)
             {
                 adquirientePercentage = PostDeclarationAdquirientePercentage(adquiriente, nonDeclaredAdquirientes, sumOfPercentages);

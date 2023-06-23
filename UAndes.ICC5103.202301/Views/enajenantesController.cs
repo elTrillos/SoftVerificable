@@ -12,7 +12,7 @@ namespace UAndes.ICC5103._202301.Views
 {
     public class EnajenantesController : Controller
     {
-        private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
+        readonly private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
 
         // GET: Enajenantes
         public ActionResult Index()

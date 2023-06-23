@@ -13,7 +13,7 @@ namespace UAndes.ICC5103._202301.Views
 {
     public class MultipropietariosController : Controller
     {
-        private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
+        readonly private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
 
         // GET: Multipropietarios
         public ActionResult Index()

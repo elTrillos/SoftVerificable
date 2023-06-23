@@ -126,6 +126,11 @@ namespace UAndes.ICC5103._202301.Views
                             {
                                 return RedirectToAction("Create");
                             }
+                            int currentAñoVigenciaFinal = multipropietariosModifications.EliminateCurrentYearMultipropietarios(escritura, updatedDate, db);
+                            if (currentAñoVigenciaFinal == InvalidValue) //if the year returned is -1, it means that there is no need to update or create anything.
+                            {
+                                return RedirectToAction("Index");
+                            }
 
                             if (sumOfPercentage == 100)
                             {
@@ -141,20 +146,28 @@ namespace UAndes.ICC5103._202301.Views
                                         fantasmaCheck = true;
                                     }
                                 }
+                                System.Diagnostics.Debug.WriteLine("fantasmaCheck");
+                                System.Diagnostics.Debug.WriteLine(fantasmaCheck);
 
                                 if (fantasmaCheck)
                                 {
                                     List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                    foreach (Multipropietario multipropietario in multipropietariosToUpdate)
+                                    if (multipropietariosToUpdate.Count() > 0)
                                     {
-                                        multipropietario.PorcentajeDerecho /= 2;
-                                        db.SaveChanges();
+                                        foreach (Multipropietario multipropietario in multipropietariosToUpdate)
+                                        {
+                                            multipropietario.PorcentajeDerecho /= multipropietariosToUpdate.Count();
+                                            db.SaveChanges();
+                                        }
+                                        sumOfEnajenantesPercentage = 100;
+                                        multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, sumOfEnajenantesPercentage, db);
+                                        createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, sumOfEnajenantesPercentage, db);
                                     }
-                                    sumOfEnajenantesPercentage = 100;
-                                    multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, sumOfEnajenantesPercentage, db);
-                                    createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, sumOfEnajenantesPercentage, db);
-
-
+                                    else
+                                    {
+                                        sumOfEnajenantesPercentage = 100;
+                                        createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, 0, db);
+                                    }
                                 }
                                 else
                                 {
@@ -165,16 +178,7 @@ namespace UAndes.ICC5103._202301.Views
                             }
                             else if (sumOfPercentage < 100 && enajenantes.Count() == 1 && adquirientes.Count() == 1)
                             {
-                                bool fantasmaCheck = false;
-                                try
-                                {
-                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenantes[0].Rut, db);
-                                }
-                                catch
-                                {
-                                    fantasmaCheck = true;
-                                }
-                                compraventaOperations.DerechosHandler(enajenantes, adquirientes, escritura, updatedDate, fantasmaCheck, db);
+                                compraventaOperations.DerechosHandler(enajenantes, adquirientes, escritura, updatedDate, db);
                                 db.SaveChanges();
                                 multipropietariosModifications.UpdateMultipropietariosPercentageDerechos(escritura, updatedDate, db);
                             }
@@ -207,7 +211,7 @@ namespace UAndes.ICC5103._202301.Views
                                     catch { }
                                 }
                                 System.Diagnostics.Debug.WriteLine("poggie woggie uwu xddd");
-                                createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, porcentajeMultiplicator, updatedDate, db);
+                                createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, updatedDate, db);
                                 db.SaveChanges();
 
                                 List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
@@ -330,7 +334,7 @@ namespace UAndes.ICC5103._202301.Views
                 int adquirientesCount = databaseQueries.AdquirienteCount(escrituraRecreation, db);
                 //List<Enajenante> escrituraEnajenantes= databaseQueries.GetEscrituraEnajenantes(escrituraRecreation, db);
                 //List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
-
+                
 
                 switch (escrituraRecreation.CNE)
                 {
@@ -392,8 +396,6 @@ namespace UAndes.ICC5103._202301.Views
                                 enajenantes.Add(newEnajenante);
                             }
 
-
-
                             List<AdquirienteClass> adquirientes = new List<AdquirienteClass>();
                             List<Adquiriente> escrituraAdquirientes = databaseQueries.GetEscrituraAdquirientes(escrituraRecreation, db);
 
@@ -412,7 +414,11 @@ namespace UAndes.ICC5103._202301.Views
                             decimal sumOfPercentage = adquirienteVerificator.SumOfPercentages(adquirientes);
                             int updatedDate = enajenanteVerificator.GetUpdatedDate(escritura);
                             //createClasses.CreateMultipleEnajenantes(escritura, enajenantes, db);
-
+                            int currentAñoVigenciaFinal = multipropietariosModifications.EliminateCurrentYearMultipropietarios(escritura, updatedDate, db);
+                            if (currentAñoVigenciaFinal == InvalidValue) //if the year returned is -1, it means that there is no need to update or create anything.
+                            {
+                                return RedirectToAction("Index");
+                            }
                             if (!valuesChecker.CheckIfDataIsValidCompraventa(escritura, updatedDate, db))
                             {
                                 return RedirectToAction("Create");
@@ -436,16 +442,22 @@ namespace UAndes.ICC5103._202301.Views
                                 if (fantasmaCheck)
                                 {
                                     List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                    foreach (Multipropietario multipropietario in multipropietariosToUpdate)
+                                    if (multipropietariosToUpdate.Count() > 0)
                                     {
-                                        multipropietario.PorcentajeDerecho /= 2;
-                                        db.SaveChanges();
+                                        foreach (Multipropietario multipropietario in multipropietariosToUpdate)
+                                        {
+                                            multipropietario.PorcentajeDerecho /= multipropietariosToUpdate.Count();
+                                            db.SaveChanges();
+                                        }
+                                        sumOfEnajenantesPercentage = 100;
+                                        multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, sumOfEnajenantesPercentage, db);
+                                        createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, sumOfEnajenantesPercentage, db);
                                     }
-                                    sumOfEnajenantesPercentage = 100;
-                                    multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, sumOfEnajenantesPercentage, db);
-                                    createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, sumOfEnajenantesPercentage, db);
-
-
+                                    else
+                                    {
+                                        sumOfEnajenantesPercentage = 100;
+                                        createClasses.CreateAdquirientesAndMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, sumOfEnajenantesPercentage, db);
+                                    }
                                 }
                                 else
                                 {
@@ -456,16 +468,7 @@ namespace UAndes.ICC5103._202301.Views
                             }
                             else if (sumOfPercentage < 100 && enajenantes.Count() == 1 && adquirientes.Count() == 1)
                             {
-                                bool fantasmaCheck = false;
-                                try
-                                {
-                                    var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenantes[0].Rut, db);
-                                }
-                                catch
-                                {
-                                    fantasmaCheck = true;
-                                }
-                                compraventaOperations.DerechosHandler(enajenantes, adquirientes, escritura, updatedDate, fantasmaCheck, db);
+                                compraventaOperations.DerechosHandler(enajenantes, adquirientes, escritura, updatedDate, db);
                                 db.SaveChanges();
                                 multipropietariosModifications.UpdateMultipropietariosPercentageDerechos(escritura, updatedDate, db);
                             }
@@ -498,7 +501,7 @@ namespace UAndes.ICC5103._202301.Views
                                     catch { }
                                 }
                                 System.Diagnostics.Debug.WriteLine("poggie woggie uwu xddd");
-                                createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, porcentajeMultiplicator, updatedDate, db);
+                                createClasses.CreateAdquirienteAndMultipropietarioForDominios(escritura, adquirientes, updatedDate, db);
                                 db.SaveChanges();
 
                                 List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);

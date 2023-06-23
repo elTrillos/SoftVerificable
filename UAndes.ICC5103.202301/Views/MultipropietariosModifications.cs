@@ -76,7 +76,7 @@ namespace UAndes.ICC5103._202301.Views
                     {
                         var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, currentYear, enajenante.Rut, db);
                         sumOfEnajenantesPercentage += enajenanteMultipropietario.PorcentajeDerecho;
-                        enajenanteMultipropietario.PorcentajeDerecho = enajenanteMultipropietario.PorcentajeDerecho * multipler;
+                        enajenanteMultipropietario.PorcentajeDerecho *= multipler;
                         enajenanteMultipropietario.AñoVigenciaFinal = currentYear - 1;
                         db.Entry(enajenanteMultipropietario).State = EntityState.Modified;
                         db.SaveChanges();

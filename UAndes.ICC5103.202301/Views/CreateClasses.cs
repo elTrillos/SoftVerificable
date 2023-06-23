@@ -145,7 +145,7 @@ namespace UAndes.ICC5103._202301.Views
             CreateMultipropietario(escritura, adquiriente, percentageToSplit, currentInscriptionNumber, updatedDate, 0, db);
         }
 
-        public void CreateAdquirienteAndMultipropietarioForDominios(Escritura escritura, List<AdquirienteClass> adquirientes, decimal percentageMultiplicator, int updatedDate, InscripcionesBrDbEntities db)
+        public void CreateAdquirienteAndMultipropietarioForDominios(Escritura escritura, List<AdquirienteClass> adquirientes, int updatedDate, InscripcionesBrDbEntities db)
         {
             int currentInscriptionNumber = Int32.Parse(escritura.NumeroInscripcion);
             DatabaseQueries databaseQueries = new DatabaseQueries();

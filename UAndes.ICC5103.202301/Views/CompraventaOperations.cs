@@ -8,15 +8,15 @@ namespace UAndes.ICC5103._202301.Views
 {
     public class CompraventaOperations
     {
-        public void DerechosHandler(List<EnajenanteClass> enajenantes, List<AdquirienteClass> adquirientes, Escritura escritura, int updatedDate,bool isFantasma, InscripcionesBrDbEntities db)
+        public void DerechosHandler(List<EnajenanteClass> enajenantes, List<AdquirienteClass> adquirientes, Escritura escritura, int updatedDate, InscripcionesBrDbEntities db)
         {
             DatabaseQueries databaseQueries = new DatabaseQueries();
             MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();
             CreateClasses createClasses = new CreateClasses();
             EnajenanteClass enajenante = enajenantes[0];
             AdquirienteClass adquiriente = adquirientes[0];
-            decimal enajenanteTotalPercentage = 0;
-            decimal adquirientePercentage = 0;
+            decimal enajenanteTotalPercentage;
+            decimal adquirientePercentage;
             try
             {
                 Multipropietario multipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenante.Rut, db);
@@ -30,7 +30,8 @@ namespace UAndes.ICC5103._202301.Views
 
                 enajenanteTotalPercentage = 100;
                 adquirientePercentage = adquiriente.PorcentajeDerecho * enajenanteTotalPercentage / 100;
-                decimal sumOfEnajenantesPercentage = 0;
+                decimal sumOfEnajenantesPercentage;
+                bool emptyCheck=false;
                 try
                 {
                     sumOfEnajenantesPercentage = databaseQueries.SumOfAllMultipropietariosPercentage(escritura, db)-adquirientePercentage;
@@ -38,8 +39,11 @@ namespace UAndes.ICC5103._202301.Views
                 catch
                 {
                     sumOfEnajenantesPercentage = enajenanteTotalPercentage * (100 - enajenante.PorcentajeDerecho) / 100;
+                    emptyCheck = true;
                 }
-                if (sumOfEnajenantesPercentage >= 100)
+                System.Diagnostics.Debug.WriteLine("checkkk");
+                System.Diagnostics.Debug.WriteLine(emptyCheck);
+                if (emptyCheck)
                 {
                     multipropietariosModifications.CreateMultipropietarioForDerechosFantasma(escritura, enajenante, updatedDate, sumOfEnajenantesPercentage, db);
                 }
