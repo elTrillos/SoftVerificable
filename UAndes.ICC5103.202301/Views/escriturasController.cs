@@ -137,11 +137,14 @@ namespace UAndes.ICC5103._202301.Views
                             if (sumOfPercentage == 100)
                             {
                                 bool fantasmaCheck = false;
+                                int existingEnajenantesCount = 0;
+
                                 foreach (LocalEnajenante enajenanteToCount in enajenantes)
                                 {
                                     try
                                     {
                                         var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenanteToCount.Rut, db);
+                                        existingEnajenantesCount++;
                                     }
                                     catch
                                     {
@@ -152,22 +155,29 @@ namespace UAndes.ICC5103._202301.Views
                                 if (fantasmaCheck)
                                 {
                                     List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                    if (multipropietariosToUpdate.Count() > 0)
+                                    if (existingEnajenantesCount > 0)
                                     {
-                                        sumOfEnajenantesPercentage = databaseQueries.GetSumOfAllMultipropietariosPercentage(escritura, db);
-                                        multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 100, db);
+                                        sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 100, db);
+                                        creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100-sumOfEnajenantesPercentage, updatedDate, 0, db);
+                                        db.SaveChanges();
+                                    }
+                                    else if(existingEnajenantesCount == 0 && multipropietariosToUpdate.Count() == 0)
+                                    {
                                         creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
                                         db.SaveChanges();
-                                        decimal updatePercentage = (100+sumOfEnajenantesPercentage) / 100;
-                                        multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                        foreach (Multipropietario multipropietarioUpdate in multipropietariosToUpdate)
-                                        {
-                                            multipropietariosModifications.UpdateMultipropietario(multipropietarioUpdate, multipropietarioUpdate.PorcentajeDerecho / updatePercentage, db);
-                                        }
                                     }
                                     else
                                     {
+                                        multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 100, db);
                                         creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
+                                        db.SaveChanges();
+                                        multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                                        int divisionValue = 2;
+
+                                        foreach (Multipropietario multipropietarioUpdate in multipropietariosToUpdate)
+                                        {
+                                            multipropietariosModifications.UpdateMultipropietario(multipropietarioUpdate, multipropietarioUpdate.PorcentajeDerecho / divisionValue, db);
+                                        }
                                     }
                                 }
                                 else
@@ -190,6 +200,7 @@ namespace UAndes.ICC5103._202301.Views
                                 List<LocalEnajenante> fantasmas = new List<LocalEnajenante>();
                                 decimal porcentajeMultiplicator = 1;
                                 db.SaveChanges();
+
                                 foreach (LocalEnajenante enajenanteFantasma in enajenantes)
                                 {
                                     try
@@ -202,6 +213,7 @@ namespace UAndes.ICC5103._202301.Views
                                         fantasmaCheck = true;
                                     }
                                 }
+
                                 foreach (LocalEnajenante enajenante in enajenantes)
                                 {
                                     try
@@ -215,6 +227,7 @@ namespace UAndes.ICC5103._202301.Views
 
                                 List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
                                 decimal sumOfPercentages = 0;
+
                                 foreach (Multipropietario multipropietario in multipropietariosToUpdate)
                                 {
                                     sumOfPercentages += multipropietario.PorcentajeDerecho;
@@ -437,11 +450,13 @@ namespace UAndes.ICC5103._202301.Views
                             if (sumOfPercentage == 100)
                             {
                                 bool fantasmaCheck = false;
-                                foreach (LocalEnajenante enajenanteFantasma in enajenantes)
+                                int existingEnajenantesCount = 0;
+                                foreach (LocalEnajenante enajenanteToCount in enajenantes)
                                 {
                                     try
                                     {
-                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenanteFantasma.Rut, db);
+                                        var enajenanteMultipropietario = databaseQueries.GetLatestMultipropietarioByRut(escritura, updatedDate, enajenanteToCount.Rut, db);
+                                        existingEnajenantesCount++;
                                     }
                                     catch
                                     {
@@ -452,22 +467,28 @@ namespace UAndes.ICC5103._202301.Views
                                 if (fantasmaCheck)
                                 {
                                     List<Multipropietario> multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                    if (multipropietariosToUpdate.Count() > 0)
+                                    if (existingEnajenantesCount > 0)
                                     {
-                                        sumOfEnajenantesPercentage = databaseQueries.GetSumOfAllMultipropietariosPercentage(escritura, db);
-                                        multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 100, db);
+                                        sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 100, db);
+                                        creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100 - sumOfEnajenantesPercentage, updatedDate, 0, db);
+                                        db.SaveChanges();
+                                    }
+                                    else if (existingEnajenantesCount == 0 && multipropietariosToUpdate.Count() == 0)
+                                    {
                                         creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
                                         db.SaveChanges();
-                                        decimal updatePercentage = (100 + sumOfEnajenantesPercentage) / 100;
-                                        multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
-                                        foreach (Multipropietario multipropietarioUpdate in multipropietariosToUpdate)
-                                        {
-                                            multipropietariosModifications.UpdateMultipropietario(multipropietarioUpdate, multipropietarioUpdate.PorcentajeDerecho / updatePercentage, db);
-                                        }
                                     }
                                     else
                                     {
+                                        multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 100, db);
                                         creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, 100, updatedDate, 0, db);
+                                        db.SaveChanges();
+                                        multipropietariosToUpdate = databaseQueries.GetAllValidMultipropietarios(escritura, updatedDate, db);
+                                        int divisionValue = 2;
+                                        foreach (Multipropietario multipropietarioUpdate in multipropietariosToUpdate)
+                                        {
+                                            multipropietariosModifications.UpdateMultipropietario(multipropietarioUpdate, multipropietarioUpdate.PorcentajeDerecho / divisionValue, db);
+                                        }
                                     }
                                 }
                                 else
@@ -475,7 +496,6 @@ namespace UAndes.ICC5103._202301.Views
                                     sumOfEnajenantesPercentage = multipropietariosModifications.EliminateTranspasoMultipropietarios(escritura, updatedDate, enajenantes, 0, db);
                                     creationOperations.CreateMultipropietariosForTraspaso(escritura, adquirientes, sumOfEnajenantesPercentage, updatedDate, 0, db);
                                 }
-
                             }
                             else if (sumOfPercentage < 100 && enajenantes.Count() == 1 && adquirientes.Count() == 1)
                             {
@@ -491,6 +511,7 @@ namespace UAndes.ICC5103._202301.Views
                                 List<LocalEnajenante> fantasmas = new List<LocalEnajenante>();
                                 porcentajeMultiplicator = 1;
                                 db.SaveChanges();
+
                                 foreach (LocalEnajenante enajenanteFantasma in enajenantes)
                                 {
                                     try
