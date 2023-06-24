@@ -22,6 +22,9 @@ namespace UAndes.ICC5103._202301.Views
     {
         private const string EmptyInput = "";
         private const int InvalidValue = -1;
+        private const string VigenteStatus = "Vigente";
+        private const string NoVigenteStatus = "No Vigente";
+        private const string EliminadoStatus = "Eliminado";
 
         readonly private InscripcionesBrDbEntities db = new InscripcionesBrDbEntities();
 
@@ -70,7 +73,7 @@ namespace UAndes.ICC5103._202301.Views
         {
             if (ModelState.IsValid)
             {
-                escritura.Estado = "Vigente";
+                escritura.Estado = VigenteStatus;
                 ValuesChecker valuesChecker = new ValuesChecker();
                 CreationOperations creationOperations = new CreationOperations();
                 MultipropietariosModifications multipropietariosModifications = new MultipropietariosModifications();
@@ -302,14 +305,14 @@ namespace UAndes.ICC5103._202301.Views
         public ActionResult DeleteConfirmed(int id)
         {
             Escritura escrituraToMod = db.Escritura.Find(id);
-            escrituraToMod.Estado = "Eliminado";
+            escrituraToMod.Estado = EliminadoStatus;
             db.Entry(escrituraToMod).State = EntityState.Modified;
             db.SaveChanges();
             DatabaseQueries databaseQueries = new DatabaseQueries();
             try
             {
                 Escritura escrituraToRecover = databaseQueries.GetSameNumeroInscripcionEscritura(escrituraToMod, escrituraToMod.NumeroInscripcion, db);
-                escrituraToRecover.Estado = "Vigente";
+                escrituraToRecover.Estado = VigenteStatus;
                 db.Entry(escrituraToRecover).State = EntityState.Modified;
                 db.SaveChanges();
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
 using UAndes.ICC5103._202301.Models;
@@ -8,6 +9,8 @@ namespace UAndes.ICC5103._202301.Views
 {
     public class DatabaseQueries
     {
+        private const string NoVigenteStatus = "No Vigente";
+        private const string VigenteStatus = "Vigente";
         public List<Multipropietario> GetSameYearMultipropietarios(Escritura escritura, int startDate, InscripcionesBrDbEntities db)
         {
             var sameYearMultipropietarios = db.Multipropietario
@@ -85,7 +88,7 @@ namespace UAndes.ICC5103._202301.Views
                 .Where(a => a.Comuna == escritura.Comuna)
                 .Where(b => b.Manzana == escritura.Manzana)
                 .Where(c => c.Predio == escritura.Predio)
-                .Where(d => d.Estado== "Vigente")
+                .Where(d => d.Estado== VigenteStatus)
                 .OrderBy(e => e.FechaInscripcion.Year)
                 .ThenBy(f => f.NumeroInscripcion)
                 .ToList();
@@ -148,13 +151,14 @@ namespace UAndes.ICC5103._202301.Views
         }
         public Escritura GetSameNumeroInscripcionEscritura(Escritura escritura, string numeroInscripcion, InscripcionesBrDbEntities db)
         {
+            
             Escritura sameNumeroEscritura = db.Escritura
                 .Where(a => a.Comuna == escritura.Comuna)
                 .Where(b => b.Manzana == escritura.Manzana)
                 .Where(c => c.Predio == escritura.Predio)
                 .Where(d => d.FechaInscripcion.Year == escritura.FechaInscripcion.Year)
                 .Where(e => e.NumeroInscripcion == numeroInscripcion)
-                .Where(f => f.Estado == "No Vigente")
+                .Where(f => f.Estado == NoVigenteStatus)
                 .First();
             return sameNumeroEscritura;
         }
