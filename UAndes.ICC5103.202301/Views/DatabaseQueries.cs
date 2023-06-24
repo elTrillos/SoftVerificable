@@ -87,7 +87,7 @@ namespace UAndes.ICC5103._202301.Views
                 .Where(c => c.Predio == escritura.Predio)
                 .Where(d => d.Estado== "Vigente")
                 .OrderBy(e => e.FechaInscripcion.Year)
-                .OrderByDescending(f => f.NumeroInscripcion)
+                .ThenBy(f => f.NumeroInscripcion)
                 .ToList();
             return escrituras;
         }
@@ -145,6 +145,18 @@ namespace UAndes.ICC5103._202301.Views
                 .Where(d => d.NumeroInscripcion == multipropietario.NumeroInscripcion.ToString())
                 .First();
             return escritura;
+        }
+        public Escritura GetSameNumeroInscripcionEscritura(Escritura escritura, string numeroInscripcion, InscripcionesBrDbEntities db)
+        {
+            Escritura sameNumeroEscritura = db.Escritura
+                .Where(a => a.Comuna == escritura.Comuna)
+                .Where(b => b.Manzana == escritura.Manzana)
+                .Where(c => c.Predio == escritura.Predio)
+                .Where(d => d.FechaInscripcion.Year == escritura.FechaInscripcion.Year)
+                .Where(e => e.NumeroInscripcion == numeroInscripcion)
+                .Where(f => f.Estado == "No Vigente")
+                .First();
+            return sameNumeroEscritura;
         }
     }
 }

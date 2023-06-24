@@ -302,10 +302,22 @@ namespace UAndes.ICC5103._202301.Views
         public ActionResult DeleteConfirmed(int id)
         {
             Escritura escrituraToMod = db.Escritura.Find(id);
-            escrituraToMod.Estado = "No Vigente";
+            escrituraToMod.Estado = "Eliminado";
             db.Entry(escrituraToMod).State = EntityState.Modified;
             db.SaveChanges();
             DatabaseQueries databaseQueries = new DatabaseQueries();
+            try
+            {
+                Escritura escrituraToRecover = databaseQueries.GetSameNumeroInscripcionEscritura(escrituraToMod, escrituraToMod.NumeroInscripcion, db);
+                escrituraToRecover.Estado = "Vigente";
+                db.Entry(escrituraToRecover).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            catch
+            {
+
+            }
+            
             List<Multipropietario> allMultipropietarios = databaseQueries.GetAllMultipropietarios(escrituraToMod, db);
             foreach (Multipropietario multipropietario in allMultipropietarios)
             {
@@ -313,6 +325,14 @@ namespace UAndes.ICC5103._202301.Views
                 db.SaveChanges();
             }
             List<Escritura> allEscrituras = databaseQueries.GetAllEscrituras(escrituraToMod, db);
+            foreach (Escritura testEsc in allEscrituras)
+            {
+                System.Diagnostics.Debug.WriteLine("xd");
+                System.Diagnostics.Debug.WriteLine(testEsc.NumeroInscripcion);
+                System.Diagnostics.Debug.WriteLine(testEsc.NumeroAtencion);
+                System.Diagnostics.Debug.WriteLine(testEsc.FechaInscripcion.Year);
+                System.Diagnostics.Debug.WriteLine(testEsc.Estado);
+            }
             foreach (Escritura escritura in allEscrituras)
             {
                 ValuesChecker valuesChecker = new ValuesChecker();
